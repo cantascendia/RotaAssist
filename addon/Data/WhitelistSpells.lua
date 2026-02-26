@@ -52,6 +52,12 @@ RA.WhitelistSpells = {
     [64843]  = { name = "Divine Hymn",          class = "PRIEST",       specID = 257,  cdSeconds = 180 },
     [228260] = { name = "Void Eruption",        class = "PRIEST",       specID = 258,  cdSeconds = 90  },
     [47585]  = { name = "Dispersion",           class = "PRIEST",       specID = 258,  cdSeconds = 120 },
+    [34914]  = { name = "Vampiric Touch",       class = "PRIEST",       specID = 258,  cdSeconds = 0   },
+    [15487]  = { name = "Silence",              class = "PRIEST",       specID = 258,  cdSeconds = 45  },
+    [10060]  = { name = "Power Infusion",       class = "PRIEST",       specID = 258,  cdSeconds = 120 },
+    [263346] = { name = "Void Torrent",         class = "PRIEST",       specID = 258,  cdSeconds = 60  },
+    [120644] = { name = "Halo",                 class = "PRIEST",       specID = 258,  cdSeconds = 40  },
+    [451329] = { name = "Tentacle Slam",        class = "PRIEST",       specID = 258,  cdSeconds = 30  },
 
     ---------- Death Knight ----------
     [49028]  = { name = "Dancing Rune Weapon",  class = "DEATHKNIGHT",  specID = 250,  cdSeconds = 120 },
@@ -73,6 +79,13 @@ RA.WhitelistSpells = {
     [51533]  = { name = "Feral Spirit",         class = "SHAMAN",       specID = 263,  cdSeconds = 90  },
     [108280] = { name = "Healing Tide Totem",   class = "SHAMAN",       specID = 264,  cdSeconds = 180 },
     [98008]  = { name = "Spirit Link Totem",    class = "SHAMAN",       specID = 264,  cdSeconds = 180 },
+    [192077] = { name = "Wind Rush Totem",      class = "SHAMAN",       specID = nil,  cdSeconds = 120 },
+    [108271] = { name = "Astral Shift",         class = "SHAMAN",       specID = nil,  cdSeconds = 90  },
+    [114051] = { name = "Ascendance",           class = "SHAMAN",       specID = 263,  cdSeconds = 120 },
+    [384352] = { name = "Doom Winds",           class = "SHAMAN",       specID = 263,  cdSeconds = 60  },
+    [197214] = { name = "Sundering",            class = "SHAMAN",       specID = 263,  cdSeconds = 40  },
+    [375982] = { name = "Primordial Wave",      class = "SHAMAN",       specID = 263,  cdSeconds = 45  },
+    [384063] = { name = "Surging Totem",        class = "SHAMAN",       specID = 263,  cdSeconds = 24  },
 
     ---------- Mage ----------
     [12042]  = { name = "Arcane Power",         class = "MAGE",         specID = 62,   cdSeconds = 120 },

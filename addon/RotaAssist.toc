@@ -40,6 +40,9 @@ Data\APL\Paladin_Retribution.lua
 Data\APL\DeathKnight_Frost.lua
 Data\APL\DK_Unholy.lua
 Data\APL\Warlock_Demonology.lua
+Data\APL\Shaman_Enhancement.lua
+Data\APL\Evoker_Devastation.lua
+Data\APL\Priest_Shadow.lua
 Data\APL\DemonHunter_Havoc.lua
 Data\APL\DemonHunter_Vengeance.lua
 Data\APL\DemonHunter_Devourer.lua
@@ -50,6 +53,9 @@ Data\SpecEnhancements\Paladin.lua
 Data\SpecEnhancements\Warrior.lua
 Data\SpecEnhancements\DeathKnight.lua
 Data\SpecEnhancements\Warlock.lua
+Data\SpecEnhancements\Shaman.lua
+Data\SpecEnhancements\Evoker.lua
+Data\SpecEnhancements\Priest.lua
 ## DecisionTrees (auto-generated or hand-crafted)
 Data\DecisionTrees\DH_Havoc_DT.lua
 Data\DecisionTrees\DH_Vengeance_DT.lua
@@ -63,6 +69,9 @@ Data\DecisionTrees\Warrior_Arms_DT.lua
 Data\DecisionTrees\DK_Frost_DT.lua 
 Data\DecisionTrees\DK_Unholy_DT.lua 
 Data\DecisionTrees\Warlock_Demo_DT.lua
+Data\DecisionTrees\Shaman_Enh_DT.lua
+Data\DecisionTrees\Evoker_Dev_DT.lua
+Data\DecisionTrees\Priest_Shadow_DT.lua
 ## TransitionMatrices (auto-generated or hand-crafted)
 Data\TransitionMatrix\DH_Havoc_TM.lua
 Data\TransitionMatrix\DH_Vengeance_TM.lua
@@ -75,6 +84,9 @@ Data\TransitionMatrix\Warrior_Arms_TM.lua
 Data\TransitionMatrix\DK_Frost_TM.lua 
 Data\TransitionMatrix\DK_Unholy_TM.lua 
 Data\TransitionMatrix\Warlock_Demo_TM.lua
+Data\TransitionMatrix\Shaman_Enh_TM.lua
+Data\TransitionMatrix\Evoker_Dev_TM.lua
+Data\TransitionMatrix\Priest_Shadow_TM.lua
 
 ## Engine
 Engine\SpecDetector.lua

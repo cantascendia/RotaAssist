@@ -135,6 +135,9 @@ L["spec_devourer"]            = "吞噬者"
 L["SPEC_ARCANE_MAGE"]       = "奥术法师"
 L["SPEC_DEMONOLOGY_WARLOCK"] = "恶魔术士"
 L["SPEC_UNHOLY_DK"]          = "邪恶死亡骑士"
+L["SPEC_ENHANCEMENT_SHAMAN"] = "增强萨满"
+L["SPEC_DEVASTATION_EVOKER"] = "毁灭唤魔师"
+L["SPEC_SHADOW_PRIEST"]      = "暗影牧师"
 
 -- 英雄天赋 (Hero Talents)
 L["hero_aldrachi_reaver"]     = "阿尔德拉奇收割者"
