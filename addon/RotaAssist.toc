@@ -15,40 +15,59 @@
 
 embeds.xml
 
-# Locales first
+## Locales first
 Locales\enUS.lua
 Locales\zhCN.lua
 Locales\jaJP.lua
 
-# Core
+## Core
 Core\Init.lua
 Core\SavedVars.lua
 Core\EventHandler.lua
 Core\AssistCapture.lua
 Core\CooldownTracker.lua
 
-# Data (MUST load before Engine)
+## Data (MUST load before Engine)
 Data\SpecInfo.lua
 Data\WhitelistSpells.lua
 Data\APL\_Template.lua
 Data\APL\Warrior_Arms.lua
 Data\APL\Warrior_Fury.lua
 Data\APL\Mage_Fire.lua
+Data\APL\Mage_Frost.lua 
+Data\APL\Paladin_Retribution.lua 
+Data\APL\DeathKnight_Frost.lua
 Data\APL\DemonHunter_Havoc.lua
 Data\APL\DemonHunter_Vengeance.lua
 Data\APL\DemonHunter_Devourer.lua
-# SpecEnhancements (CD/defensive/resource config per spec)
+## SpecEnhancements (CD/defensive/resource config per spec)
 Data\SpecEnhancements\DemonHunter.lua
-# DecisionTrees (auto-generated or hand-crafted)
+Data\SpecEnhancements\Mage.lua
+Data\SpecEnhancements\Paladin.lua 
+Data\SpecEnhancements\Warrior.lua
+Data\SpecEnhancements\DeathKnight.lua
+## DecisionTrees (auto-generated or hand-crafted)
 Data\DecisionTrees\DH_Havoc_DT.lua
 Data\DecisionTrees\DH_Vengeance_DT.lua
 Data\DecisionTrees\DH_Devourer_DT.lua
-# TransitionMatrices (auto-generated or hand-crafted)
+Data\DecisionTrees\Mage_Frost_DT.lua 
+Data\DecisionTrees\Paladin_Ret_DT.lua 
+Data\DecisionTrees\Warrior_Fury_DT.lua 
+Data\DecisionTrees\DK_Frost_DT.lua 
+Data\DecisionTrees\Mage_Fire_DT.lua 
+Data\DecisionTrees\Warrior_Arms_DT.lua
+## TransitionMatrices (auto-generated or hand-crafted)
 Data\TransitionMatrix\DH_Havoc_TM.lua
 Data\TransitionMatrix\DH_Vengeance_TM.lua
 Data\TransitionMatrix\DH_Devourer_TM.lua
+Data\TransitionMatrix\Mage_Frost_TM.lua 
+Data\TransitionMatrix\Paladin_Ret_TM.lua 
+Data\TransitionMatrix\Warrior_Fury_TM.lua
+Data\TransitionMatrix\DK_Frost_TM.lua 
+Data\TransitionMatrix\Mage_Fire_TM.lua 
+Data\TransitionMatrix\Warrior_Arms_TM.lua
 
-# Engine
+## Engine
 Engine\SpecDetector.lua
 Engine\AssistedCombatBridge.lua
 Engine\AccuracyTracker.lua
@@ -64,7 +83,7 @@ Engine\InterruptAdvisor.lua
 Engine\DefensiveAdvisor.lua
 Engine\PrePullChecker.lua
 
-# UI last — Widgets must load before MainDisplay
+## UI last — Widgets must load before MainDisplay
 UI\Widgets\GlowWidget.lua
 UI\Widgets\IconWidget.lua
 UI\Widgets\ResourceBar.lua

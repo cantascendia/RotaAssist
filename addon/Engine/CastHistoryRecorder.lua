@@ -82,7 +82,7 @@ end
 ---@param unit string
 ---@param _ any
 ---@param spellID number
-local function OnSpellCastSucceeded(_, unit, _, spellID)
+local function OnSpellCastSucceeded(self, event, unit, castGUID, spellID)
     if unit ~= "player" then return end
 
     -- 过滤非战斗技能 / filter non-combat spells (only whitelist)

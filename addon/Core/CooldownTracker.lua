@@ -181,6 +181,9 @@ function CooldownTracker:OnEnable()
         eh:Subscribe("SPELL_UPDATE_COOLDOWN", "CooldownTracker", function()
             scanAllCooldowns()
         end)
+        eh:Subscribe("PLAYER_ENTERING_WORLD", "CooldownTracker", function()
+            self:OnPlayerEnteringWorld()
+        end)
     end
 
     -- Start OnUpdate polling as a fallback

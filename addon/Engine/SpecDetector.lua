@@ -130,6 +130,9 @@ function SpecDetector:OnEnable()
             RA:PrintDebug("SpecDetector: Specialization changed event")
             refreshSpec()
         end)
+        eh:Subscribe("PLAYER_ENTERING_WORLD", "SpecDetector", function(_, isInitialLogin, isReloadingUi)
+            self:OnPlayerEnteringWorld(isInitialLogin, isReloadingUi)
+        end)
     end
 end
 

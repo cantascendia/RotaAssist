@@ -177,6 +177,39 @@ L["HINT_COLLAPSING_STAR"]     = "30魂以上时释放坍缩之星"
 L["HINT_REAP_STACKS"]         = "虚空坠落3层时收割"
 
 ------------------------------------------------------------------------
+-- Mage, Paladin, Warrior, Death Knight
+------------------------------------------------------------------------
+-- Specs
+L["spec_frost"]               = "冰霜"
+L["spec_fire"]                = "火焰"
+L["spec_retribution"]         = "惩戒"
+L["spec_fury"]                = "狂怒"
+L["spec_arms"]                = "武器"
+
+-- Abilities
+L["ICY_VEINS"]                = "冰冷血脉"
+L["RAY_OF_FROST"]             = "冰霜射线"
+L["FROZEN_ORB"]               = "寒冰宝珠"
+L["COMBUSTION"]               = "燃烧"
+
+L["AVENGING_WRATH"]           = "复仇之怒"
+L["WAKE_OF_ASHES"]            = "灰烬觉醒"
+L["DIVINE_TOLL"]              = "圣洁鸣钟"
+L["EXECUTION_SENTENCE"]       = "处决宣判"
+
+L["RECKLESSNESS"]             = "鲁莽"
+L["AVATAR"]                   = "天神下凡"
+L["BLADESTORM"]               = "剑刃风暴"
+L["ODYNS_FURY"]               = "奥丁之怒"
+L["COLOSSUS_SMASH"]           = "巨人打击"
+L["RAVAGER"]                  = "破坏者"
+
+L["PILLAR_OF_FROST"]          = "冰霜之柱"
+L["EMPOWER_RUNE_WEAPON"]       = "符文武器增效"
+L["BREATH_OF_SINDRAGOSA"]     = "辛达苟萨之息"
+L["FROSTWYRMS_FURY"]          = "冰霜巨龙之怒"
+
+------------------------------------------------------------------------
 -- 智能推断引擎提示 (Smart AI Inference Tips)
 ------------------------------------------------------------------------
 L["BURST_SOON_POOL_RESOURCE"] = "即将爆发 %d 秒 — 请预留能量！"

@@ -107,7 +107,7 @@ end
 -- Signal Collection (0.2s tick + event hooks)
 ------------------------------------------------------------------------
 
-local function OnSpellCastSucceeded(_, unit, _, spellID)
+local function OnSpellCastSucceeded(self, event, unit, castGUID, spellID)
     if unit ~= "player" or not InCombatLockdown() then return end
     
     -- Filter simplistic non-GCD spells using C_Spell

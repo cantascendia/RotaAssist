@@ -5,7 +5,7 @@
 -- Independently draggable from the main display.
 ------------------------------------------------------------------------
 
-local _, NS = ...\
+local _, NS = ...
 local RA = NS.RA
 local CooldownPanel = {}
 RA:RegisterModule("CooldownPanel", CooldownPanel)
@@ -258,6 +258,9 @@ function CooldownPanel:OnEnable()
                 container:SetScale(dbNow.panelScale or 0.8)
                 isLocked = dbNow.panelLocked or false
             end
+        end)
+        eh:Subscribe("PLAYER_ENTERING_WORLD", "CooldownPanel", function()
+            self:OnPlayerEnteringWorld()
         end)
     end
 end

@@ -177,6 +177,39 @@ L["HINT_COLLAPSING_STAR"]     = "ソウル30以上でコラプシングスター
 L["HINT_REAP_STACKS"]         = "ヴォイドフォール3スタックでリープ"
 
 ------------------------------------------------------------------------
+-- Mage, Paladin, Warrior, Death Knight
+------------------------------------------------------------------------
+-- Specs
+L["spec_frost"]               = "フロスト"
+L["spec_fire"]                = "ファイア"
+L["spec_retribution"]         = "レトリビューション"
+L["spec_fury"]                = "フューリー"
+L["spec_arms"]                = "アームズ"
+
+-- Abilities
+L["ICY_VEINS"]                = "アイシーヴェイン"
+L["RAY_OF_FROST"]             = "レイ・オブ・フロスト"
+L["FROZEN_ORB"]               = "フローズンオーブ"
+L["COMBUSTION"]               = "コンバスション"
+
+L["AVENGING_WRATH"]           = "アベンジング・ラース"
+L["WAKE_OF_ASHES"]            = "ウェイク・オブ・アッシュ"
+L["DIVINE_TOLL"]              = "ディヴァイン・トール"
+L["EXECUTION_SENTENCE"]       = "処刑の宣告"
+
+L["RECKLESSNESS"]             = "レックレスネス"
+L["AVATAR"]                   = "アバター"
+L["BLADESTORM"]               = "ブレードストーム"
+L["ODYNS_FURY"]               = "オーディンの怒り"
+L["COLOSSUS_SMASH"]           = "コロッサススマッシュ"
+L["RAVAGER"]                  = "ラヴェジャー"
+
+L["PILLAR_OF_FROST"]          = "ピラー・オブ・フロスト"
+L["EMPOWER_RUNE_WEAPON"]       = "エンパワー・ルーンウェポン"
+L["BREATH_OF_SINDRAGOSA"]     = "ブレス・オブ・シンドラゴサ"
+L["FROSTWYRMS_FURY"]          = "フロストワームの怒り"
+
+------------------------------------------------------------------------
 L["BURST_SOON_POOL_RESOURCE"] = "バーストまで %d 秒 — リソースを温存！"
 L["BURST_READY"]              = "バースト準備完了！"
 L["AOE_DETECTED"]             = "%d ターゲット検出 — 範囲モード"

@@ -175,6 +175,39 @@ L["VOIDBLADE"]                = "Voidblade"
 L["SOUL_IMMOLATION"]          = "Soul Immolation"
 L["SHIFT"]                    = "Shift"
 
+------------------------------------------------------------------------
+-- Mage, Paladin, Warrior, Death Knight
+------------------------------------------------------------------------
+-- Specs
+L["spec_frost"]               = "Frost"
+L["spec_fire"]                = "Fire"
+L["spec_retribution"]         = "Retribution"
+L["spec_fury"]                = "Fury"
+L["spec_arms"]                = "Arms"
+
+-- Abilities
+L["ICY_VEINS"]                = "Icy Veins"
+L["RAY_OF_FROST"]             = "Ray of Frost"
+L["FROZEN_ORB"]               = "Frozen Orb"
+L["COMBUSTION"]               = "Combustion"
+
+L["AVENGING_WRATH"]           = "Avenging Wrath"
+L["WAKE_OF_ASHES"]            = "Wake of Ashes"
+L["DIVINE_TOLL"]              = "Divine Toll"
+L["EXECUTION_SENTENCE"]       = "Execution Sentence"
+
+L["RECKLESSNESS"]             = "Recklessness"
+L["AVATAR"]                   = "Avatar"
+L["BLADESTORM"]               = "Bladestorm"
+L["ODYNS_FURY"]               = "Odyn's Fury"
+L["COLOSSUS_SMASH"]           = "Colossus Smash"
+L["RAVAGER"]                  = "Ravager"
+
+L["PILLAR_OF_FROST"]          = "Pillar of Frost"
+L["EMPOWER_RUNE_WEAPON"]       = "Empower Rune Weapon"
+L["BREATH_OF_SINDRAGOSA"]     = "Breath of Sindragosa"
+L["FROSTWYRMS_FURY"]          = "Frostwyrm's Fury"
+
 -- Hints
 L["HINT_EYE_BEAM_DEMONIC"]    = "Use Eye Beam to enter Demonic form"
 L["HINT_VOID_RAY_FURY"]       = "Void Ray at 100 Fury"

@@ -111,7 +111,7 @@ local function EvaluateInterruptNeed(unitTarget)
     end
 end
 
-local function OnSpellCastSucceeded(_, unit, _, spellID)
+local function OnSpellCastSucceeded(self, event, unit, castGUID, spellID)
     if unit == "player" and currentInterruptConfig and spellID == currentInterruptConfig.spellID then
         lastInterruptCastTime = GetTime()
         interruptState.available = false
@@ -123,7 +123,7 @@ local function OnSpellCastSucceeded(_, unit, _, spellID)
     end
 end
 
-local function OnSpellCastStart(_, unitTarget)
+local function OnSpellCastStart(self, event, unitTarget)
     -- Fire and forget evaluate. We cannot read the secret spellID here.
     EvaluateInterruptNeed(unitTarget)
 end

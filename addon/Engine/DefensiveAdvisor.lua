@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- RotaAssist - Defensive Advisor
 -- Monitors player HP% and recommends defensive abilities when low.
--- Uses UnitHealth/UnitHealthMax which are safe during combat in 12.0.
+-- Uses heuristic to infer low HP using Blizzard Recommendation.
 -- プレイヤーHP監視と防御スキル推薦。
 ------------------------------------------------------------------------
 
@@ -37,40 +37,36 @@ local lastHpPct = 1.0
 ------------------------------------------------------------------------
 
 local function checkHealth()
-    -- UnitHealth / UnitHealthMax are safe in combat for "player"
-    local hp    = UnitHealth("player") or 0
-    local hpMax = UnitHealthMax("player") or 1
-    if hpMax <= 0 then hpMax = 1 end
-
-    local hpPct = hp / hpMax
-    lastHpPct = hpPct
-
     if not defensives then return end
+
+    -- 12.0 Heuristic: Infer low HP from Blizzard recommending a defensive spell
+    local bridge = RA:GetModule("AssistedCombatBridge")
+    if not bridge then return end
+    local rec = bridge:GetCurrentRecommendation()
+    if not rec or not rec.spellID then
+        lastAlertSpellID = nil
+        return
+    end
 
     local eh = RA:GetModule("EventHandler")
 
     for _, def in ipairs(defensives) do
-        if hpPct <= def.hpThreshold then
-            -- Check if the defensive is actually off CD
-            local ready = true
-            local cdOk, cdInfo = pcall(C_Spell.GetSpellCooldown, def.spellID)
-            if cdOk and cdInfo and cdInfo.duration and cdInfo.duration > 1.5 then
-                local remaining = (cdInfo.startTime + cdInfo.duration) - GetTime()
-                if remaining > 0 then ready = false end
-            end
-
-            if ready and lastAlertSpellID ~= def.spellID then
+        if rec.spellID == def.spellID then
+            -- Blizzard is recommending this defensive → player HP is low
+            if lastAlertSpellID ~= def.spellID then
                 lastAlertSpellID = def.spellID
+                lastHpPct = def.hpThreshold  -- estimate
                 if eh and eh.Fire then
-                    eh:Fire("ROTAASSIST_DEFENSIVE_ALERT", def.spellID, hpPct, def.hpThreshold)
+                    eh:Fire("ROTAASSIST_DEFENSIVE_ALERT", def.spellID, def.hpThreshold, def.hpThreshold)
                 end
             end
-            return  -- only recommend the highest priority defensive
+            return
         end
     end
 
-    -- HP recovered above all thresholds — reset alert state
+    -- Blizzard is not recommending any defensive → HP is OK
     lastAlertSpellID = nil
+    lastHpPct = 1.0
 end
 
 local function onUpdate(_, dt)
@@ -150,6 +146,32 @@ end
 ------------------------------------------------------------------------
 -- Public API
 ------------------------------------------------------------------------
+
+---Get the current active defensive recommendation (if any).
+---@return table|nil { spellID, name, texture, urgency, hpPct }
+function DefensiveAdvisor:GetActiveRecommendation()
+    if not defensives or not isTracking then return nil end
+    for _, def in ipairs(defensives) do
+        if lastHpPct <= def.hpThreshold then
+            local ready = true
+            local cdOk, cdInfo = pcall(C_Spell.GetSpellCooldown, def.spellID)
+            if cdOk and cdInfo and cdInfo.duration and cdInfo.duration > 1.5 then
+                local remaining = (cdInfo.startTime + cdInfo.duration) - GetTime()
+                if remaining > 0 then ready = false end
+            end
+            if ready then
+                return {
+                    spellID = def.spellID,
+                    name    = def.name,
+                    texture = def.texture,
+                    urgency = math.max(0.5, 1.0 - lastHpPct),
+                    hpPct   = lastHpPct,
+                }
+            end
+        end
+    end
+    return nil
+end
 
 ---Get the current HP percentage.
 ---@return number hpPct 0.0–1.0

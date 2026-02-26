@@ -21,12 +21,16 @@ RA.WhitelistSpells = {
     [167105] = { name = "Colossus Smash",      class = "WARRIOR",      specID = 71,   cdSeconds = 45  },
     [107574] = { name = "Avatar",              class = "WARRIOR",      specID = nil,  cdSeconds = 90  },
     [1719]   = { name = "Recklessness",        class = "WARRIOR",      specID = 72,   cdSeconds = 90  },
-    [228920] = { name = "Ravager",             class = "WARRIOR",      specID = 73,   cdSeconds = 45  },
+    [385059] = { name = "Odyn's Fury",         class = "WARRIOR",      specID = 72,   cdSeconds = 45  },
+    [228920] = { name = "Ravager",             class = "WARRIOR",      specID = nil,   cdSeconds = 90  },
     [12975]  = { name = "Last Stand",          class = "WARRIOR",      specID = 73,   cdSeconds = 180 },
     [871]    = { name = "Shield Wall",         class = "WARRIOR",      specID = 73,   cdSeconds = 240 },
 
     ---------- Paladin ----------
     [31884]  = { name = "Avenging Wrath",      class = "PALADIN",      specID = nil,  cdSeconds = 120 },
+    [255937] = { name = "Wake of Ashes",       class = "PALADIN",      specID = 70,   cdSeconds = 45  },
+    [375576] = { name = "Divine Toll",         class = "PALADIN",      specID = 70,   cdSeconds = 60  },
+    [343527] = { name = "Execution Sentence",  class = "PALADIN",      specID = 70,   cdSeconds = 60  },
     [31850]  = { name = "Ardent Defender",      class = "PALADIN",      specID = 66,   cdSeconds = 120 },
     [86659]  = { name = "Guardian of Ancient Kings", class = "PALADIN", specID = 66,   cdSeconds = 300 },
     [642]    = { name = "Divine Shield",        class = "PALADIN",      specID = nil,  cdSeconds = 300 },
@@ -54,6 +58,8 @@ RA.WhitelistSpells = {
     [55233]  = { name = "Vampiric Blood",       class = "DEATHKNIGHT",  specID = 250,  cdSeconds = 90  },
     [152279] = { name = "Breath of Sindragosa", class = "DEATHKNIGHT",  specID = 251,  cdSeconds = 120 },
     [51271]  = { name = "Pillar of Frost",      class = "DEATHKNIGHT",  specID = 251,  cdSeconds = 60  },
+    [47568]  = { name = "Empower Rune Weapon",  class = "DEATHKNIGHT",  specID = 251,  cdSeconds = 120 },
+    [279302] = { name = "Frostwyrm's Fury",     class = "DEATHKNIGHT",  specID = 251,  cdSeconds = 90  },
     [275699] = { name = "Apocalypse",           class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 75  },
     [42650]  = { name = "Army of the Dead",     class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 480 },
 
@@ -68,6 +74,8 @@ RA.WhitelistSpells = {
     [12042]  = { name = "Arcane Power",         class = "MAGE",         specID = 62,   cdSeconds = 120 },
     [190319] = { name = "Combustion",           class = "MAGE",         specID = 63,   cdSeconds = 120 },
     [12472]  = { name = "Icy Veins",            class = "MAGE",         specID = 64,   cdSeconds = 180 },
+    [205021] = { name = "Ray of Frost",         class = "MAGE",         specID = 64,   cdSeconds = 75  },
+    [84714]  = { name = "Frozen Orb",           class = "MAGE",         specID = 64,   cdSeconds = 60  },
     [45438]  = { name = "Ice Block",            class = "MAGE",         specID = nil,  cdSeconds = 240 },
 
     ---------- Warlock ----------

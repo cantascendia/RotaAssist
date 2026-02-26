@@ -56,7 +56,7 @@ end
 -- Core Logic
 ------------------------------------------------------------------------
 
-local function OnSpellCastSucceeded(_, unit, _, spellID)
+local function OnSpellCastSucceeded(self, event, unit, castGUID, spellID)
     if unit ~= "player" or not sessionActive then return end
     if not IsGCDSpell(spellID) then return end
 

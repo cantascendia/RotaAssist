@@ -127,16 +127,16 @@ local function AssembleQueue()
         aiTip = nil
     }
 
-    if mBridge then
+    if mBridge and mBridge.GetCurrentRecommendation then
         local rec = mBridge:GetCurrentRecommendation()
         context.blizzSpell = rec and rec.spellID or nil
     end
 
-    if mAPLEngine then
+    if mAPLEngine and mAPLEngine.PredictNext then
         context.aplPred = mAPLEngine:PredictNext(nil, nil)
     end
 
-    if mAIInference then
+    if mAIInference and mAIInference.GetContext then
         local aiCtx = mAIInference:GetContext()
         if aiCtx and aiCtx.inferred then
             context.aiPhase = aiCtx.inferred.combatPhase
@@ -151,22 +151,29 @@ local function AssembleQueue()
         end
     end
 
-    if mCooldownOverlay then
+    if mCooldownOverlay and mCooldownOverlay.GetCooldownStates then
         local cds = mCooldownOverlay:GetCooldownStates()
         finalQueue.cooldowns = {}
         local cIdx = 1
-        for _, cd in ipairs(cds) do
-            if cd.isWhitelisted and cd.ready then
-                context.cdReadyList[cd.spellID] = true
-            end
-            if cd.isWhitelisted and not cd.ready then
-                finalQueue.cooldowns[cIdx] = cd
+        for spellID, cd in pairs(cds) do
+            if cd.ready then
+                context.cdReadyList[spellID] = true
+            else
+                finalQueue.cooldowns[cIdx] = {
+                    spellID   = spellID,
+                    name      = cd.name,
+                    texture   = cd.texture,
+                    remaining = cd.remaining,
+                    ready     = false,
+                    startTime = cd.start,
+                    duration  = cd.duration,
+                }
                 cIdx = cIdx + 1
             end
         end
     end
 
-    if mDefensiveAdvisor then
+    if mDefensiveAdvisor and mDefensiveAdvisor.GetActiveRecommendation then
         local def = mDefensiveAdvisor:GetActiveRecommendation()
         if def then
             context.defSpell = def.spellID
