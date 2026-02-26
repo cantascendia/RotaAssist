@@ -35,8 +35,11 @@ Data\APL\Warrior_Arms.lua
 Data\APL\Warrior_Fury.lua
 Data\APL\Mage_Fire.lua
 Data\APL\Mage_Frost.lua 
+Data\APL\Mage_Arcane.lua
 Data\APL\Paladin_Retribution.lua 
 Data\APL\DeathKnight_Frost.lua
+Data\APL\DK_Unholy.lua
+Data\APL\Warlock_Demonology.lua
 Data\APL\DemonHunter_Havoc.lua
 Data\APL\DemonHunter_Vengeance.lua
 Data\APL\DemonHunter_Devourer.lua
@@ -46,26 +49,32 @@ Data\SpecEnhancements\Mage.lua
 Data\SpecEnhancements\Paladin.lua 
 Data\SpecEnhancements\Warrior.lua
 Data\SpecEnhancements\DeathKnight.lua
+Data\SpecEnhancements\Warlock.lua
 ## DecisionTrees (auto-generated or hand-crafted)
 Data\DecisionTrees\DH_Havoc_DT.lua
 Data\DecisionTrees\DH_Vengeance_DT.lua
 Data\DecisionTrees\DH_Devourer_DT.lua
 Data\DecisionTrees\Mage_Frost_DT.lua 
+Data\DecisionTrees\Mage_Fire_DT.lua 
+Data\DecisionTrees\Mage_Arcane_DT.lua 
 Data\DecisionTrees\Paladin_Ret_DT.lua 
 Data\DecisionTrees\Warrior_Fury_DT.lua 
-Data\DecisionTrees\DK_Frost_DT.lua 
-Data\DecisionTrees\Mage_Fire_DT.lua 
 Data\DecisionTrees\Warrior_Arms_DT.lua
+Data\DecisionTrees\DK_Frost_DT.lua 
+Data\DecisionTrees\DK_Unholy_DT.lua 
+Data\DecisionTrees\Warlock_Demo_DT.lua
 ## TransitionMatrices (auto-generated or hand-crafted)
 Data\TransitionMatrix\DH_Havoc_TM.lua
 Data\TransitionMatrix\DH_Vengeance_TM.lua
-Data\TransitionMatrix\DH_Devourer_TM.lua
 Data\TransitionMatrix\Mage_Frost_TM.lua 
+Data\TransitionMatrix\Mage_Fire_TM.lua 
+Data\TransitionMatrix\Mage_Arcane_TM.lua 
 Data\TransitionMatrix\Paladin_Ret_TM.lua 
 Data\TransitionMatrix\Warrior_Fury_TM.lua
-Data\TransitionMatrix\DK_Frost_TM.lua 
-Data\TransitionMatrix\Mage_Fire_TM.lua 
 Data\TransitionMatrix\Warrior_Arms_TM.lua
+Data\TransitionMatrix\DK_Frost_TM.lua 
+Data\TransitionMatrix\DK_Unholy_TM.lua 
+Data\TransitionMatrix\Warlock_Demo_TM.lua
 
 ## Engine
 Engine\SpecDetector.lua

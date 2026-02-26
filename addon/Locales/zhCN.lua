@@ -132,6 +132,10 @@ L["spec_havoc"]               = "浩劫"
 L["spec_vengeance"]           = "复仇"
 L["spec_devourer"]            = "吞噬者"
 
+L["SPEC_ARCANE_MAGE"]       = "奥术法师"
+L["SPEC_DEMONOLOGY_WARLOCK"] = "恶魔术士"
+L["SPEC_UNHOLY_DK"]          = "邪恶死亡骑士"
+
 -- 英雄天赋 (Hero Talents)
 L["hero_aldrachi_reaver"]     = "阿尔德拉奇收割者"
 L["hero_fel_scarred"]         = "邪痕"

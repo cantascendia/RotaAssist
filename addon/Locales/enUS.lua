@@ -137,6 +137,10 @@ L["spec_havoc"]               = "Havoc"
 L["spec_vengeance"]           = "Vengeance"
 L["spec_devourer"]            = "Devourer"
 
+L["SPEC_ARCANE_MAGE"]       = "Arcane Mage"
+L["SPEC_DEMONOLOGY_WARLOCK"] = "Demonology Warlock"
+L["SPEC_UNHOLY_DK"]          = "Unholy Death Knight"
+
 -- Hero Talents
 L["hero_aldrachi_reaver"]     = "Aldrachi Reaver"
 L["hero_fel_scarred"]         = "Fel-Scarred"

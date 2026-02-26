@@ -62,6 +62,10 @@ RA.WhitelistSpells = {
     [279302] = { name = "Frostwyrm's Fury",     class = "DEATHKNIGHT",  specID = 251,  cdSeconds = 90  },
     [275699] = { name = "Apocalypse",           class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 75  },
     [42650]  = { name = "Army of the Dead",     class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 480 },
+    [63560]  = { name = "Dark Transformation",  class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 45  },
+    [343294] = { name = "Soul Reaper",          class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 6   },
+    [455397] = { name = "Raise Abomination",    class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 90  },
+    [49206]  = { name = "Summon Gargoyle",      class = "DEATHKNIGHT",  specID = 252,  cdSeconds = 180 },
 
     ---------- Shaman ----------
     [198067] = { name = "Fire Elemental",       class = "SHAMAN",       specID = 262,  cdSeconds = 150 },
@@ -72,6 +76,9 @@ RA.WhitelistSpells = {
 
     ---------- Mage ----------
     [12042]  = { name = "Arcane Power",         class = "MAGE",         specID = 62,   cdSeconds = 120 },
+    [365362] = { name = "Arcane Surge",         class = "MAGE",         specID = 62,   cdSeconds = 90  },
+    [321507] = { name = "Touch of the Magi",    class = "MAGE",         specID = 62,   cdSeconds = 45  },
+    [153626] = { name = "Arcane Orb",           class = "MAGE",         specID = 62,   cdSeconds = 20  },
     [190319] = { name = "Combustion",           class = "MAGE",         specID = 63,   cdSeconds = 120 },
     [12472]  = { name = "Icy Veins",            class = "MAGE",         specID = 64,   cdSeconds = 180 },
     [205021] = { name = "Ray of Frost",         class = "MAGE",         specID = 64,   cdSeconds = 75  },
@@ -81,6 +88,9 @@ RA.WhitelistSpells = {
     ---------- Warlock ----------
     [1122]   = { name = "Summon Infernal",      class = "WARLOCK",      specID = 267,  cdSeconds = 180 },
     [265187] = { name = "Summon Demonic Tyrant", class = "WARLOCK",     specID = 266,  cdSeconds = 90  },
+    [104316] = { name = "Call Dreadstalkers",    class = "WARLOCK",     specID = 266,  cdSeconds = 20  },
+    [111898] = { name = "Grimoire: Felguard",    class = "WARLOCK",     specID = 266,  cdSeconds = 120 },
+    [196277] = { name = "Implosion",             class = "WARLOCK",     specID = 266,  cdSeconds = 0   },
     [205180] = { name = "Summon Darkglare",     class = "WARLOCK",      specID = 265,  cdSeconds = 120 },
     [104773] = { name = "Unending Resolve",     class = "WARLOCK",      specID = nil,  cdSeconds = 180 },
 
