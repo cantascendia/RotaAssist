@@ -51,3 +51,9 @@ docs/ai-cto/.codex-bridge.lock
 
 # CTO harness 升级备份（本地留存，不入库）
 .claude/*.bak-*/
+
+# === Local debug artifacts (CTO Round 15 cleanup) ===
+/ci_failures*.log
+/commits*.txt
+/logs*.json
+/run_log*.txt
