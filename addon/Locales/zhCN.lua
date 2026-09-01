@@ -94,6 +94,11 @@ L["MISSING_ITEMS"]            = "缺少 %d 项"
 L["CD_READY"]                 = "就绪"
 L["CD_SECONDS"]               = "%d秒"
 L["CD_MINUTES"]               = "%d:%02d"
+-- 28像素冷却图标上的紧凑变体 (CooldownBar 组件)
+L["CD_READY_SHORT"]           = "就绪"
+L["CD_MINUTES_SHORT"]         = "%d分"
+-- 技能名无法解析时的占位符
+L["SPELL_UNNAMED"]            = "技能#%d"
 
 ------------------------------------------------------------------------
 -- 提示信息
@@ -246,6 +251,9 @@ L["SHOW_PHASE_INDICATOR"]     = "显示阶段指示器"
 L["ACCURACY"]                 = "准确率"
 L["BLIZZARD_ACCURACY"]        = "暴雪推荐准确率"
 L["SMART_ACCURACY"]           = "智能融合准确率"
+-- 准确率条上的单字模式后缀: 智 = 智能融合, 暴 = 暴雪原生
+L["ACCURACY_SUFFIX_SMART"]    = "智"
+L["ACCURACY_SUFFIX_BLIZZARD"] = "暴"
 
 ------------------------------------------------------------------------
 -- Missing Keys (Fix AceLocale strict mode errors)

@@ -133,6 +133,19 @@ function PrePullPanel:Update(checkResults)
     -- Adjust frame height based on rows + padding / 根据行数和边距调整框架高度
     local totalHeight = 15 + (#checkResults * 18) + 15
     self.frame:SetHeight(totalHeight)
+
+    -- FIX (Bug1): 有检查项时必须主动显示。框架在 Create() 里以 Hide() 收尾，而整条调用链
+    -- (MainDisplay:UpdateDisplay / checkVisibility) 只调用 :Update() 和 :Hide()，从无一处
+    -- Show()，因此战前清单面板此前永远不可见。
+    -- FIX (Bug1): show the panel whenever there are rows. Create() ends with Hide() and the
+    -- entire call chain (MainDisplay:UpdateDisplay / checkVisibility) only ever called
+    -- :Update() and :Hide() — nothing showed it, so the checklist was never visible.
+    -- 注意：本框架是 mainFrame 的子框体，MainDisplay 侧显式的 :Hide()（战斗中 / 插件关闭 /
+    -- combatOnly 超时）仍然生效——父框体隐藏时子框体一并不可见，语义未被破坏。
+    -- Note: this frame is a child of mainFrame, so MainDisplay's explicit :Hide() calls
+    -- (in combat / addon disabled / combatOnly timeout) still take precedence via parent
+    -- visibility — their semantics are preserved.
+    self.frame:Show()
 end
 
 function PrePullPanel:Show()

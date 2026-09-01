@@ -103,7 +103,14 @@ function RA_AccuracyMeter:Update(accuracy)
         self.bar:SetStatusBarColor(0.9, 0.2, 0.2) -- Red
     end
 
-    local suffix = self.mode == "smart" and "S" or "B"
+    -- 模式后缀走 i18n：S = SmartQueue 融合推荐，B = 暴雪原生推荐
+    -- Localized mode suffix: S = SmartQueue blend, B = Blizzard's own recommendation.
+    local suffix
+    if self.mode == "smart" then
+        suffix = RA.L and RA.L["ACCURACY_SUFFIX_SMART"] or "S"
+    else
+        suffix = RA.L and RA.L["ACCURACY_SUFFIX_BLIZZARD"] or "B"
+    end
     self.text:SetText(string.format("%d%% (%s)", math.floor(accuracy), suffix))
 end
 

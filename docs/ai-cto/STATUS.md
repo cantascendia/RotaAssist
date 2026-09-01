@@ -1,205 +1,132 @@
-# RotaAssist — CTO AI 进度状态
-> 最后更新: Round 7 | 日期: 2026-03-14
+# RotaAssist — CTO 项目状态
+
+> 最后更新: **Round 16（第零轮重启）** | 日期: 2026-09-01
+> ⚠️ 上一版 STATUS.md 停留在 Round 12，与仓库实际状态（Round 15 + T1-T5）严重脱节。本版按实测重写。
 
 ## 项目一句话
-WoW 12.0 AI 战斗辅助插件，融合 Blizzard Assisted Combat + APL 预测 + 神经网络推断
+WoW Midnight (12.1) 循环**教练**插件 —— 在 Blizzard Assisted Combat 之上叠加多步前瞻、
+准确率反馈与战斗阶段情境，定位从「告诉你按什么」转向「让你变强」。
 
-## 当前质量评分: 8.5/10
+## 质量评分: **5.5 / 10**
+（上一版自评 8.5 —— 基于测试数量与功能清单。本版按**可交付性**重评：
+代码成熟度确实不低，但从未发布、从未真机验证、发布通道断裂 4 个月。）
 
-## 活跃分支
-| 分支 | 用途 | 状态 |
-|------|------|------|
-| main | 主线 | SHA 013504e, CI 待验证 |
-| improve/round7-test-and-ci | 测试与 CI 升级 | 正在执行 |
+| 维度 | 分 | 说明 |
+|---|---|---|
+| 架构 | 7 | 为 secret-value 世界设计，方向正确；但有 god object 与双系统重复 |
+| 代码质量 | 5 | 975 行死代码、6 处 P0 secret 违规、1030 行文件注释全 mojibake |
+| 性能 | 4 | 4 个常驻 OnUpdate 帧战斗外全速运转，~2200 次 API/秒 |
+| 安全/合规 | 5 | 方向对，但 6 处 secret 值参与比较/算术 |
+| 测试 | 6 | 25 文件 344 用例，但 mock 从未与真机校准，没抓到 20% 死规则 |
+| DX | 3 | 🔴 GitHub 账号封禁，无法 push/PR/CI/发版 |
+| 功能完整性 | 4 | 5 个 UI 功能性 bug；20% APL 规则永久失效；151 处占位符 |
+| UX | 4 | 无设计系统、无 EditMode、12 个阶段名各语言均显示英文枚举 |
 
-## 已完成指令
-- [#1.x] 数据清理去重、工程基础(CI/packaging/changelog) → 已合并
-- [#2.x] 代码质量P1 (Init.lua Registry统一, SQM table reuse, package.sh) → 已合并
-- [#3.x] 清理死代码Predictor.lua, schema统一(interrupt/resource), DefensiveAdvisor:OnDisable, 测试基础(busted+mock+3测试文件) → 已合并
-- [#4.x] SQM CalculateScore 单元测试 → 已合并
-- [#5.x] Registry, EventHandler, CastHistory, AccuracyTracker, PatternDetector, SpecData 单元测试 → 已合并
-- [#6.x] InitHelpers, APLEngine, SQM Integration, InitSlash 单元测试 → 已合并
+---
 
-## 当前待办
-- [#7.1] 修复 CI: 升级 GitHub Actions 到 Node 24 兼容版本
-- [#7.2] 增加 CooldownOverlay, AssistedCombatBridge, DefensiveAdvisor, SavedVars 单元测试
+## 🔴 P0 阻塞项
 
-## 待办队列(优先级)
-1. CI绿灯 — 阻塞一切: 高/高/正在执行
-2. 记忆持久化 — 防止上下文丢失: 中/高
-3. RecommendationManager.lua 死代码清除: 低/中
-4. Phase2 专精扩展(Warrior/Mage/Paladin/Hunter): 高/产品关键路径
+### 1. ~~GitHub 账号被封禁~~ → 用户已裁定放弃 GitHub（2026-09-01）
+「不管 github，被彻底封了」。**本地 main 即真相源**，不再视为阻塞：
+- 备份：`git bundle` 每轮末重建（`C:\projects\RotaAssist-backup-*.bundle`）
+- 验证：本地 Lua 5.1 `luac -p`（`C:\Program Files (x86)\Lua\5.1\`）
+- CI/新远端：留待选定 GitLab/Codeberg 时一并迁移
+- 发布：CurseForge/Wago 手动上传，不依赖 GitHub
+- 完整处置：DECISIONS.md D-010
+
+### 2. TOC 落后 3 个补丁
+`## Interface: 120000`（12.0.0）— 当前游戏为 **12.1.0，需 120100**。
+游戏会标记为「已过期插件」，默认不加载。
+
+### 3. 六处 secret-value 硬违规
+| 位置 | 问题 |
+|---|---|
+| `PatternDetector.lua:117-119` | `mx > 0` 比较发生在 `issecretvalue` 守卫**之前** |
+| `NeuralPredictor.lua:261-263` | 同上，逐字重复 |
+| `SmartQueueManager.lua:388-395` | `currentCharges` 完全无 `issecretvalue` 校验 |
+| `APLEngine.lua:287-291` | 消费上述污染值做 `compareNumber` — **端到端可复现违规链** |
+| `SmartQueueManager.lua:373` | 全项目唯一裸调用 `UnitPower`（无 pcall） |
+| `RecommendationManager.lua:158-167` | 比较+除法双违规（死代码，但应随文件删除） |
+
+---
+
+## 🟠 P1 主要问题
+
+| # | 问题 | 位置 | 量化 |
+|---|---|---|---|
+| 1 | APL 条件词汇未实现导致规则静默失效 | `APLEngine.lua:310` | **70/352 = 19.9%** |
+| 2 | 防御建议在 HP=secret 时静默失效 | `DefensiveAdvisor.lua:141-143` | M+/PvP 全场景失效 |
+| 3 | PrePullPanel 永不显示 | `PrePullPanel.lua` | 全链路无一处 `Show()` |
+| 4 | confidence 星标语义倒置 | `MainDisplay.lua:262,289` | 传 0–1 浮点，函数期望整数 1/2/3 |
+| 5 | CooldownBar CD 转圈恒为 0 | `CooldownBar.lua:82-83` | 括号内恒等于 0 |
+| 6 | 死代码链 | RecommendationManager + CooldownTracker + AssistCapture | **975 行** |
+| 7 | InterruptAdvisor 不在 MODULE_ORDER | `Init.lua:36-61` | 排在所有 UI 之后初始化 |
+| 8 | 4 个常驻 OnUpdate 帧无战斗开关 | SmartQueue/CDTracker/CDOverlay/DefAdvisor | 站城全速运转 |
+| 9 | 每帧扫描 131 技能充能 | `SmartQueueManager.lua:388-395` | ~873 pcall+API/秒 |
+| 10 | CooldownTracker 全表轮询 | `CooldownTracker.lua:100-128` | 1310 次 API/秒，**消费者已死** |
+| 11 | ~~12 个阶段 i18n 键全缺失~~ **误报已撤销** | `enUS.lua:235-246` | Round 16 git 仲裁：36/36 键在 HEAD 即存在。单 critic 幻觉案例，同 `.claude/rules/learned/2026-05-11` 模式 |
+| 12 | 零 EditMode / 零 CooldownViewer 集成 | 全项目 | 12.0 用户基本期望 |
+| 13 | 双阶段检测系统并存 | AIInference vs PatternDetector | ~600 行重复 + 双份采样 |
+| 14 | 151 处占位符 | Devourer 数据 44 处 | 铁律 #9 违规 |
+| 15 | SmartQueueManager 中文注释全文 mojibake | 全文件 1030 行 | UTF-8 被按 Shift-JIS 解读 |
+
+---
+
+## 分支状态（origin/main = `2c0d990`，HEAD = `35f89ab` on `codex/fix-event-debug-spam`）
+
+| 分支 | 领先 | 冲突 | 内容 |
+|---|---|---|---|
+| `codex/fix-event-debug-spam` (HEAD) | 3+2 | ✅ 干净 | 事件刷屏修复 + 图标泄漏修复 + CI 修复 |
+| `feat/t5-repo-hygiene` | 1 | ⚠️ 琐碎 | .gitignore +6 行，纯 append 冲突 |
+| `feat/t1-mage-fire-data` | 1 | ✅ 干净 | 火法 DT+TM+测试 **+968/−0** |
+| `feat/t3-paladin-ret-audit-tests` | 1 | ✅ 干净 | 惩戒骑测试 +271 |
+| `feat/t4-deathknight-audit-tests` | 1 | ✅ 干净 | DK 测试 +455/−38 |
+| `feat/t2-cdm-hook-a53e` | 1 | ✅ 干净 | **CooldownViewer 共存** +510，补 12.0 最大缺口 |
+| `improve/round15-ui-overhaul` | 13 | 🔴 **冲突** | MainDisplay 重写为水平图标条；比 main 老 1.5 月，落后 3 提交 |
+
+**合并建议顺序**：HEAD → t5 → t1/t3/t4（批量）→ t2 → round15（**必须 rebase 不能 merge**）
+
+---
+
+## 竞品格局（2026-09 实测）
+
+| 插件 | 下载 | 做的事 |
+|---|---|---|
+| Simple Assisted Combat Icon | 201.6K | 显示 1 个图标 |
+| HekiLight | 33.2K | 5 图标条 + proc 金边 + 键位 |
+| Blizzkili / BetterAssistant / Synaptic / Knickili / NextGCD | 1.8K–28.6K | 图标条 |
+
+**Hekili 已死，WeakAuras 自 12.0 起从未发布可用版本。**
+无任何竞品做：多步前瞻 / 准确率反馈 / 阶段识别 / 开怪前检查 / 战后复盘。
+
+---
+
+## 待办队列（按对最终产品的影响排序）
+
+| # | 任务 | 类型 | 优先级 |
+|---|---|---|---|
+| 1 | 恢复发布通道（新远端 + CI 绿灯） | 阻塞解除 | 🔴 最高 |
+| 2 | TOC → 120100 + 6 处 P0 secret 违规 | 技术债 | 🔴 |
+| 3 | APL 条件词汇加载期校验（D-011） | 技术债 | 🟠 |
+| 4 | 删除 975 行死代码链（D-013） | 技术债 | 🟠 |
+| 5 | 5 个 UI 功能性 bug | 功能完整性 | 🟠 |
+| 6 | 合并 6 个干净分支 | 工程 | 🟠 |
+| 7 | 收窄至 3 专精 + Devourer spellID 验证 | 产品关键路径 | 🟠 |
+| 8 | Theme.lua 设计系统 + EditMode | UX | 🟡 |
+| 9 | 真机冒烟测试 | 验证 | 🔴 但需用户执行 |
+| 10 | 性能：4 个常驻帧加战斗开关 | 性能 | 🟡 |
+| 11 | 双阶段检测系统合并 | 架构 | 🟡 |
+| 12 | Tauri 伴侣（护城河） | 创新 | 🔵 P6 |
+
+---
 
 ## 风险登记
-- CI从未绿过: 高严重度, 本轮修复 (Node 16 弃用问题)
-- Devourer spellID 全为占位符: 中严重度, 延后到spec数据审计
 
-## 关键技术决策
-- 使用 busted + mock_wow_api.lua 做 Lua 单元测试
-- Registry.lua 作为 PASSIVE_BLACKLIST/OVERRIDE_PAIRS 唯一真相来源
-- SpecEnhancements 统一使用 nested interruptSpell 和 powerType 字段
-
-## Round 7 – Test and CI
-- Branch: improve/round7-test-and-ci
-- Tests added: test_cooldown_overlay, test_assisted_combat_bridge, test_defensive_advisor, test_saved_vars
-- CI status: Upgraded actions to Node 24 to fix deprecation errors.
-
-## Round 8 — Final Test Expansion (2026-03-14)
-
-**Branch**: `improve/round8-test-expansion`  
-**Base**: `main@be12243`
-
-### Changes
-- Added `tests/test_interrupt_advisor.lua` — interrupt state, cooldown check, lifecycle
-- Added `tests/test_neural_predictor.lua` — module load, Markov API, save/load matrix
-- Added `tests/test_prepull_checker.lua` — consumable buff checks, RunChecks/IsReady API
-- Added `tests/test_whitelist_spells.lua` — data integrity, 13-class coverage, cd >= 30
-- Added `tests/test_spec_detector.lua` — spec detection, role check, spec change event
-- Added `tests/test_ai_inference.lua` — InferredState structure, GetContext, default values
-
-### Coverage
-- Test files: 16 → 22
-- Estimated test cases: ~190 → ~260+
-- All Engine modules now covered: Init, Registry, SpecData, EventHandler, CastHistoryRecorder,
-  AccuracyTracker, PatternDetector, APLEngine, SmartQueueManager, CooldownOverlay,
-  AssistedCombatBridge, DefensiveAdvisor, SavedVars, InterruptAdvisor, NeuralPredictor,
-  PrePullChecker, SpecDetector, AIInference
-- Data modules covered: WhitelistSpells
-
-### Notes
-- RecommendationManager is marked DEPRECATED and commented out of TOC; not tested
-- Mock additions: GetCVar, GetSpecialization, GetSpecializationInfo, UnitClass, C_UnitAuras
-
-## Round 9 — End-to-End Integration Tests (2026-03-14)
-
-**Branch**: `improve/round9-e2e-integration`
-**Base**: `main@0fc95ad`
-
-### Changes
-- Added `tests/test_e2e_combat_flow.lua` — full combat lifecycle integration test
-- Updated `tests/mock_wow_api.lua` — added bit library, C_AssistedCombat, C_UnitAuras,
-  C_CurveUtil, CreateColor, UnitClass, GetSpecialization mocks for E2E test support
-
-### Test Coverage
-- Test files: 22 → 23
-- Estimated test cases: ~264 → ~290+
-- E2E scenarios validated:
-  1. All 14 Engine modules load and initialize without errors
-  2. OnInitialize → OnEnable chain for all modules
-  3. Combat start (PLAYER_REGEN_DISABLED) activates AccuracyTracker session
-  4. ROTAASSIST_SPELLCAST_SUCCEEDED records to CastHistoryRecorder ring buffer
-  5. AccuracyTracker matches casts against Blizzard recommendation
-  6. Non-matching casts correctly reduce accuracy percentage
-  7. Multiple casts build ring buffer with correct ordering (newest first)
-  8. Combat end (PLAYER_REGEN_ENABLED) triggers AccuracyTracker:SaveSession
-  9. CastHistoryRecorder resets session accuracy on combat end
-  10. APLEngine predicts next steps from loaded APL data
-  11. APL predictions skip passive-blacklisted spells
-  12. Meta state (Metamorphosis) changes APL prediction selection
-  13. SmartQueueManager returns valid queue and display data structures
-  14. Event propagation reaches multiple subscribers correctly
-  15. CastHistoryRecorder save/load round-trip preserves data
-  16. AccuracyTracker session records persist to SavedVariables
-## Round 10 — Edge Cases, Override Pairs, Python Tests (2026-03-14)
-
-**Branch**: `improve/round10-edge-and-python`
-**Base**: `main@2055c49`
-
-### Changes
-- Added `tests/test_edge_cases.lua` — Init.lua safe wrappers, APLEngine edge cases,
-  CastHistoryRecorder/AccuracyTracker/SmartQueueManager/Registry boundary conditions
-- Added `tests/test_override_pairs.lua` — Registry bidirectional mapping, SharesCooldown,
-  APLEngine SimulateSpellCast CD mirroring, SQM cooldown check, passive blacklist
-- Added `training/test_apl_parser.py` — Python APL parser unit tests (pytest)
-- Updated `ci.yml` — added pytest step to python-training job
-
-### Coverage
-- Test files: 23 → 25
-- Estimated test cases: ~287 → ~344
-- Fixes: 1 (corrected GetSpellCooldownSafe test assertions)
-
-## Round 11 — CTO Memory Files (2026-03-14)
-
-**Branch**: `improve/round11-memory-files`
-**Base**: `main@0a67b7d`
-
-### Changes
-- Created `docs/ai-cto/VISION.md` — product vision + technical vision
-- Created `docs/ai-cto/ARCHITECTURE.md` — module hierarchy + data flow + init order
-- Created `docs/ai-cto/DECISIONS.md` — 7 technical decision records (D-001 through D-007)
-- Updated `docs/ai-cto/STATUS.md` — added Round 10 + Round 11 entries
-
-### Active Branch State
-- main@0a67b7d — stable, CI green, 25 test files, 344 cases
-- No open PRs
-
-### Pending Work Queue (Priority)
-1. Warrior SpecEnhancements (Arms 71 / Fury 72) — 产品关键路径
-2. Mage SpecEnhancements (Fire 63) — 产品关键路径
-3. Warrior/Mage DecisionTree + TransitionMatrix generation — 产品关键路径
-4. TOC registration for new SpecEnhancements files
-5. Devourer spellID 验证 — 延后到 12.0 live
-6. 真机冒烟测试 — 需要 WoW 12.0 客户端
-
-## Round 12 — Warrior SpecEnhancements (2026-03-14)
-
-**Branch**: `improve/round12-warrior-spec`
-**Base**: `main@868ffa0`
-
-### Changes
-- Created `addon/Data/SpecEnhancements/Warrior.lua` — Arms (71) + Fury (72)
-- Updated `addon/RotaAssist.toc` — registered Warrior.lua
-- Updated `training/simc_apl_to_dataset.py` — added arms/fury to SPEC_IDS, SPEC_SPELLS, SPELL_MAP, DEFAULT_APLS
-- Updated `.github/workflows/ci.yml` — added arms/fury CSV generation tests
-- Added `tests/test_warrior_spec.lua` — data integrity tests for both specs
-- Updated `docs/ai-cto/STATUS.md`
-
-### Warrior Support Status
-- APL: ✅ (existed: Warrior_Arms.lua, Warrior_Fury.lua)
-- SpecEnhancements: ✅ (new: Warrior.lua)
-- DecisionTree: ❌ (pending generation)
-- TransitionMatrix: ❌ (pending generation)
-- Python training: ✅ (arms/fury added to pipeline)
-
-## Round 13 ? Warrior DecisionTree + TransitionMatrix (2026-03-14)
-
-**Branch**: `improve/round13-warrior-dt-tm`
-**Base**: `main@0d80062`
-
-### Changes
-- Generated `addon/Data/DecisionTrees/WAR_Arms_DT.lua` via training pipeline
-- Generated `addon/Data/DecisionTrees/WAR_Fury_DT.lua` via training pipeline
-- Generated `addon/Data/TransitionMatrix/WAR_Arms_TM.lua` via training pipeline
-- Generated `addon/Data/TransitionMatrix/WAR_Fury_TM.lua` via training pipeline
-- Updated `addon/RotaAssist.toc` - registered 4 new data files
-- Updated `.github/workflows/ci.yml` - end-to-end DT+TM generation validation
-- Updated `docs/ai-cto/STATUS.md`
-
-### Warrior Support Status (COMPLETE)
-- APL: yes
-- SpecEnhancements: yes
-- DecisionTree: yes (new)
-- TransitionMatrix: yes (new)
-- Python pipeline: yes
-- TOC registration: yes
-
-## Round 14 — CD Filter Hotfix (P0 Product Bug Fix)
-
-**Branch**: `fix/round14-cd-filter-hotfix`
-**Base**: `main@a45a7d7`
-
-### Root Cause
-User reported Havoc DH skills still recommended while on cooldown.
-Three bugs identified in SQM/APLEngine CD filtering chain:
-1. Sticky Blizzard fallback (lastKnownBlizzSpell) not validated against CD
-2. CD safety net has no fallback for spells not tracked by CooldownOverlay
-3. APLEngine PredictNext only checks real-time CD in step 1, not step 2+
-
-### Changes
-- Fixed `SmartQueueManager.lua` sticky fallback to check IsSpellOnCooldown
-- Fixed `SmartQueueManager.lua` CD safety net to use API fallback for untracked spells
-- Fixed `APLEngine.lua` PredictNext to cross-check real CD in steps 2+ (with sim guard)
-- Added `tests/test_cd_filter.lua` — 4 regression tests
-
-### Quality
-- Score: 8.5 → 8.8/10 (P0 product fix)
+| 风险 | 严重度 | 状态 |
+|---|---|---|
+| GitHub 账号封禁 → 无法交付 | 🔴 极高 | 需用户申诉；并行建备用远端 |
+| 真机从未验证 → 全部 secret 处理是纸上推演 | 🔴 高 | 需用户在 12.1 客户端执行 |
+| Devourer 44 个 spellID 编造 | 🟠 中 | 可用权威源验证（已上线 6 个月） |
+| 市场同质化，领先者靠极简拿 201.6K | 🟠 中 | 差异化在前瞻/反馈/复盘 |
+| mock 与真机行为偏离 | 🟠 中 | 真机验证后需回灌校准 mock |
+| round15 分支冲突加深（3 条线改同一 681 行文件） | 🟡 低 | 尽快 rebase |

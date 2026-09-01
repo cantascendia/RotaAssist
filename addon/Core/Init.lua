@@ -144,11 +144,15 @@ function RA:GetSpellCooldownSafe(spellID)
     local dur = cdInfo.duration
     local st  = cdInfo.startTime
 
-    if not dur or not st then
+    -- WOW 12.0 SECRET VALUE SAFE: issecretvalue() must precede the nil truth-test.
+    -- A truth-test on a secret value is itself a violation, so this ordering matters.
+    -- WOW 12.0 SECRET VALUE 安全：issecretvalue() 必须早于 nil 真值判断。
+    -- 对 secret 值做真值判断本身就是违规，所以这两步的顺序不可颠倒。
+    if issecretvalue(dur) or issecretvalue(st) then
         return nil, nil, nil, nil
     end
 
-    if issecretvalue(dur) or issecretvalue(st) then
+    if not dur or not st then
         return nil, nil, nil, nil
     end
 
@@ -448,6 +452,7 @@ function RA:SlashCommand(input)
         self:Print("  /ra reset    — " .. L["SLASH_HELP_RESET"])
         self:Print("  /ra debug    — " .. L["SLASH_HELP_DEBUG"])
         self:Print("  /ra accuracy — Show combat accuracy history")
+        self:Print("  /ra aplcheck — Report APL rules with unsupported conditions")
         self:Print("  /ra version  — " .. L["SLASH_HELP_VERSION"])
     elseif cmd == "config" or cmd == "options" or cmd == "settings" then
         LibStub("AceConfigDialog-3.0"):Open("RotaAssist")
@@ -478,6 +483,15 @@ function RA:SlashCommand(input)
         local tracker = self:GetModule("AccuracyTracker")
         if tracker and tracker.PrintHistory then
             tracker:PrintHistory()
+        end
+    elseif cmd == "aplcheck" then
+        -- Diagnostics for APL condition tokens the engine cannot evaluate.
+        -- 打印 APL 引擎无法求值的条件 token 诊断。
+        local aplEngine = self:GetModule("APLEngine")
+        if aplEngine and aplEngine.PrintConditionReport then
+            aplEngine:PrintConditionReport()
+        else
+            self:PrintWarning("APLEngine is not available. / APLEngine 不可用。")
         end
     elseif cmd == "version" or cmd == "ver" then
         self:Print(string.format("%s v%s", self.name, self.version))

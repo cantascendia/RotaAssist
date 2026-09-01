@@ -48,6 +48,18 @@ function IconWidget:Create(parent, size, name)
     obj.confidence:SetJustifyH("LEFT")
     obj.confidence:SetFont(STANDARD_TEXT_FONT, math.max(10, math.floor(size * 0.22)), "OUTLINE")
     obj.confidence:SetTextColor(1, 0.8, 0) -- Gold
+
+    -- Cooldown Timer Text (Bottom center)
+    -- FIX (Bug4): 独立于 keybind 的 CD 计时文本。此前 CooldownBar 复用 keybind 字段写
+    -- 剩余秒数，导致 CD 图标上永远无法同时显示按键和剩余时间。
+    -- FIX (Bug4): dedicated cooldown-timer FontString. CooldownBar used to overwrite the
+    -- keybind FontString with the remaining time, so an icon could never show both.
+    -- 注意：与 confidence（BOTTOMLEFT）同处底部，但两者从不作用于同一个 widget
+    -- Note: shares the bottom edge with `confidence` (BOTTOMLEFT), but no widget uses both.
+    obj.cdTimer = obj.frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    obj.cdTimer:SetPoint("BOTTOM", obj.frame, "BOTTOM", 0, 2)
+    obj.cdTimer:SetJustifyH("CENTER")
+    obj.cdTimer:SetFont(STANDARD_TEXT_FONT, fontSize, "OUTLINE")
     
     -- Alert Frame (Red pulsating border)
     obj.alertFrame = CreateFrame("Frame", nil, obj.frame, "BackdropTemplate")
@@ -71,7 +83,8 @@ function IconWidget:Create(parent, size, name)
     a2:SetOrder(2)
     
     obj.currentSpellID = nil
-    
+    obj.fadeTimer = nil
+
     return obj
 end
 
@@ -81,15 +94,28 @@ end
 function IconWidget:SetSpell(spellID, texture)
     if self.currentSpellID == spellID then return end
     self.currentSpellID = spellID
-    
+
     if not texture then
         local ok, info = pcall(C_Spell.GetSpellTexture, spellID)
         texture = (ok and info) and info or 134400
     end
-    
-    -- Crossfade
+
+    -- Crossfade / 交叉淡入淡出
+    -- FIX (Bug5): 改用可取消的 C_Timer.NewTimer，并在新建前取消上一个。
+    -- 旧代码用 C_Timer.After 且从不取消：快速连续换技能时旧回调仍会触发，
+    -- 可能"后发先至"写入过期纹理；且每次调用都泄漏一个闭包 + 定时器。
+    -- FIX (Bug5): use a cancellable NewTimer and cancel the pending one first.
+    -- C_Timer.After callbacks could not be cancelled, so a stale callback could land
+    -- after a newer one and apply the wrong texture; it also allocated a fresh closure
+    -- and timer on every recommendation update.
+    -- 同 DefensiveAlert:Dismiss() 的写法 / mirrors the pattern in DefensiveAlert:Dismiss().
+    if self.fadeTimer then
+        self.fadeTimer:Cancel()
+        self.fadeTimer = nil
+    end
     UIFrameFadeOut(self.frame, 0.1)
-    C_Timer.After(0.1, function()
+    self.fadeTimer = C_Timer.NewTimer(0.1, function()
+        self.fadeTimer = nil
         self.icon:SetTexture(texture)
         UIFrameFadeIn(self.frame, 0.1)
     end)
@@ -106,27 +132,46 @@ function IconWidget:SetCooldown(start, duration)
     end
 end
 
----Set confidence stars (★★★, ★★☆, ★☆☆) or hide.
----@param level number|nil  3=high, 2=med, 1=low
-function IconWidget:SetConfidence(level)
-    if not level or level < 1 then
+---Set confidence stars (★★★, ★★☆, ★☆☆) or clear.
+---FIX (Bug2): 统一为 0–1 浮点语义。旧实现按整数 1/2/3 分档，但所有调用方传的都是
+---0–1 浮点（数据源 predData.confidence 本就是 0–1），导致语义完全倒置：
+---置信度 1.0（最高）落到 else 渲染 ★☆☆（最低星），0.9 则被当作 "< 1" 直接清空。
+---FIX (Bug2): unified on 0–1 float semantics. The old integer 1/2/3 branches inverted the
+---meaning for every caller: confidence 1.0 (highest) fell through to ★☆☆ (lowest), and
+---0.9 was treated as "< 1" and cleared the text entirely.
+---@param confidence number|nil  0.0–1.0; nil or <= 0 clears the stars
+function IconWidget:SetConfidence(confidence)
+    if not confidence or confidence <= 0 then
         self.confidence:SetText("")
-    elseif level == 3 then
+    elseif confidence >= 0.8 then
         self.confidence:SetText("★★★")
-    elseif level == 2 then
+    elseif confidence >= 0.5 then
         self.confidence:SetText("★★☆")
     else
         self.confidence:SetText("★☆☆")
     end
 end
 
----Set the keybind text.
+---Set the keybind text (top-right corner).
+---设置按键绑定文本（右上角）。
 ---@param text string|nil
 function IconWidget:SetKeybind(text)
     if text and text ~= "" then
         self.keybind:SetText(text)
     else
         self.keybind:SetText("")
+    end
+end
+
+---Set the cooldown timer text (bottom centre).
+---设置冷却计时文本（底部居中）。与 SetKeybind 相互独立，两者可同时显示。
+---Independent from SetKeybind so keybind and remaining cooldown can coexist.
+---@param text string|nil
+function IconWidget:SetCooldownTimer(text)
+    if text and text ~= "" then
+        self.cdTimer:SetText(text)
+    else
+        self.cdTimer:SetText("")
     end
 end
 
@@ -170,10 +215,18 @@ end
 
 ---Clear the widget.
 function IconWidget:Clear()
+    -- FIX (Bug5): 取消未决的交叉淡入定时器，否则它会在 Clear() 之后把旧纹理写回来。
+    -- FIX (Bug5): cancel any pending crossfade timer, which would otherwise restore the
+    -- previous texture right after this Clear().
+    if self.fadeTimer then
+        self.fadeTimer:Cancel()
+        self.fadeTimer = nil
+    end
     self.currentSpellID = nil
     self.icon:SetTexture(134400)
     self.cooldown:Clear()
     self:SetKeybind("")
+    self:SetCooldownTimer("")
     self:SetConfidence(nil)
     self:SetGlow(false)
     self:SetAlert(false)

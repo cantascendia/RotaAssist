@@ -370,8 +370,14 @@ local function AssembleQueue()
                 end
             end
         end
-        local rawPower = UnitPower("player", powerType)
-        if rawPower and not issecretvalue(rawPower) then
+        -- WOW 12.0 SECRET VALUE SAFE: wrap the API call in pcall (it can error in
+        -- restricted contexts), then gate on issecretvalue() BEFORE any truth-test or
+        -- comparison. `if rawPower and ...` evaluated the value first — that is the bug.
+        -- WOW 12.0 SECRET VALUE 安全：先用 pcall 包住 API 调用（受限环境下会报错），
+        -- 再在任何真值判断/比较之前过 issecretvalue()。原写法 `if rawPower and ...`
+        -- 先对值做了真值判断，正是问题所在。
+        local okPower, rawPower = pcall(UnitPower, "player", powerType)
+        if okPower and not issecretvalue(rawPower) and type(rawPower) == "number" then
             limitedState.resource = rawPower
         else
             limitedState.resource = 0
@@ -388,8 +394,20 @@ local function AssembleQueue()
         if C_Spell and C_Spell.GetSpellCharges and RA.WhitelistSpells then
             for sid in pairs(RA.WhitelistSpells) do
                 local okCharges, chargeInfo = pcall(C_Spell.GetSpellCharges, sid)
-                if okCharges and type(chargeInfo) == "table" and chargeInfo.currentCharges then
-                    limitedState.charges[sid] = chargeInfo.currentCharges
+                if okCharges and type(chargeInfo) == "table" then
+                    -- WOW 12.0 SECRET VALUE SAFE: currentCharges is a secret value in combat.
+                    -- The old `and chargeInfo.currentCharges then` truth-tested it before any
+                    -- guard and then stored the tainted value, which APLEngine later compared.
+                    -- Gate on issecretvalue() first; leave the entry nil when unreadable so
+                    -- APLEngine can treat it as "unknown" instead of a bogus number.
+                    -- WOW 12.0 SECRET VALUE 安全：战斗中 currentCharges 是 secret 值。原写法
+                    -- `and chargeInfo.currentCharges then` 在无任何守卫的情况下对其做真值判断，
+                    -- 并把被污染的值存起来供 APLEngine 比较。改为先过 issecretvalue()；读不到时
+                    -- 保持该项为 nil，让 APLEngine 按"未知"处理而不是拿到一个假数字。
+                    local cc = chargeInfo.currentCharges
+                    if not issecretvalue(cc) and type(cc) == "number" then
+                        limitedState.charges[sid] = cc
+                    end
                 end
             end
         end

@@ -88,7 +88,9 @@ local function createCDWidget(spellID, index)
             local state = cdTracker:GetCooldownState(spellID)
             if state then
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(state.name or ("Spell#" .. spellID), 1, 1, 1)
+                -- 技能名缺失时的占位符走 i18n / Localized placeholder when the spell name is unknown
+                local unnamedFmt = RA.L and RA.L["SPELL_UNNAMED"] or "Spell#%d"
+                GameTooltip:SetText(state.name or string.format(unnamedFmt, spellID), 1, 1, 1)
                 local L = RA.L
                 local cdStr = formatCooldown(state.remaining)
                 GameTooltip:AddLine(string.format(

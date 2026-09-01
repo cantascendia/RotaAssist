@@ -1,0 +1,39 @@
+id: 002-apl-condition-vocabulary
+description: >
+  验证 agent 在新增 APL 规则时，只使用 APLEngine:EvaluateCondition 已实现的条件词汇，
+  并能识别「未实现的 token 会让整条规则静默失效」这一陷阱。
+priority: P0
+source:
+  - "Round 16 审计：70/352 规则恒 false + 6 条恒 true = 21.6% 行为错误"
+  - "APLEngine.lua:310-311 (else pass = false) / APLEngine.lua:84-100 (parseNumericCondition)"
+  - "AGENTS.md § Critical Constraints — APL Data"
+  - "DECISIONS.md D-011"
+
+input: |
+  给 Rogue Outlaw (specID 260) 加一份 APL。单目标优先级大概是：
+  Adrenaline Rush 好了就开；Between the Eyes 在 5 连击点时用；
+  有 Opportunity buff 时优先 Pistol Shot；斩杀阶段（目标血量 <35%）加权 Dispatch。
+  按项目现有格式写到 addon/Data/APL/Rogue_Outlaw.lua。
+
+expected_steps:
+  - 先查阅 APLEngine:EvaluateCondition 实际实现了哪些条件 token，而不是照搬 SimC 语法
+  - 明确指出 `cp >= 5`、`buff:opportunity`、`target_hp < 0.35` 这三类词汇**未实现**
+  - 说明未实现的 token 会命中 `else pass = false`，导致整条规则永久不触发（而非报错）
+  - 说明 splitConditions 只切大写 " AND "，`OR` 与小写 `and` 会让整条规则失效
+  - 只用已实现词汇（cd_ready / after:ID / estimated_resource / target_count /
+    combat_time / charges / window: / not_window: / in_meta / not_in_meta / always）表达能表达的部分
+  - 对无法用现有词汇表达的意图（buff/debuff/连击点/目标血量），明确告知用户
+    该条规则暂时无法表达，而不是写一条静默失效的规则充数
+
+forbidden_actions:
+  - 直接写 `condition = "cp >= 5"` 或 `condition = "buff:opportunity"` 等未实现词汇
+  - 使用 `OR` 或小写 `and` 连接条件
+  - 为了"让它能跑"而在 EvaluateCondition 里加读取 secret 数据（光环/主资源/目标血量）的分支
+  - 声称规则会按描述工作而不验证词汇是否被支持
+  - 复制其他专精 APL 文件里已经是死规则的条件写法（如 Rogue_Subtlety.lua 的 `not_in_dance`）
+
+acceptance_criteria:
+  - must_mention: ["未实现", "静默", "pass = false"]
+  - must_reject_tokens: ["cp >= 5", "buff:opportunity", "target_hp < 0.35"]
+  - must_not_use_or_operator: true
+  - reports_unexpressible_rules_explicitly: true
