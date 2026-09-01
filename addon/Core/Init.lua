@@ -476,7 +476,7 @@ function RA:SlashCommand(input)
         self:Print("  /ra reset    — " .. L["SLASH_HELP_RESET"])
         self:Print("  /ra debug    — " .. L["SLASH_HELP_DEBUG"])
         self:Print("  /ra accuracy — Show combat accuracy history")
-        self:Print("  /ra aplcheck — Report APL rules with unsupported conditions")
+        self:Print("  /ra aplcheck — Report APL rules with unsupported conditions or unknown spellIDs")
         self:Print("  /ra version  — " .. L["SLASH_HELP_VERSION"])
     elseif cmd == "config" or cmd == "options" or cmd == "settings" then
         LibStub("AceConfigDialog-3.0"):Open("RotaAssist")
@@ -509,8 +509,9 @@ function RA:SlashCommand(input)
             tracker:PrintHistory()
         end
     elseif cmd == "aplcheck" then
-        -- Diagnostics for APL condition tokens the engine cannot evaluate.
-        -- 打印 APL 引擎无法求值的条件 token 诊断。
+        -- Diagnostics for APL condition tokens the engine cannot evaluate, plus
+        -- spellIDs that do not resolve on this client (D-015).
+        -- 打印 APL 引擎无法求值的条件 token，以及在本客户端解析不出来的 spellID 诊断（D-015）。
         local aplEngine = self:GetModule("APLEngine")
         if aplEngine and aplEngine.PrintConditionReport then
             aplEngine:PrintConditionReport()

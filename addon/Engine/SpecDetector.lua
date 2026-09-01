@@ -47,23 +47,65 @@ local function detectSpec()
     }
 end
 
+---@type table<number, boolean>  specIDs already announced as unsupported
+---已提示过"不支持"的专精 ID，避免每次天赋变更都刷屏
+local notifiedUnsupportedSpecs = {}
+
+---Fall back to pure Blizzard-recommendation mode for a spec we ship no APL for.
+---v1.1.0 loads Demon Hunter data only (D-014), so this is the normal path for the
+---other 17 specs — it must be silent-safe, produce no Lua error, and leave
+---SmartQueueManager working off `C_AssistedCombat` alone.
+---对未随版本发布 APL 的专精回退到纯暴雪推荐模式。
+---v1.1.0 只加载恶魔猎手数据（D-014），其余 17 个专精走的就是这条路径 ——
+---必须无 Lua 报错，且让 SmartQueueManager 仅凭 `C_AssistedCombat` 继续工作。
+---@param specInfo SpecInfo
+---@param reason string  Debug-only explanation (not user-facing)
+local function degradeToBlizzardOnly(specInfo, reason)
+    RA:PrintDebug("SpecDetector: " .. reason)
+
+    -- Drop any APL left over from a previously loaded spec. Without this the engine
+    -- would keep predicting the OLD spec's rotation after the player switches to an
+    -- unsupported one — worse than showing nothing.
+    -- 清除上一个专精残留的 APL。否则玩家切到不支持的专精后，引擎仍会用旧专精的循环
+    -- 做预测 —— 那比什么都不显示更糟。
+    local aplEngine = RA:GetModule("APLEngine")
+    if aplEngine and aplEngine.ClearAPL then
+        aplEngine:ClearAPL()
+    end
+
+    -- One notice per spec per session: refreshSpec() also fires on talent changes
+    -- and on every PLAYER_ENTERING_WORLD.
+    -- 每个专精每次会话只提示一次：refreshSpec() 在天赋变更与每次进入世界时都会触发。
+    if specInfo.specID and notifiedUnsupportedSpecs[specInfo.specID] then
+        return
+    end
+    if specInfo.specID then
+        notifiedUnsupportedSpecs[specInfo.specID] = true
+    end
+
+    local fmt = (RA.L and RA.L["SPEC_NOT_SUPPORTED"])
+        or "%s is not yet supported — showing Blizzard's suggestion only."
+    RA:Print(string.format(fmt, tostring(specInfo.specName or specInfo.specID)))
+end
+
 ---@param specInfo SpecInfo
 local function loadAPLForSpec(specInfo)
     if not RA.APLData then
-        RA:PrintDebug("SpecDetector: No APL data table found")
+        degradeToBlizzardOnly(specInfo, "No APL data table found")
         return
     end
 
     local aplData = RA.APLData[specInfo.specID]
     if not aplData then
-        RA:PrintDebug(string.format("SpecDetector: No APL found for specID %d", specInfo.specID))
+        degradeToBlizzardOnly(specInfo, string.format(
+            "No APL found for specID %d", specInfo.specID))
         return
     end
 
     local validClass = aplData.class
     if validClass and validClass ~= specInfo.classFile then
-        RA:PrintDebug(string.format(
-            "SpecDetector: APL class mismatch for specID %d (APL=%s, player=%s) - skipping",
+        degradeToBlizzardOnly(specInfo, string.format(
+            "APL class mismatch for specID %d (APL=%s, player=%s) - skipping",
             specInfo.specID, validClass, specInfo.classFile))
         return
     end

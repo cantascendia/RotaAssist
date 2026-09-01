@@ -403,6 +403,194 @@ local function validateAPLConditions(specID, aplData)
 end
 
 ------------------------------------------------------------------------
+-- Unknown-spellID Defense (LOAD TIME — see D-015)
+-- 未知 spellID 防御（加载期 —— 见 D-015）
+--
+-- Data/APL/DemonHunter_Devourer.lua was authored from 12.0 datamining and still
+-- carries unverified spellIDs. An ID that does not exist on the running client
+-- would otherwise be recommended as garbage: an empty icon with no name that the
+-- player cannot cast. SetAPL() therefore resolves every rule's spellID once per
+-- spec and DELETES the unresolvable rules from the live action lists.
+--
+-- Why prune at load instead of filtering in PredictNext(): PredictNext runs on
+-- the UI update path and walks the action list every step of every frame, while
+-- spell existence is a fixed property of the client build. Checking it once per
+-- spec costs nothing at runtime; checking it per frame costs a pcall per rule.
+--
+-- Data/APL/DemonHunter_Devourer.lua 的 spellID 源自 12.0 数据挖掘，尚未真机验证。
+-- 客户端里不存在的 ID 会被当作垃圾推荐显示出来：一个没有名字、玩家也放不出来的空图标。
+-- 因此 SetAPL() 对每个专精把所有规则的 spellID 解析一次，并把解析不出来的规则
+-- 直接从生效的 action list 中删除。
+--
+-- 为何在加载期剔除而不是在 PredictNext() 里过滤：PredictNext 挂在 UI 刷新路径上，
+-- 每帧每步都要遍历 action list，而"技能是否存在"是客户端版本的固定属性。每个专精查
+-- 一次的代价是零；每帧查一次的代价是每条规则一个 pcall。
+------------------------------------------------------------------------
+
+---@type table[]  Diagnostics: { specID, spellID, note, list, pruned, count }
+APLEngine.unknownSpells = {}
+
+---@type table<number, boolean>  spellIDs this client could not resolve
+local unknownSpellIDs = {}
+
+---@type table<string, table>  "specID|spellID" -> diagnostic entry (de-duplication)
+local unknownSpellSeen = {}
+
+---Does this spellID resolve against the running client's spell database?
+---Undecidable cases (API absent, pcall error) return true: never disable a rule on
+---the strength of a check that did not actually run.
+---该 spellID 在当前客户端的技能库里能解析出来吗？
+---无法判定时（API 不存在 / pcall 失败）返回 true：不因一次没真正跑成的检查而禁用规则。
+---@param spellID any
+---@return boolean exists
+local function spellExists(spellID)
+    if type(spellID) ~= "number" then
+        return false
+    end
+    if not (C_Spell and C_Spell.GetSpellInfo) then
+        return true
+    end
+    local ok, info = pcall(C_Spell.GetSpellInfo, spellID)
+    if not ok then
+        return true
+    end
+    -- type() rather than a truthiness test: the return value is never inspected
+    -- beyond "is it a table", so nothing here can trip over a secret value.
+    -- 用 type() 而不是真值判断：这里只关心"是不是一张表"，不会踩到 secret value。
+    return type(info) == "table"
+end
+
+---Record one unresolvable spellID, de-duplicated across every list it appears in.
+---记录一个无法解析的 spellID，跨所有出现的 list 去重。
+---@param specID number|nil
+---@param listName string
+---@param rule table
+---@param pruned boolean  true = rule deleted, false = flagged and skipped at runtime
+local function recordUnknownSpell(specID, listName, rule, pruned)
+    unknownSpellIDs[rule.spellID] = true
+
+    local key = tostring(specID) .. "|" .. tostring(rule.spellID)
+    local entry = unknownSpellSeen[key]
+    if entry then
+        entry.count = entry.count + 1
+        return
+    end
+
+    entry = {
+        specID  = specID,
+        spellID = rule.spellID,
+        list    = listName,
+        note    = rule.note or listName,
+        pruned  = pruned,
+        count   = 1,
+    }
+    unknownSpellSeen[key] = entry
+
+    local entries = APLEngine.unknownSpells
+    entries[#entries + 1] = entry
+end
+
+---Delete every rule with an unresolvable spellID from one action list.
+---从一个 action list 中删除所有 spellID 无法解析的规则。
+---@param specID number|nil
+---@param visited table<table, boolean>  guards aliased profiles (annihilator == default)
+---@param actionList table|nil
+---@param listName string
+---@return number removed
+local function pruneActionList(specID, visited, actionList, listName)
+    if type(actionList) ~= "table" or visited[actionList] then
+        return 0
+    end
+    visited[actionList] = true
+
+    local removed = 0
+    for i = #actionList, 1, -1 do
+        local rule = actionList[i]
+        if type(rule) == "table" and rule.spellID and not spellExists(rule.spellID) then
+            recordUnknownSpell(specID, listName, rule, true)
+            table.remove(actionList, i)
+            removed = removed + 1
+        end
+    end
+    return removed
+end
+
+---Flag (but do not delete) unresolvable spellIDs in an index-sensitive list.
+---The opener is walked by array index while its entries carry an explicit `step`
+---field; deleting an entry would desynchronise the two. PredictNext() consults
+---unknownSpellIDs to skip these at runtime instead.
+---标记（但不删除）位置敏感列表中无法解析的 spellID。
+---opener 按数组下标遍历，条目里又带着显式的 `step` 字段，删除会让两者错位。
+---改由 PredictNext() 在运行时查 unknownSpellIDs 跳过。
+---@param specID number|nil
+---@param visited table<table, boolean>
+---@param actionList table|nil
+---@param listName string
+---@return number flagged
+local function flagActionList(specID, visited, actionList, listName)
+    if type(actionList) ~= "table" or visited[actionList] then
+        return 0
+    end
+    visited[actionList] = true
+
+    local flagged = 0
+    for i = 1, #actionList do
+        local entry = actionList[i]
+        if type(entry) == "table" and entry.spellID and not spellExists(entry.spellID) then
+            recordUnknownSpell(specID, listName, entry, false)
+            flagged = flagged + 1
+        end
+    end
+    return flagged
+end
+
+---Walk an APL definition and remove/flag every rule whose spellID this client
+---cannot resolve. Returns how many diagnostics this call added.
+---遍历 APL 定义，剔除/标记所有本客户端无法解析 spellID 的规则，返回新增诊断条数。
+---@param specID number|nil
+---@param aplData table
+---@return number added
+local function pruneUnknownSpells(specID, aplData)
+    local before = #APLEngine.unknownSpells
+    local visited = {}
+
+    local function pruneProfile(profileName, profile)
+        if type(profile) ~= "table" then return end
+        pruneActionList(specID, visited, profile.singleTarget, profileName .. "/singleTarget")
+        pruneActionList(specID, visited, profile.aoe, profileName .. "/aoe")
+        if type(profile.voidMeta) == "table" then
+            -- voidMeta is either a plain action list or a { singleTarget = {...} }
+            -- wrapper; the inert call is a no-op for whichever shape it is not.
+            -- voidMeta 可能是纯规则列表，也可能是 { singleTarget = {...} } 包装；
+            -- 不匹配的那次调用会自然空转。
+            pruneActionList(specID, visited, profile.voidMeta.singleTarget, profileName .. "/voidMeta")
+            pruneActionList(specID, visited, profile.voidMeta, profileName .. "/voidMeta")
+        end
+        flagActionList(specID, visited, profile.opener, profileName .. "/opener")
+        flagActionList(specID, visited, profile.majorCooldowns, profileName .. "/majorCooldowns")
+    end
+
+    if type(aplData.profiles) == "table" then
+        -- "default" first, so an alias (Devourer's profiles.annihilator IS
+        -- profiles.default) never gets to claim the list name in the report.
+        -- pairs() order is undefined; this keeps `/ra aplcheck` output stable.
+        -- 先走 "default"：别名（吞噬者的 profiles.annihilator 就是 profiles.default）
+        -- 不会抢走报告里的 list 名。pairs() 顺序未定义，这样能让输出稳定。
+        pruneProfile("default", aplData.profiles["default"])
+        for profileName, profile in pairs(aplData.profiles) do
+            if profileName ~= "default" then
+                pruneProfile(profileName, profile)
+            end
+        end
+    end
+
+    -- Phase 1 backward-compat flat rule list
+    pruneActionList(specID, visited, aplData.rules, "rules")
+
+    return #APLEngine.unknownSpells - before
+end
+
+------------------------------------------------------------------------
 -- Condition Evaluator (retained from Phase 2)
 -- シミュレーション状態に対して条件を評価する
 ------------------------------------------------------------------------
@@ -694,9 +882,14 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
             -- Fill predictions starting from startStep, up to depth entries.
             for i = startStep, math.min(startStep + depth - 1, #openerSeq) do
                 local entry = openerSeq[i]
-                -- Skip spells the player hasn't learned (e.g. untalented Essence Break)
-                -- 跳过未学习的技能（如未天赋的精华爆裂）
-                local known = (not IsPlayerSpell) or IsPlayerSpell(entry.spellID)
+                -- Skip spells the player hasn't learned (e.g. untalented Essence Break),
+                -- and spellIDs this client could not resolve at all. Opener entries are
+                -- step-indexed, so pruneUnknownSpells() only flags them (see D-015) —
+                -- this is where they are actually skipped.
+                -- 跳过未学习的技能（如未天赋的精华爆裂），以及本客户端根本解析不出来的 spellID。
+                -- opener 按 step 索引，pruneUnknownSpells() 只做标记（见 D-015），实际跳过在这里。
+                local known = ((not IsPlayerSpell) or IsPlayerSpell(entry.spellID))
+                              and not unknownSpellIDs[entry.spellID]
                 if entry and known then
                     predictions[#predictions + 1] = {
                         spellID    = entry.spellID,
@@ -868,6 +1061,17 @@ function APLEngine:SetAPL(specID, aplData, classID)
     -- 绝不允许从 OnUpdate 路径进入。
     if aplData and specID and not validatedSpecs[specID] then
         validatedSpecs[specID] = true
+
+        -- Prune first: a rule whose spell does not exist is gone, so there is no
+        -- point reporting its condition tokens as well. (D-015)
+        -- 先剔除：技能都不存在的规则已经被删掉，没必要再报它的条件 token。（D-015）
+        local unknownAdded = pruneUnknownSpells(specID, aplData)
+        if unknownAdded > 0 then
+            RA:PrintWarning(string.format(
+                "APLEngine: specID %d references %d spellID(s) unknown to this client — those rules are disabled. /ra aplcheck",
+                specID, unknownAdded))
+        end
+
         local before = #APLEngine.invalidRules
         validateAPLConditions(specID, aplData)
         local added = #APLEngine.invalidRules - before
@@ -882,9 +1086,47 @@ function APLEngine:SetAPL(specID, aplData, classID)
         specID, tostring(classID)))
 end
 
+local LIST_CAP = 40
+
+---Print the unknown-spellID section of `/ra aplcheck` (D-015).
+---打印 `/ra aplcheck` 的未知 spellID 一节（D-015）。
+local function printUnknownSpellReport()
+    local entries = APLEngine.unknownSpells
+    local total = #entries
+
+    if total == 0 then
+        RA:Print("APL spellID check: every loaded rule resolves against this client.")
+        RA:Print("APL spellID 校验：已加载规则的技能 ID 在本客户端全部可解析。")
+        return
+    end
+
+    RA:PrintWarning(string.format(
+        "APL spellID check: %d spellID(s) do not exist on this client.", total))
+    RA:PrintWarning(string.format(
+        "APL spellID 校验：%d 个 spellID 在本客户端不存在。", total))
+
+    local shown = math.min(total, LIST_CAP)
+    for i = 1, shown do
+        local e = entries[i]
+        RA:Print(string.format("  [spec %s] spell %s  %s  x%d rule(s)  list=%s  note=\"%s\"",
+            tostring(e.specID), tostring(e.spellID),
+            e.pruned and "removed" or "skipped",
+            tonumber(e.count) or 1, tostring(e.list), tostring(e.note)))
+    end
+    if total > shown then
+        RA:Print(string.format("  ... %d more entr(ies) not shown / ... 另有 %d 条未显示",
+            total - shown, total - shown))
+    end
+
+    RA:Print("Devourer spellIDs are datamined placeholders (D-015) — unresolvable rules never fire.")
+    RA:Print("吞噬者的 spellID 是数据挖掘占位值（D-015）—— 解析不出来的规则永远不会触发。")
+end
+
 ---Print the load-time condition-validation report. Backs `/ra aplcheck`.
 ---打印加载期条件校验报告。为 `/ra aplcheck` 提供数据。
 function APLEngine:PrintConditionReport()
+    printUnknownSpellReport()
+
     local entries = self.invalidRules
     local total = #entries
 
@@ -899,7 +1141,6 @@ function APLEngine:PrintConditionReport()
     RA:PrintWarning(string.format(
         "APL 条件校验：%d 条规则使用了不支持的 token，永远不会触发。", total))
 
-    local LIST_CAP = 40
     local shown = math.min(total, LIST_CAP)
     for i = 1, shown do
         local e = entries[i]

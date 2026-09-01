@@ -1,0 +1,4 @@
+# Business path SSOT for RotaAssist (WoW 插件)
+# v3.6.1 — addon/ 标准模式
+
+addon/

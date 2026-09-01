@@ -3,11 +3,30 @@
 -- Rotation priority for the NEW Devourer DH spec in WoW 12.0 Midnight.
 -- Hero-talent variants: Annihilator (default), Void-Scarred.
 --
--- ⚠  IMPORTANT — DEVOURER SPELL-ID VERIFICATION:
---   The Devourer spec was added in Midnight (12.0).  Some spellIDs in
---   this file are based on early datamining and may differ on the live
---   12.0.1 servers.  Please verify against Wowhead / the live API
---   with /dump C_Spell.GetSpellInfo(SPELLID) and update accordingly.
+-- ╔══════════════════════════════════════════════════════════════════╗
+-- ║  ⚠  EVERY spellID IN THIS FILE IS UNVERIFIED (D-015)             ║
+-- ║  ⚠  本文件中的每一个 spellID 都尚未真机验证（D-015）              ║
+-- ╚══════════════════════════════════════════════════════════════════╝
+--   Devourer shipped with Midnight (12.0) but the IDs below come from
+--   early datamining, not from a live client. Treat the whole file as
+--   provisional — not just the lines someone remembered to mark.
+--   吞噬者随 Midnight (12.0) 上线，但下面的 ID 来自早期数据挖掘而非真机。
+--   整个文件都是临时值 —— 不是只有"某人记得标注"的那几行。
+--
+--   RUNTIME DEFENSE / 运行时防御:
+--     APLEngine:SetAPL() resolves every rule's spellID through
+--     C_Spell.GetSpellInfo() once per spec at load time and DELETES the
+--     rules it cannot resolve (Engine/APLEngine.lua, pruneUnknownSpells).
+--     A wrong ID therefore costs a missing suggestion, never a garbage one.
+--     APLEngine:SetAPL() 在加载期用 C_Spell.GetSpellInfo() 逐条解析
+--     spellID，解析不出来的规则会被直接删除（见 pruneUnknownSpells）。
+--     因此错误的 ID 只会让某条建议消失，不会产生垃圾推荐。
+--
+--   TO AUDIT / 如何自查:  in-game `/ra aplcheck` lists every unresolvable
+--     spellID with the rule it came from. Verify against Wowhead or
+--     `/dump C_Spell.GetSpellInfo(SPELLID)` and replace the value here.
+--     游戏内执行 `/ra aplcheck` 会列出所有解析失败的 spellID 及其来源规则。
+--     用 Wowhead 或 `/dump C_Spell.GetSpellInfo(SPELLID)` 核对后在此替换。
 --
 -- ⚠  WoW 12.0 CONSTRAINTS:
 --   • We CANNOT read aura / buff / Void Soul count in combat.
@@ -81,7 +100,6 @@ APL.profiles["default"] = {
         -- ① Soul Immolation — resource generation on cooldown
         -- 灵魂献祭 — 冷却好就用，资源生成
         -- ソウルイモレーション — CDごとに使用、リソース生成
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442525, cdSeconds = 15,
             priority  = 1,
             condition = "cd_ready AND not_in_meta",
@@ -94,7 +112,6 @@ APL.profiles["default"] = {
         -- ② Voidblade — melee leap combo initiator
         -- 虚空之刃 — 近战跳跃，连击起手
         -- ヴォイドブレード — 近接リープ、コンボ開始
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442520, cdSeconds = 15,
             priority  = 2,
             condition = "cd_ready AND not_in_meta",
@@ -107,7 +124,6 @@ APL.profiles["default"] = {
         -- ③ The Hunt — high-damage charge
         -- 猎杀 — 高伤害冲锋
         -- ザ・ハント — 高ダメージチャージ
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 370965, cdSeconds = 90,
             priority  = 3,
             condition = "cd_ready",
@@ -120,7 +136,6 @@ APL.profiles["default"] = {
         -- ④ Reap — consume Voidfall stacks (estimated at 3)
         -- 收割 — 消耗虚空坠落层数（估计3层时使用）
         -- リープ — ヴォイドフォールスタック消費（推定3スタック時）
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442515, cdSeconds = 10,
             priority  = 4,
             condition = "cd_ready",
@@ -133,7 +148,6 @@ APL.profiles["default"] = {
         -- ⑤ Void Ray — at 100 Fury (resource-gated outside Meta)
         -- 虚空射线 — 100怒气时使用（变身外资源消耗）
         -- ヴォイドレイ — フューリー100で使用（メタ外リソース消費）
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442507, cdSeconds = 16,
             priority  = 5,
             condition = "estimated_resource >= 100 AND not_in_meta",
@@ -146,7 +160,6 @@ APL.profiles["default"] = {
         -- ⑥ Vengeful Retreat — movement / utility
         -- 复仇回退 — 移动/实用
         -- ヴェンジフルリトリート — 移動/ユーティリティ
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 198793, cdSeconds = 25,
             priority  = 6,
             condition = "cd_ready AND not_in_meta",
@@ -159,7 +172,6 @@ APL.profiles["default"] = {
         -- ⑦ Shift — dash, 2-3 charges
         -- 位移 — 冲刺，2-3充能
         -- シフト — ダッシュ、2-3チャージ
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442530, cdSeconds = 10,
             priority  = 7,
             condition = "cd_ready",
@@ -173,7 +185,6 @@ APL.profiles["default"] = {
         -- 吞噬 — 填充技能，随时可用
         -- コンシューム — フィラー、常に使用可能
         {
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
             spellID   = 442501,
             priority  = 8,
             condition = "always",
@@ -198,7 +209,6 @@ APL.profiles["default"] = {
         -- 坍缩之星 — 巨大爆发，消耗30灵魂
         -- コラプシングスター — 大ダメージ、30ソウル消費
         {
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
             spellID   = 442510,
             priority  = 1,
             condition = "in_meta AND estimated_resource >= 30",
@@ -211,7 +221,6 @@ APL.profiles["default"] = {
         -- ② Void Ray — on cooldown (16s hasted CD in Meta)
         -- 虚空射线 — 冷却好就用（变身中16秒CD）
         -- ヴォイドレイ — CDごとに使用（メタ中16秒CD）
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442507, cdSeconds = 16,
             priority  = 2,
             condition = "cd_ready AND in_meta",
@@ -224,7 +233,6 @@ APL.profiles["default"] = {
         -- ③ Reap — after 2-3 Devour casts (Soul collection)
         -- 收割 — 2-3次吞噬后使用（收集灵魂）
         -- リープ — デヴァウア2-3回後に使用（ソウル収集）
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442515, cdSeconds = 10,
             priority  = 3,
             condition = "cd_ready AND in_meta",
@@ -237,7 +245,6 @@ APL.profiles["default"] = {
         -- ④ Voidblade — if Voidrush talented (pauses Soul drain)
         -- 虚空之刃 — 如有虚空冲能天赋（暂停灵魂流失）
         -- ヴォイドブレード — ヴォイドラッシュタレント時（ソウル減少停止）
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442520, cdSeconds = 15,
             priority  = 4,
             condition = "cd_ready AND in_meta",
@@ -251,7 +258,6 @@ APL.profiles["default"] = {
         -- 吞噬 — 冷却间的填充
         -- デヴァウア — CDの合間のフィラー
         {
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
             spellID   = 442501,
             priority  = 5,
             condition = "always",
@@ -269,17 +275,11 @@ APL.profiles["default"] = {
     -- AoE: 坍缩之星成为最高优先（大范围伤害）
     -- AoE: コラプシングスターが最優先（大AoE）
     aoe = {
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442510, priority = 1, condition = "in_meta AND estimated_resource >= 30", targetCount = 3, note = "Collapsing Star — AoE nuke",         displayPriority = 1, confidence = 0.85, tags = {"aoe", "burst"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442507, cdSeconds = 16, priority = 2, condition = "cd_ready",                             targetCount = 3, note = "Void Ray — aggressive use in AoE",   displayPriority = 2, confidence = 0.85, tags = {"aoe"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442525, cdSeconds = 15, priority = 3, condition = "cd_ready",                             targetCount = 3, note = "Soul Immolation — resource gen",     displayPriority = 3, confidence = 0.8,  tags = {"aoe"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442515, cdSeconds = 10, priority = 4, condition = "cd_ready",                             targetCount = 3, note = "Reap — Soul burst AoE",              displayPriority = 4, confidence = 0.75, tags = {"aoe"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442520, cdSeconds = 15, priority = 5, condition = "cd_ready",                             targetCount = 3, note = "Voidblade — leap AoE",               displayPriority = 5, confidence = 0.7,  tags = {"aoe", "movement"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442501, priority = 6, condition = "always",                               targetCount = 3, note = "Consume — filler",                   displayPriority = 6, confidence = 0.5,  tags = {"aoe"} },
     },
 
@@ -289,15 +289,10 @@ APL.profiles["default"] = {
     -- 起手循环
     -- オープナーローテーション
     opener = {
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442525, cdSeconds = 15, step = 1, note = "Soul Immolation — pre-pull resource gen" },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 370965, cdSeconds = 90, step = 2, note = "The Hunt — on-pull charge" },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442520, cdSeconds = 15, step = 3, note = "Voidblade — melee leap" },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442515, cdSeconds = 10, step = 4, note = "Reap — early Soul burst" },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442507, cdSeconds = 16, step = 5, note = "Void Ray — first Fury dump" },
     },
 
@@ -305,7 +300,6 @@ APL.profiles["default"] = {
     -- MAJOR COOLDOWNS (manual reminders)
     ------------------------------------
     majorCooldowns = {
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442508, note = "Void Metamorphosis — resource-gated (50 Souls), NOT a timed CD. Manual activation" },
     },
 }
@@ -337,34 +331,22 @@ APL.profiles["void_scarred"] = {
 
     singleTarget = {
         -- Outside Meta: same general priority, emphasize Voidblade
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442520, cdSeconds = 15, priority = 1, condition = "cd_ready AND not_in_meta",                note = "Voidblade — Hungering Slash combo initiator",   displayPriority = 1, confidence = 0.85, tags = {"burst", "movement"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442525, cdSeconds = 15, priority = 2, condition = "cd_ready AND not_in_meta",                note = "Soul Immolation — resource gen",                displayPriority = 2, confidence = 0.85, tags = {"sustain"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 370965, cdSeconds = 90, priority = 3, condition = "cd_ready",                                note = "The Hunt",                                      displayPriority = 3, confidence = 0.9,  tags = {"burst"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442515, cdSeconds = 10, priority = 4, condition = "cd_ready",                                note = "Reap — Soul consumer",                          displayPriority = 4, confidence = 0.75, tags = {"sustain"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442507, cdSeconds = 16, priority = 5, condition = "estimated_resource >= 100 AND not_in_meta", note = "Void Ray — Fury dump + Eradicate proc",       displayPriority = 5, confidence = 0.7,  tags = {"sustain"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 198793, cdSeconds = 25, priority = 6, condition = "cd_ready AND not_in_meta",                note = "Vengeful Retreat",                               displayPriority = 6, confidence = 0.7,  tags = {"movement"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442530, cdSeconds = 10, priority = 7, condition = "cd_ready",                                note = "Shift — dash",                                  displayPriority = 7, confidence = 0.6,  tags = {"movement"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442501, priority = 8, condition = "always",                                  note = "Consume — filler, Eradicate proc fishing",      displayPriority = 8, confidence = 0.6,  tags = {"sustain"} },
     },
 
     -- Void Meta phase: skip Collapsing Star in pure ST, more Devour spam
     voidMeta = {
         -- No Collapsing Star in ST for Void-Scarred (save Souls)
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442507, cdSeconds = 16, priority = 1, condition = "cd_ready AND in_meta",      note = "Void Ray — core + Eradicate proc",       displayPriority = 1, confidence = 0.9,  tags = {"sustain"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442520, cdSeconds = 15, priority = 2, condition = "cd_ready AND in_meta",      note = "Voidblade — Voidrush pauses drain",       displayPriority = 2, confidence = 0.8,  tags = {"burst", "movement"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442515, cdSeconds = 10, priority = 3, condition = "cd_ready AND in_meta",      note = "Reap — Soul burst",                       displayPriority = 3, confidence = 0.75, tags = {"sustain"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442501, priority = 4, condition = "always",                    note = "Consume/Devour — spam for Eradicate procs", displayPriority = 4, confidence = 0.65, tags = {"sustain"} },
     },
 
@@ -372,17 +354,11 @@ APL.profiles["void_scarred"] = {
     -- 范围战斗中，即使虚空疤痕也使用坍缩之星
     -- AoEではヴォイドスカードでもコラプシングスターを使用
     aoe = {
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442510, priority = 1, condition = "in_meta AND estimated_resource >= 30", targetCount = 3, note = "Collapsing Star — AoE even for VS",  displayPriority = 1, confidence = 0.85, tags = {"aoe", "burst"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442507, cdSeconds = 16, priority = 2, condition = "cd_ready",                             targetCount = 3, note = "Void Ray — aggressive AoE",          displayPriority = 2, confidence = 0.85, tags = {"aoe"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442525, cdSeconds = 15, priority = 3, condition = "cd_ready",                             targetCount = 3, note = "Soul Immolation",                    displayPriority = 3, confidence = 0.8,  tags = {"aoe"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442515, cdSeconds = 10, priority = 4, condition = "cd_ready",                             targetCount = 3, note = "Reap",                               displayPriority = 4, confidence = 0.75, tags = {"aoe"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442520, cdSeconds = 15, priority = 5, condition = "cd_ready",                             targetCount = 3, note = "Voidblade",                          displayPriority = 5, confidence = 0.7,  tags = {"aoe", "movement"} },
--- ⚠ UNVERIFIED: Placeholder spellID, needs 12.0 live verification
         { spellID = 442501, priority = 6, condition = "always",                               targetCount = 3, note = "Consume — filler",                   displayPriority = 6, confidence = 0.5,  tags = {"aoe"} },
     },
 

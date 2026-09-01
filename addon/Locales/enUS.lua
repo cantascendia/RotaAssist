@@ -276,3 +276,13 @@ L["DISPLAY_MODE"]             = "Display Mode"
 L["INTERRUPT_ALERT"]          = "INTERRUPT!"
 L["COOLDOWN_READY_ALERT"]     = "CD Ready!"
 L["AOE_MODE"]                 = "AoE Mode"
+
+------------------------------------------------------------------------
+-- Spec Support Scope (v1.1.0 ships Demon Hunter only — see D-014)
+-- 专精支持范围（v1.1.0 仅发布恶魔猎手三专精 —— 见 D-014）
+------------------------------------------------------------------------
+-- %s = localized spec name. Shown once per unsupported spec, then the addon
+-- keeps running in pure Blizzard-recommendation mode.
+-- %s = 本地化专精名。每个不支持的专精只提示一次，之后插件继续以纯暴雪推荐模式运行。
+L["SPEC_NOT_SUPPORTED"]       = "%s is not yet supported — showing Blizzard's suggestion only."
+

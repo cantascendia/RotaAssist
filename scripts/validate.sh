@@ -43,6 +43,10 @@ fi
 # ── 3. TOC file existence check ───────────────────────────────────────
 echo "── [3/5] TOC File Existence ──"
 while IFS= read -r line; do
+    # Strip trailing CR: the TOC is CRLF on Windows checkouts (core.autocrlf),
+    # and a stray \r on the path made every existence check fail (109 false errors).
+    # 去掉行尾 \r：Windows 检出的 TOC 是 CRLF，残留 \r 曾让全部文件误报缺失。
+    line="${line%$'\r'}"
     # Skip comments and blank lines
     [[ "$line" =~ ^[[:space:]]*# ]] && continue
     [[ "$line" =~ ^[[:space:]]*$ ]] && continue

@@ -1,47 +1,126 @@
-[center][size=6][b]RotaAssist - Smart Combat Assistant | Hekili Alternative for Midnight[/b][/size][/center]
+[center][size=6][b]RotaAssist — A Rotation Coach, Not a Crutch[/b][/size][/center]
 
-[center][img]https://raw.githubusercontent.com/yourname/RotaAssist/main/docs/images/banner.png[/img][/center]
-
-[size=4][b]The spiritual successor to rotation helpers, built natively for WoW 12.0 Midnight.[/b][/size]
-
-[b]RotaAssist[/b] is not a fork of Hekili. It is a next-generation intelligent combat assistant designed specifically for World of Warcraft: Midnight (12.0). By leveraging Blizzard's brand-new [b]C_AssistedCombat[/b] API, RotaAssist provides 100% compliance with Blizzard's Terms of Service while offering a visual fidelity and situational awareness far beyond legacy alternatives like SACI or JAC.
+[center][i]Built for World of Warcraft: Midnight 12.1 (Interface 120100)[/i][/center]
 
 [hr]
 
-[size=4][b]Key Features[/b][/size]
+[size=4][b]Blizzard already tells you the next button.[/b][/size]
+
+Assisted Combat ships with the game. It highlights one spell. Every rotation addon on
+this site wraps that same call and draws that same one spell somewhere else on your screen.
+
+[b]RotaAssist does the part Blizzard doesn't.[/b]
 
 [list]
-[*] [b]100% TOS Compliant:[/b] Uses only official Blizzard APIs. No memory hacks, no automation.
-[*] [b]Revolutionary T-Shaped HUD:[/b] A modern UI layout that centralizes your rotation, cooldowns, resources, and defensives.
-[*] [b]Smart APL Forecasting:[/b] Powered by SimulationCraft-based logic, RotaAssist predicts your next 2-3 moves so you can stay ahead of the curve.
-[*] [b]Intelligent Cooldown Management:[/b] Dynamic visual alerts when your major abilities are about to become ready.
-[*] [b]Defensive Advisor:[/b] Automatic screen alerts based on your current health percentage and specialization thresholds.
-[*] [b]Pre-Pull Checklist:[/b] Never forget your Flasks, Food, or Runes again.
-[*] [b]Native Multi-Language:[/b] Built-in support for English, Simplified Chinese, and Japanese.
+[*] [b]The next five, not the next one.[/b] Multi-step lookahead from a forward APL simulation, so you can plan a burst window instead of reacting one global at a time.
+[*] [b]Whether you actually hit it.[/b] Live and historical accuracy tracking, broken down by combat phase, so you learn where your rotation drifts.
+[*] [b]What kind of moment this is.[/b] Twelve combat phases detected automatically — burst, AoE, execute, emergency and more — using non-secret signals only.
+[*] [b]What you forgot before the pull.[/b] Flask, food and rune checks before the fight starts, not a wipe later.
 [/list]
+
+An icon tells you what to press. A coach tells you why you're behind. That's the difference.
 
 [hr]
 
 [size=4][b]Supported Specializations[/b][/size]
 
-Currently supporting:
+[b]v1.1.0 ships Demon Hunter only.[/b] This is deliberate.
+
 [list]
-[*] [b]Demon Hunter:[/b] Havoc, Vengeance, Devourer (Hero Spec)
+[*] [b]Havoc[/b] (577) — fully supported
+[*] [b]Vengeance[/b] (581) — fully supported
+[*] [b]Devourer[/b] (1480) — [color=#ff9900][b]experimental[/b][/color]
 [/list]
-[i]More classes and specializations are coming in v0.2.0![/i]
+
+[b]Why only three?[/b] Seventeen other specs exist in the source tree. On audit, they
+averaged around 30% of their priority rules permanently dead — conditions the engine
+could never evaluate, failing silently while the addon looked like it was working.
+Several decision trees were 14-line stubs. Rather than advertise twenty specs and ship
+half a rotation for most of them, this release ships the three that are genuinely
+complete. Breadth can be added later. Credibility can't.
+
+[b]About Devourer:[/b] the spec is real and live, but several spell IDs in our data came
+from early datamining and have not been verified against a live 12.1 client. RotaAssist
+guards every spell lookup at runtime, so an unknown ID never throws an error — the
+affected recommendation simply doesn't display. Verify one yourself with
+[b]/dump C_Spell.GetSpellInfo(442501)[/b] and please post corrections in the comments.
+Devourer players are the reason this gets fixed.
 
 [hr]
 
-[size=4][b]Installation & Usage[/b][/size]
+[size=4][b]Midnight 12.x Compliance[/b][/size]
 
 [list]
-[*] Install via CurseForge or download manually from GitHub.
-[*] Use [b]/ra[/b] to open the configuration panel.
-[*] Use [b]/ra lock[/b] to toggle UI position locking.
-[*] Right-click the display for a quick access context menu.
+[*] [b]No secret values are ever used to make a decision.[/b] Every read that can return a secret value goes through one template: pcall, then [b]issecretvalue[/b], then a type check, then a fallback. This release fixed six places where that guard was missing or came too late.
+[*] [b]Built on the official C_AssistedCombat API.[/b] The recommendation chain starts from Blizzard's own call.
+[*] [b]The APL is a forward simulator[/b], reading simulated state rather than restricted live APIs.
+[*] [b]The prediction model uses only non-secret features[/b] — cast history, nameplate count, combat duration, spec.
+[*] [b]No memory reading. No automation. No input injection.[/b] Official APIs only.
 [/list]
 
 [hr]
 
-[center][b]Links[/b]
-[url=https://github.com/yourname/RotaAssist]GitHub Repository[/url] | [url=https://discord.gg/placeholder]Join our Discord[/url] | [url=https://github.com/yourname/RotaAssist/issues]Report a Bug[/url][/center]
+[size=4][b]Features[/b][/size]
+
+[list]
+[*] [b]Multi-step lookahead[/b] — see 3–5 casts ahead, not just the next one
+[*] [b]Accuracy tracking[/b] — real-time meter plus per-phase historical breakdown
+[*] [b]Combat phase detection[/b] — 12 phases, non-secret signals only
+[*] [b]Pre-pull checklist[/b] — flask, food, rune verification before combat
+[*] [b]Personal AI prediction[/b] — decision tree plus Markov chain trained on YOUR cast history
+[*] [b]Multi-source fusion[/b] — Blizzard recommendation, APL simulation and AI blended into one weighted call
+[*] [b]Interrupt and defensive alerts[/b] — sound plus visual flash
+[*] [b]CooldownViewer coexistence[/b] — optional hook so the cooldown panel doesn't duplicate Blizzard's native viewer (off by default)
+[*] [b]Trilingual[/b] — English, 简体中文, 日本語
+[/list]
+
+[hr]
+
+[size=4][b]Installation[/b][/size]
+
+[list=1]
+[*] Install with the CurseForge App, or download the zip from the Files tab.
+[*] For manual installs, extract into [b]World of Warcraft/_retail_/Interface/AddOns/[/b] — you should end up with [b]Interface/AddOns/RotaAssist/RotaAssist.toc[/b].
+[*] Restart the game, or type [b]/reload[/b].
+[/list]
+
+No required dependencies. Ace3 is embedded.
+
+[hr]
+
+[size=4][b]Slash Commands[/b][/size]
+
+[list]
+[*] [b]/ra[/b] — print the command list
+[*] [b]/ra toggle[/b] — show/hide the main display
+[*] [b]/ra config[/b] — open settings
+[*] [b]/ra lock[/b] — lock/unlock the display position
+[*] [b]/ra accuracy[/b] — print accuracy history
+[*] [b]/ra aplcheck[/b] — APL condition diagnostics: lists any priority rule using a token the engine can't evaluate. Expected output for all three shipped specs is zero.
+[*] [b]/ra debug[/b] — toggle debug mode
+[*] [b]/ra reset[/b] — reset all settings
+[*] [b]/ra version[/b] — show version
+[/list]
+
+[b]/ra aplcheck[/b] is an honesty tool. Unrecognized rotation conditions used to fail
+silently — green tests, broken product. Now they're recorded at load time and you can
+read the list yourself.
+
+[hr]
+
+[size=4][b]Bug Reports[/b][/size]
+
+Please report issues in the comments on this page. Include:
+
+[list]
+[*] Your client version ([b]/dump GetBuildInfo()[/b])
+[*] Spec and hero talent
+[*] The full Lua error — [b]BugSack + BugGrabber[/b] strongly recommended
+[*] Steps to reproduce
+[/list]
+
+Devourer spell ID corrections are especially welcome.
+
+[hr]
+
+[center][i]Released under the MIT License.[/i][/center]
