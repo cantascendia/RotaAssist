@@ -69,13 +69,21 @@ Do not author rules using `buff:` `debuff:` `debuff_missing:` `debuff_remains:`
 - Module lifecycle: `OnInitialize()` → `OnEnable()` → `OnDisable()`
 
 ## Build & Test
-```bash
-# Lint Lua code
-luacheck addon/ --config .luacheckrc
 
-# Run training pipeline test
+There is NO CI (GitHub abandoned, see docs/ai-cto/DECISIONS.md D-010).
+The local runner is the only regression defense — run it before every commit.
+
+```bash
+# Full test suite (506 cases, ~0.3s) — busted-compatible shim w/ file insulation
+"/c/Program Files (x86)/Lua/5.1/lua.exe" scripts/run_tests.lua
+# filter: ... scripts/run_tests.lua registry sqm
+
+# Syntax check (no luacheck on this machine; luac -p is the substitute)
+"/c/Program Files (x86)/Lua/5.1/luac.exe" -p <file.lua>
+
+# Training pipeline test
 cd training && pip install -r requirements.txt
-python simc_apl_to_dataset.py --spec havoc --output /tmp/test.csv --samples 10
+python -m pytest test_apl_parser.py -v
 
 # Package for release
 ./scripts/package.sh 1.0.0
@@ -97,9 +105,9 @@ python simc_apl_to_dataset.py --spec havoc --output /tmp/test.csv --samples 10
 ## Lessons Learned (Auto-Updated)
 
 ### Round 1-2 Findings
-- `Predictor.lua` in `addon/Engine/` is dead code — NOT loaded by TOC, references
-  deprecated modules (AssistCapture, CooldownTracker). Do not modify it; it should
-  be deleted.
+- `Predictor.lua` in `addon/Engine/` is dead code — NOT loaded by TOC. Do not
+  modify it; it should be deleted. (The modules it referenced — `AssistCapture`,
+  `CooldownTracker`, `RecommendationManager` — were deleted in Round 17 per D-013.)
 - SpecEnhancements schema is inconsistent: DH uses `interruptSpellID` (flat),
   Evoker/Rogue use `interruptSpell = { spellID, ... }` (nested). Always use the
   nested format going forward.

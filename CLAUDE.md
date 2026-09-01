@@ -64,11 +64,19 @@ CTO 操作手册见 ai-playbook 仓库的 `playbook/handbook.md`。
 ### 构建和测试
 
 ```bash
-luacheck addon/ --config .luacheckrc      # 静态检查
-busted tests/ --verbose --pattern=test    # 单元 + 集成测试
+# 本地测试（首选，0.3s 跑完 506 用例；busted 兼容 shim，带文件级隔离）
+"/c/Program Files (x86)/Lua/5.1/lua.exe" scripts/run_tests.lua
+# 或: powershell -File scripts/run_tests.ps1 [过滤词]
+
+# 语法检查（本机无 luacheck，用 luac -p 兜底）
+"/c/Program Files (x86)/Lua/5.1/luac.exe" -p <file.lua>
+
 python -m pytest training/test_apl_parser.py -v
 ./scripts/package.sh 1.0.0                # 打包
 ```
+
+📌 **提交前必须**：`scripts/run_tests.lua` 全绿 + 改动文件 `luac -p` 通过。
+CI 不存在（GitHub 已弃，D-010），本地跑测试是唯一回归防线。
 
 ### 🔴 12.x Secret Value 铁则（违反即为 P0）
 

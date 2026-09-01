@@ -1,7 +1,9 @@
 # RotaAssist — CTO 项目状态
 
-> 最后更新: **Round 16（第零轮重启）** | 日期: 2026-09-01
-> ⚠️ 上一版 STATUS.md 停留在 Round 12，与仓库实际状态（Round 15 + T1-T5）严重脱节。本版按实测重写。
+> 最后更新: **Round 17（进行中）** | 日期: 2026-09-01
+> Round 16 = 第零轮重启（审计 + P0 修复 + 7 分支合并，main = `701a3ca`）。
+> Round 17 = 死代码删除 + 性能降频（分支 `improve/round17-dead-code-and-perf`）。
+> 下方 P0/P1 清单保留 Round 16 审计原文作为底账，✅ 标记表示已修复。
 
 ## 项目一句话
 WoW Midnight (12.1) 循环**教练**插件 —— 在 Blizzard Assisted Combat 之上叠加多步前瞻、
@@ -34,11 +36,11 @@ WoW Midnight (12.1) 循环**教练**插件 —— 在 Blizzard Assisted Combat �
 - 发布：CurseForge/Wago 手动上传，不依赖 GitHub
 - 完整处置：DECISIONS.md D-010
 
-### 2. TOC 落后 3 个补丁
-`## Interface: 120000`（12.0.0）— 当前游戏为 **12.1.0，需 120100**。
-游戏会标记为「已过期插件」，默认不加载。
+### 2. ✅ TOC 落后 3 个补丁 — Round 16 已修（`120100`，commit 3ced3c6）
 
-### 3. 六处 secret-value 硬违规
+### 3. ✅ 六处 secret-value 硬违规 — Round 16 已全修（commit 3ced3c6，统一为
+pcall → issecretvalue → 类型检查 → 兜底；RecommendationManager 随 Round 17 删除）
+底账：
 | 位置 | 问题 |
 |---|---|
 | `PatternDetector.lua:117-119` | `mx > 0` 比较发生在 `issecretvalue` 守卫**之前** |
@@ -72,19 +74,21 @@ WoW Midnight (12.1) 循环**教练**插件 —— 在 Blizzard Assisted Combat �
 
 ---
 
-## 分支状态（origin/main = `2c0d990`，HEAD = `35f89ab` on `codex/fix-event-debug-spam`）
+## 分支状态（Round 16 末：main = `701a3ca`）
 
-| 分支 | 领先 | 冲突 | 内容 |
-|---|---|---|---|
-| `codex/fix-event-debug-spam` (HEAD) | 3+2 | ✅ 干净 | 事件刷屏修复 + 图标泄漏修复 + CI 修复 |
-| `feat/t5-repo-hygiene` | 1 | ⚠️ 琐碎 | .gitignore +6 行，纯 append 冲突 |
-| `feat/t1-mage-fire-data` | 1 | ✅ 干净 | 火法 DT+TM+测试 **+968/−0** |
-| `feat/t3-paladin-ret-audit-tests` | 1 | ✅ 干净 | 惩戒骑测试 +271 |
-| `feat/t4-deathknight-audit-tests` | 1 | ✅ 干净 | DK 测试 +455/−38 |
-| `feat/t2-cdm-hook-a53e` | 1 | ✅ 干净 | **CooldownViewer 共存** +510，补 12.0 最大缺口 |
-| `improve/round15-ui-overhaul` | 13 | 🔴 **冲突** | MainDisplay 重写为水平图标条；比 main 老 1.5 月，落后 3 提交 |
+✅ **已全部合入 main（2026-09-01）**，经 `integrate/round16` 集成分支 + `--ff-only`：
+codex/fix-event-debug-spam → t5（.gitignore append 冲突已解）→ t1 → t3 → t4 →
+t2-cdm-hook（CDMHook 已进 MODULE_ORDER + TOC）→ improve/round16-compliance-and-bugs。
+合并后 112 个非库 Lua 文件 `luac -p` 全部通过。
 
-**合并建议顺序**：HEAD → t5 → t1/t3/t4（批量）→ t2 → round15（**必须 rebase 不能 merge**）
+**仍未合并**：
+| 分支 | 状态 |
+|---|---|
+| `improve/round15-ui-overhaul` | 🔴 需 **rebase**（禁 merge）。MainDisplay 水平图标条重写，比 main 老 1.5 月；现又叠加 round16 的 MainDisplay 改动，冲突进一步加深 |
+| `improve/round17-dead-code-and-perf` | 🔄 执行中：D-013 死代码删除 + InterruptAdvisor MODULE_ORDER + 常驻帧降频 + 充能扫描收窄 |
+
+📌 本地工作流备忘：合并 main 用集成分支 + `--ff-only`（branch-guard 拦 main 上的直接 Edit，
+合并冲突也要在集成分支解）。每轮末重建 `git bundle` 备份。
 
 ---
 
@@ -103,20 +107,23 @@ WoW Midnight (12.1) 循环**教练**插件 —— 在 Blizzard Assisted Combat �
 
 ## 待办队列（按对最终产品的影响排序）
 
-| # | 任务 | 类型 | 优先级 |
+| # | 任务 | 类型 | 状态 |
 |---|---|---|---|
-| 1 | 恢复发布通道（新远端 + CI 绿灯） | 阻塞解除 | 🔴 最高 |
-| 2 | TOC → 120100 + 6 处 P0 secret 违规 | 技术债 | 🔴 |
-| 3 | APL 条件词汇加载期校验（D-011） | 技术债 | 🟠 |
-| 4 | 删除 975 行死代码链（D-013） | 技术债 | 🟠 |
-| 5 | 5 个 UI 功能性 bug | 功能完整性 | 🟠 |
-| 6 | 合并 6 个干净分支 | 工程 | 🟠 |
-| 7 | 收窄至 3 专精 + Devourer spellID 验证 | 产品关键路径 | 🟠 |
+| ~~1~~ | ~~恢复发布通道~~ | — | ✅ 用户裁定放弃 GitHub，本地 main 即真相源（D-010） |
+| ~~2~~ | ~~TOC 120100 + 6 处 P0 secret 违规~~ | — | ✅ Round 16 完成（commit 3ced3c6） |
+| ~~3~~ | ~~APL 条件词汇加载期校验~~ | — | ✅ Round 16 完成，`/ra aplcheck` 可查 55 条问题规则 |
+| ~~4~~ | ~~删除 975 行死代码链~~ | — | 🔄 Round 17 执行中 |
+| ~~5~~ | ~~5 个 UI 功能性 bug~~ | — | ✅ Round 16 完成 |
+| ~~6~~ | ~~合并 6 个干净分支~~ | — | ✅ Round 16 完成（main = 701a3ca） |
+| ~~10~~ | ~~常驻帧战斗开关~~ | — | 🔄 Round 17 执行中（降频而非停摆）+ 充能扫描收窄 |
+| 7 | 收窄至 3 专精 + Devourer spellID 验证 | 产品关键路径 | 🟠 下一轮 |
 | 8 | Theme.lua 设计系统 + EditMode | UX | 🟡 |
-| 9 | 真机冒烟测试 | 验证 | 🔴 但需用户执行 |
-| 10 | 性能：4 个常驻帧加战斗开关 | 性能 | 🟡 |
-| 11 | 双阶段检测系统合并 | 架构 | 🟡 |
-| 12 | Tauri 伴侣（护城河） | 创新 | 🔵 P6 |
+| 9 | 真机冒烟测试 | 验证 | 🔴 **需用户在 12.1 客户端执行** |
+| 11 | 双阶段检测系统合并（AIInference vs PatternDetector） | 架构 | 🟡 |
+| 12 | round15-ui-overhaul rebase（水平图标条） | UX | 🟡 |
+| 13 | SmartQueueManager mojibake 注释修复 + AssembleQueue 拆分 | 技术债 | 🟡 |
+| 14 | 本地测试运行器（lua.exe + busted shim，恢复 344 用例可跑） | 工程 | 🟠 |
+| 15 | Tauri 伴侣（护城河） | 创新 | 🔵 P6 |
 
 ---
 
@@ -124,9 +131,11 @@ WoW Midnight (12.1) 循环**教练**插件 —— 在 Blizzard Assisted Combat �
 
 | 风险 | 严重度 | 状态 |
 |---|---|---|
-| GitHub 账号封禁 → 无法交付 | 🔴 极高 | 需用户申诉；并行建备用远端 |
+| ~~GitHub 账号封禁~~ | — | ✅ 已裁定放弃；bundle 备份每轮末重建 |
+| **本地单点：仓库只存在于这台 PC** | 🔴 高 | bundle 已建；建议尽快选定新远端或把 bundle 纳入 OneDrive 备份任务 |
 | 真机从未验证 → 全部 secret 处理是纸上推演 | 🔴 高 | 需用户在 12.1 客户端执行 |
-| Devourer 44 个 spellID 编造 | 🟠 中 | 可用权威源验证（已上线 6 个月） |
-| 市场同质化，领先者靠极简拿 201.6K | 🟠 中 | 差异化在前瞻/反馈/复盘 |
-| mock 与真机行为偏离 | 🟠 中 | 真机验证后需回灌校准 mock |
-| round15 分支冲突加深（3 条线改同一 681 行文件） | 🟡 低 | 尽快 rebase |
+| 测试不可跑（无 busted，CI 无）→ 回归盲区 | 🟠 中 | 待办 #14；当前靠 luac -p + agent 内嵌 stub harness |
+| Devourer 44 个 spellID 编造 | 🟠 中 | 网页抓取不可靠，待真机 `/dump` 验证 |
+| mock 与真机行为偏离 | 🟠 中 | 真机验证后回灌校准 |
+| round15 分支冲突加深（round16 又改了 MainDisplay） | 🟡 低 | rebase 时一并处理 |
+| 审计误报（单 critic 幻觉）：本轮 1 例（阶段 i18n 键） | 🟡 低 | 重大发现须双源验证（git 仲裁先例） |
