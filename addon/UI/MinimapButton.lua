@@ -49,7 +49,9 @@ function MinimapButton:OnEnable()
     end
 
     -- Create data broker object
-    local L = RA.L
+    -- RA.L 兜底为空表，避免 RA.L 尚未初始化时闭包内索引 nil
+    -- Fall back to an empty table so the closures below never index a nil RA.L
+    local L = RA.L or {}
     dataBroker = LDB:NewDataObject("RotaAssist", {
         type = "launcher",
         text = "RotaAssist",
@@ -68,9 +70,10 @@ function MinimapButton:OnEnable()
             end
         end,
         OnTooltipShow = function(tooltip)
+            -- 与同文件首行保持一致的 `or` 兜底 / same `or` fallback style as the title line above
             tooltip:AddLine(L["MINIMAP_TOOLTIP_TITLE"] or "RotaAssist", 0, 0.8, 1)
-            tooltip:AddLine(L["TOOLTIP_MINIMAP_LEFT"], 0.8, 0.8, 0.8)
-            tooltip:AddLine(L["TOOLTIP_MINIMAP_RIGHT"], 0.8, 0.8, 0.8)
+            tooltip:AddLine(L["TOOLTIP_MINIMAP_LEFT"] or "Left-click: Open settings", 0.8, 0.8, 0.8)
+            tooltip:AddLine(L["TOOLTIP_MINIMAP_RIGHT"] or "Right-click: Toggle display", 0.8, 0.8, 0.8)
         end,
     })
 

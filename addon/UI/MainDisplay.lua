@@ -258,10 +258,12 @@ local function UpdateDisplay()
         updateWidgetCooldown(elements.mainIcon, mainDisplaySpellID)
         
         -- 盲区技能标识：显示来源标签
+        -- SetConfidence 接受 0–1 浮点（>=0.8 → ★★★，>=0.5 → ★★☆，>0 → ★☆☆，<=0 → 清空）
+        -- SetConfidence takes a 0–1 float (>=0.8 → ★★★, >=0.5 → ★★☆, >0 → ★☆☆, <=0 → cleared)
         if data.main.source == "APL_BLINDSPOT" then
-            elements.mainIcon:SetConfidence(0.9)  -- 用高置信星标表示"这是我们的补充推荐"
+            elements.mainIcon:SetConfidence(0.9)  -- 高置信星标：这是我们的补充推荐 / high-confidence badge
         else
-            elements.mainIcon:SetConfidence(0)    -- 清除星标
+            elements.mainIcon:SetConfidence(0)    -- 清除星标 / clear the stars
         end
         
         elements.mainIcon.frame:Show()
@@ -286,6 +288,8 @@ local function UpdateDisplay()
                 widget:SetSpell(predDisplaySpellID, tex)
                 lastDisplayed.predSpells[i] = predDisplaySpellID
             end
+            -- predData.confidence 本就是 0–1 浮点，与 SetConfidence 的分档语义一致
+            -- predData.confidence is already a 0–1 float, matching SetConfidence's thresholds
             widget:SetConfidence(predData.confidence or 1.0)
             
             local predKey = showKeybinds and FindKeybindForSpell(predDisplaySpellID) or ""

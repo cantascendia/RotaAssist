@@ -138,15 +138,24 @@ local function scanCooldowns()
                         if estimatedRemaining <= 0 then
                             state.remaining = 0
                             state.ready     = true
+                            state.startTime = 0
+                            state.duration  = 0
                         else
                             state.remaining = estimatedRemaining
                             state.ready     = false
+                            -- Estimated CDs also need startTime/duration so the UI swirl
+                            -- (CooldownBar → SetCooldown) works on the secret-value path.
+                            -- 估算路径同样要提供 startTime/duration，否则 secret 场景下 UI 转圈失效。
+                            state.startTime = lastCastTime
+                            state.duration  = wsInfo.cdSeconds
                         end
                     else
                         -- 从未施放过：保持就绪（合理默认，技能在初始状态下可用）
                         -- Never cast this session: assume ready (spell available by default).
                         state.remaining = 0
                         state.ready     = true
+                        state.startTime = 0
+                        state.duration  = 0
                     end
                 end
                 -- 无 cdSeconds 或 cdSeconds == 0：保留旧状态（现有行为）

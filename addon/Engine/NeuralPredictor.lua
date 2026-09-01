@@ -259,11 +259,20 @@ function NeuralPredictor:BuildFeatures()
             if enh.secondaryPowerType then
                 local ok1, cur = pcall(UnitPower, "player", enh.secondaryPowerType)
                 local ok2, mx  = pcall(UnitPowerMax, "player", enh.secondaryPowerType)
-                cur = (ok1 and cur) or 0
-                mx  = (ok2 and mx and mx > 0 and mx) or 1
-                -- WOW 12.0 SECRET VALUE SAFE: guard against unexpected secret values
-                if issecretvalue and (issecretvalue(cur) or issecretvalue(mx)) then
+                -- WOW 12.0 SECRET VALUE SAFE: pcall only protects the API call itself, never
+                -- the comparisons or truth-tests that follow it. The issecretvalue() gate must
+                -- come BEFORE any use of cur/mx (a bare `mx > 0` on a secret value is a violation).
+                -- WOW 12.0 SECRET VALUE 安全：pcall 只保护 API 调用本身，不保护调用之后的比较/
+                -- 真值判断。issecretvalue() 守卫必须早于任何对 cur/mx 的使用（裸 `mx > 0` 即违规）。
+                if not ok1 or not ok2 then
                     cur, mx = 0, 1
+                elseif issecretvalue and (issecretvalue(cur) or issecretvalue(mx)) then
+                    cur, mx = 0, 1
+                else
+                    -- Confirmed non-secret from here on: arithmetic/comparison is safe.
+                    -- 至此已确认非 secret 值，后续算术/比较运算安全。
+                    if type(cur) ~= "number" then cur = 0 end
+                    if type(mx) ~= "number" or mx <= 0 then mx = 1 end
                 end
                 f.secondaryResource = cur
                 f.secondaryResourceMax = mx

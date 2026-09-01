@@ -63,39 +63,50 @@ function CooldownBar:Update(cooldownStates)
                 icon:SetCooldown(nil, nil)
                 icon:SetDesaturated(false)
                 icon:SetAlert(false)
-                -- 就绪时显示 "OK" 表示大招可用
-                -- Show "OK" when the cooldown is ready to use
-                icon:SetKeybind("OK")
+                -- 就绪时显示"就绪"标记表示大招可用（走 i18n，不再硬编码 "OK"）
+                -- Show a localized ready badge when the cooldown is available.
+                -- FIX (Bug4): 写入独立的 CD 计时文本，不再占用 keybind 字段
+                -- FIX (Bug4): write to the dedicated CD timer text instead of the keybind field.
+                icon:SetCooldownTimer(RA.L and RA.L["CD_READY_SHORT"] or "OK")
             else
                 icon:SetDesaturated(true)
-                local start = GetTime() - (state.duration and (state.duration - state.remaining) or 0)
-                -- We only have remaining time easily available; to properly set Cooldown sweep
-                -- we need duration. The Overlay passes 'remaining', let's fix it by passing start/dur
-                -- or just fallback to desaturated without sweep if dur is missing.
-                -- RecommendationManager actually provides 'remaining', let's assume duration is 60s fallback
-                -- if not provided, or better, CooldownOverlay should send start/dur. 
-                -- Assuming start and duration are injected or we just wait for CD alert.
-                if state.startTime and state.duration then
+
+                -- FIX (Bug3): 用 CooldownOverlay 提供的真实 startTime/duration 驱动转圈。
+                -- 旧代码的回退分支算的是 `GetTime() - (approxDur - state.remaining)`，
+                -- 而 approxDur 就等于 state.remaining，括号内恒为 0 → start 永远是"此刻"，
+                -- 转圈每帧都从满圈重新开始，完全不反映真实进度。
+                -- FIX (Bug3): drive the sweep with the real startTime/duration supplied by
+                -- CooldownOverlay:GetCooldownStates(). The old fallback computed
+                -- `approxDur - state.remaining`, which is always 0 because approxDur *is*
+                -- state.remaining, so the sweep restarted from full on every frame.
+                if state.startTime and state.duration
+                   and state.startTime > 0 and state.duration > 1.5 then
                     icon:SetCooldown(state.startTime, state.duration)
                 else
-                    -- Approximate if only remaining is given
-                    local approxDur = state.remaining > 0 and state.remaining or 1
-                    icon:SetCooldown(GetTime() - (approxDur - state.remaining), approxDur)
+                    -- 只有 remaining 而无 startTime/duration（CooldownOverlay 的 secret value
+                    -- 估算路径不写这两个字段）时，无法还原真实进度。宁可不画转圈，也不要画一个
+                    -- 恒定错误的转圈；剩余时间仍由下方的计时文本传达。
+                    -- Without a real start/duration (CooldownOverlay's secret-value estimation
+                    -- path leaves both fields untouched) progress cannot be reconstructed.
+                    -- Clear the sweep rather than render a permanently wrong one — the
+                    -- remaining time is still conveyed by the timer text below.
+                    icon:SetCooldown(nil, nil)
                 end
-                
+
                 -- 显示冷却剩余秒数文字
                 -- Display remaining cooldown time text
                 local remaining = state.remaining or 0
                 if remaining > 0 then
                     if remaining >= 60 then
-                        icon:SetKeybind(string.format("%dm", math.floor(remaining / 60)))
+                        local minutesFmt = RA.L and RA.L["CD_MINUTES_SHORT"] or "%dm"
+                        icon:SetCooldownTimer(string.format(minutesFmt, math.floor(remaining / 60)))
                     else
-                        icon:SetKeybind(string.format("%d", math.ceil(remaining)))
+                        icon:SetCooldownTimer(string.format("%d", math.ceil(remaining)))
                     end
                 else
-                    icon:SetKeybind("")
+                    icon:SetCooldownTimer("")
                 end
-                
+
                 if state.remaining > 0 and state.remaining <= 5 then
                     icon:SetAlert(true)
                 else

@@ -57,9 +57,16 @@ local function trim(s)
     return s:match("^%s*(.-)%s*$")
 end
 
+---Split a condition string on its conjunction separator.
+---Accepts ` AND ` and ` and ` (case-insensitive). Lua patterns have no
+---case-insensitive flag, so the character sets are spelled out explicitly.
+---`OR` is deliberately NOT handled here — see isSupportedToken() below.
+---按合取分隔符切分条件字符串。
+---支持 ` AND ` 与 ` and `（大小写不敏感）。Lua 模式没有忽略大小写的标志位，
+---因此显式写出字符集。`OR` 有意不在此处理 —— 见下方 isSupportedToken()。
 local function splitConditions(condition)
     local clauses = {}
-    local normalized = condition:gsub("%s+AND%s+", "\1")
+    local normalized = condition:gsub("%s+[Aa][Nn][Dd]%s+", "\1")
     for clause in normalized:gmatch("[^\1]+") do
         clauses[#clauses + 1] = trim(clause)
     end
@@ -220,6 +227,182 @@ local function resolveProfileFromTalents(aplData)
 end
 
 ------------------------------------------------------------------------
+-- Condition Vocabulary Validation (LOAD TIME ONLY — never on the hot path)
+-- 条件词汇校验（仅加载期 —— 绝不在热路径调用）
+--
+-- EvaluateCondition() ends in `else pass = false end`, so any token it does not
+-- recognise silently disables its rule forever. Rather than let that rot in
+-- place, SetAPL() validates every condition string once per spec and records the
+-- offenders here. Inspect with `/ra aplcheck`.
+--
+-- EvaluateCondition() 最后是 `else pass = false end`，任何它不认识的 token 都会让
+-- 对应规则永久静默失效。与其让问题烂在原地，SetAPL() 在每个专精加载时逐条校验
+-- condition 字符串，并把问题规则记录到这里。用 `/ra aplcheck` 查看。
+--
+-- NOTE: tokens such as buff:/debuff:/cp/target_hp are intentionally NOT
+-- implemented. They depend on secret combat values that the simulator can only
+-- guess at, and a guessed answer produces plausible-but-wrong advice.
+-- 注意：buff:/debuff:/cp/target_hp 等 token 是有意不实现的。它们依赖 secret 战斗
+-- 数据，模拟器只能靠猜，而猜出来的结果会给出"看似合理实则错误"的建议。
+------------------------------------------------------------------------
+
+---@type table[]  Diagnostics: { specID, list, spellID, condition, token }
+APLEngine.invalidRules = {}
+
+---@type table<number, boolean>  specIDs already validated (validation is deterministic)
+local validatedSpecs = {}
+
+---Argument-less tokens handled by EvaluateCondition.
+---EvaluateCondition 支持的无参数 token。
+local SIMPLE_TOKENS = {
+    ["always"]      = true,
+    ["cd_ready"]    = true,
+    ["ready"]       = true,
+    ["in_meta"]     = true,
+    ["not_in_meta"] = true,
+}
+
+---Tokens of the form `<prefix><op><number>`, mirroring the
+---parseNumericCondition() branches inside EvaluateCondition.
+---形如 `<前缀><运算符><数字>` 的 token，与 EvaluateCondition 内的
+---parseNumericCondition() 分支一一对应。
+local NUMERIC_PREFIXES = {
+    "estimated_resource",
+    "target_count",
+    "combat_time",
+    "charges",
+}
+
+---Is this single clause something EvaluateCondition can actually evaluate?
+---这个子句 EvaluateCondition 真的能求值吗？
+---@param token string  A trimmed single clause
+---@return boolean supported
+local function isSupportedToken(token)
+    if SIMPLE_TOKENS[token] then
+        return true
+    end
+
+    if token:match("^cd_soon:%d+%.?%d*$") then return true end
+    if token:match("^after:%d+$")         then return true end
+    if token:match("^not_after:%d+$")     then return true end
+
+    -- window:<key> / not_window:<key> — the key must be one the simulator can ever
+    -- set (WINDOW_STEP_DURATIONS), otherwise the clause is permanently false.
+    -- window key 必须是模拟器可能置位的键（WINDOW_STEP_DURATIONS），否则该子句恒为 false。
+    local windowKey = token:match("^window:(.+)$") or token:match("^not_window:(.+)$")
+    if windowKey then
+        return WINDOW_STEP_DURATIONS[windowKey] ~= nil
+    end
+
+    -- Numeric comparisons. A bare prefix match is NOT enough: without a valid
+    -- operator+number, EvaluateCondition silently yields `pass = true`, which is just
+    -- as wrong as a silent false (e.g. "charges:mind_blast>=2" names a spell, not a
+    -- number, and would let the rule fire unconditionally).
+    -- 数值比较。仅前缀匹配不够：没有合法的运算符+数字时，EvaluateCondition 会静默返回
+    -- pass = true，与静默 false 同样有害（例如 "charges:mind_blast>=2" 跟的是技能名而非
+    -- 数字，会让规则无条件触发）。
+    for i = 1, #NUMERIC_PREFIXES do
+        local prefix = NUMERIC_PREFIXES[i]
+        if token:sub(1, #prefix) == prefix then
+            local op = parseNumericCondition(token, prefix)
+            return op ~= nil
+        end
+    end
+
+    return false
+end
+
+---Record one offending rule, de-duplicated within the spec being validated.
+---记录一条问题规则，在当前校验的专精内去重。
+---@param seen table<string, boolean>
+---@param specID number|nil
+---@param listName string
+---@param rule table
+---@param condition string
+---@param token string
+local function recordInvalidRule(seen, specID, listName, rule, condition, token)
+    local key = tostring(rule.spellID) .. "|" .. condition .. "|" .. token
+    if seen[key] then return end
+    seen[key] = true
+
+    local entries = APLEngine.invalidRules
+    entries[#entries + 1] = {
+        specID    = specID,
+        list      = listName,
+        spellID   = rule.spellID,
+        condition = condition,
+        token     = token,
+    }
+end
+
+---@param seen table<string, boolean>
+---@param specID number|nil
+---@param rule table
+---@param listName string
+local function validateRuleCondition(seen, specID, rule, listName)
+    local condition = type(rule) == "table" and rule.condition or nil
+    if type(condition) ~= "string" or condition == "" then
+        return
+    end
+
+    -- `OR` is deliberately unimplemented: splitConditions() only splits conjunctions,
+    -- so a disjunction collapses into one unmatchable token and kills the rule. Report
+    -- it as unsupported instead of half-implementing disjunction over guessed data.
+    -- `OR` 有意未实现：splitConditions() 只切合取，析取会被压成一个无法匹配的 token
+    -- 从而让规则失效。这里如实上报为 unsupported，而不是基于猜测数据半吊子实现析取。
+    if condition:match("%s+[Oo][Rr]%s+") then
+        recordInvalidRule(seen, specID, listName, rule, condition, "OR (unsupported operator)")
+        return
+    end
+
+    local clauses = splitConditions(condition)
+    for i = 1, #clauses do
+        if not isSupportedToken(clauses[i]) then
+            recordInvalidRule(seen, specID, listName, rule, condition, clauses[i])
+        end
+    end
+end
+
+---@param seen table<string, boolean>
+---@param specID number|nil
+---@param actionList table|nil
+---@param listName string
+local function validateActionList(seen, specID, actionList, listName)
+    if type(actionList) ~= "table" then return end
+    for i = 1, #actionList do
+        validateRuleCondition(seen, specID, actionList[i], listName)
+    end
+end
+
+---Walk every action list in an APL definition and validate its conditions.
+---遍历 APL 定义中的所有 action list 并校验其条件。
+---@param specID number|nil
+---@param aplData table
+local function validateAPLConditions(specID, aplData)
+    local seen = {}
+
+    if type(aplData.profiles) == "table" then
+        for profileName, profile in pairs(aplData.profiles) do
+            if type(profile) == "table" then
+                validateActionList(seen, specID, profile.singleTarget, profileName .. "/singleTarget")
+                validateActionList(seen, specID, profile.aoe, profileName .. "/aoe")
+                if type(profile.voidMeta) == "table" then
+                    -- voidMeta is either a plain action list or a { singleTarget = {...} }
+                    -- wrapper; the inert call is a no-op for whichever shape it is not.
+                    -- voidMeta 可能是纯规则列表，也可能是 { singleTarget = {...} } 包装；
+                    -- 不匹配的那次调用会自然空转。
+                    validateActionList(seen, specID, profile.voidMeta.singleTarget, profileName .. "/voidMeta")
+                    validateActionList(seen, specID, profile.voidMeta, profileName .. "/voidMeta")
+                end
+            end
+        end
+    end
+
+    -- Phase 1 backward-compat flat rule list
+    validateActionList(seen, specID, aplData.rules, "rules")
+end
+
+------------------------------------------------------------------------
 -- Condition Evaluator (retained from Phase 2)
 -- シミュレーション状態に対して条件を評価する
 ------------------------------------------------------------------------
@@ -286,10 +469,21 @@ function APLEngine:EvaluateCondition(condition, spellID, simState)
 
         elseif cond:match("^charges") then
             local op, value = parseNumericCondition(cond, "charges")
-            if op and value then
-                local charges = simState.charges and simState.charges[spellID] or 0
+            local charges = simState.charges and simState.charges[spellID]
+            if op and value and charges ~= nil then
+                -- simState.charges only ever holds values already cleared by
+                -- issecretvalue() in SmartQueueManager:BuildLimitedState(), so the
+                -- comparison below is safe. A secret/unreadable charge count is left
+                -- nil there and lands in the `pass = true` branch instead.
+                -- simState.charges 中只会存放 SmartQueueManager:BuildLimitedState()
+                -- 里已通过 issecretvalue() 校验的值，故此处比较安全。读不到（secret）
+                -- 的充能数在那边保持为 nil，会走下面的 pass = true 分支。
                 pass = compareNumber(charges, op, value)
             else
+                -- Unparsable condition, or charges unreadable: never block a rule on
+                -- data we cannot trust — degrade open rather than silently false.
+                -- 条件无法解析，或充能读不到：不因不可信数据阻塞规则，
+                -- 采取"放行"降级而不是静默 false。
                 pass = true
             end
 
@@ -668,8 +862,57 @@ function APLEngine:SetAPL(specID, aplData, classID)
         table.sort(aplData.rules, function(a,b) return (a.priority or 999) < (b.priority or 999) end)
     end
 
+    -- Validate the condition vocabulary once per spec. Load-time only: this walks
+    -- every rule and allocates, so it must never be reached from the OnUpdate path.
+    -- 每个专精只在加载期校验一次条件词汇。仅加载期：它会遍历所有规则并分配内存，
+    -- 绝不允许从 OnUpdate 路径进入。
+    if aplData and specID and not validatedSpecs[specID] then
+        validatedSpecs[specID] = true
+        local before = #APLEngine.invalidRules
+        validateAPLConditions(specID, aplData)
+        local added = #APLEngine.invalidRules - before
+        if added > 0 then
+            RA:PrintWarning(string.format(
+                "APLEngine: specID %d has %d rule(s) with unsupported conditions — /ra aplcheck",
+                specID, added))
+        end
+    end
+
     RA:PrintDebug(string.format("APLEngine: Loaded APL for specID %d classID %s",
         specID, tostring(classID)))
+end
+
+---Print the load-time condition-validation report. Backs `/ra aplcheck`.
+---打印加载期条件校验报告。为 `/ra aplcheck` 提供数据。
+function APLEngine:PrintConditionReport()
+    local entries = self.invalidRules
+    local total = #entries
+
+    if total == 0 then
+        RA:Print("APL condition check: all loaded rules use supported tokens.")
+        RA:Print("APL 条件校验：已加载规则的 token 全部受支持。")
+        return
+    end
+
+    RA:PrintWarning(string.format(
+        "APL condition check: %d rule(s) use unsupported tokens and can never fire.", total))
+    RA:PrintWarning(string.format(
+        "APL 条件校验：%d 条规则使用了不支持的 token，永远不会触发。", total))
+
+    local LIST_CAP = 40
+    local shown = math.min(total, LIST_CAP)
+    for i = 1, shown do
+        local e = entries[i]
+        RA:Print(string.format("  [spec %s] %s  spell %s  token=%s  cond=\"%s\"",
+            tostring(e.specID), tostring(e.list), tostring(e.spellID),
+            tostring(e.token), tostring(e.condition)))
+    end
+    if total > shown then
+        RA:Print(string.format("  ... %d more entr(ies) not shown / ... 另有 %d 条未显示", total - shown, total - shown))
+    end
+
+    RA:Print("Unsupported tokens are intentional: buff:/debuff:/cp/target_hp need secret combat data.")
+    RA:Print("不支持的 token 是有意为之：buff:/debuff:/cp/target_hp 依赖 secret 战斗数据，模拟器只能猜。")
 end
 
 ---Re-evaluate the active profile based on the player's current talents.

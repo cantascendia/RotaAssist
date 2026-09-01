@@ -99,6 +99,11 @@ L["MISSING_ITEMS"]            = "Missing %d items"
 L["CD_READY"]                 = "Ready"
 L["CD_SECONDS"]               = "%ds"
 L["CD_MINUTES"]               = "%d:%02d"
+-- Compact variants rendered on top of a 28px cooldown icon (CooldownBar widget)
+L["CD_READY_SHORT"]           = "OK"
+L["CD_MINUTES_SHORT"]         = "%dm"
+-- Placeholder used when a spell name cannot be resolved
+L["SPELL_UNNAMED"]            = "Spell#%d"
 
 ------------------------------------------------------------------------
 -- Tooltips & Info
@@ -251,6 +256,9 @@ L["SHOW_PHASE_INDICATOR"]     = "Show Phase Indicator"
 L["ACCURACY"]                 = "Accuracy"
 L["BLIZZARD_ACCURACY"]        = "Blizzard Accuracy"
 L["SMART_ACCURACY"]           = "Smart Accuracy"
+-- Single-character mode suffix on the accuracy meter: S = SmartQueue, B = Blizzard
+L["ACCURACY_SUFFIX_SMART"]    = "S"
+L["ACCURACY_SUFFIX_BLIZZARD"] = "B"
 
 ------------------------------------------------------------------------
 -- Missing Keys (Fix AceLocale strict mode errors)

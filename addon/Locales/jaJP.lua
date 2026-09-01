@@ -94,6 +94,11 @@ L["MISSING_ITEMS"]            = "%d 項目が不足"
 L["CD_READY"]                 = "使用可能"
 L["CD_SECONDS"]               = "%d秒"
 L["CD_MINUTES"]               = "%d:%02d"
+-- 28ピクセルのクールダウンアイコン上に表示する短縮表記 (CooldownBar ウィジェット)
+L["CD_READY_SHORT"]           = "可"
+L["CD_MINUTES_SHORT"]         = "%d分"
+-- スキル名を解決できない場合のプレースホルダー
+L["SPELL_UNNAMED"]            = "スペル#%d"
 
 ------------------------------------------------------------------------
 -- ツールチップ
@@ -244,6 +249,9 @@ L["SHOW_PHASE_INDICATOR"]     = "フェーズ表示"
 L["ACCURACY"]                 = "精度"
 L["BLIZZARD_ACCURACY"]        = "Blizzard推奨精度"
 L["SMART_ACCURACY"]           = "スマート精度"
+-- 精度メーターの1文字モード表記: S = スマート融合, B = Blizzard標準
+L["ACCURACY_SUFFIX_SMART"]    = "S"
+L["ACCURACY_SUFFIX_BLIZZARD"] = "B"
 
 ------------------------------------------------------------------------
 -- Missing Keys (Fix AceLocale strict mode errors)
