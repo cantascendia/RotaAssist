@@ -5,6 +5,12 @@
 
 local _, NS = ...
 local RA = NS.RA
+
+-- Design tokens (D-016): even the chat colour escapes in the About page come
+-- from the theme, so there is exactly one place to restyle the addon.
+-- 设计令牌（D-016）：连"关于"页的聊天框颜色转义也走主题，改风格只需改一处。
+local Theme = RA.Theme
+
 local ConfigPanel = {}
 RA:RegisterModule("ConfigPanel", ConfigPanel)
 
@@ -85,12 +91,25 @@ local function GetOptions()
                     notifySettingsChanged()
                 end,
                 args = {
+                    -- NOTE: iconCount keeps main's meaning — the number of
+                    -- PREDICTION icons, not the total. The round15 branch
+                    -- redefined it as "total icons"; adopting that would have
+                    -- silently halved every existing user's lookahead.
+                    -- 注意：iconCount 沿用 main 的语义（预测图标数，非总数）。
+                    -- round15 曾把它改成"图标总数"，直接采用会让老用户的前瞻数腰斩。
                     iconCount = {
                         name = L["CONFIG_ICON_COUNT"],
                         desc = L["CONFIG_ICON_COUNT_DESC"],
                         type = "range",
-                        min = 1, max = 2, step = 1,
+                        min = 1, max = 4, step = 1,
                         order = 10,
+                    },
+                    iconSpacing = {
+                        name = L["CONFIG_ICON_SPACING"],
+                        desc = L["CONFIG_ICON_SPACING_DESC"],
+                        type = "range",
+                        min = 0, max = 16, step = 1,
+                        order = 15,
                     },
                     scale = {
                         name = L["CONFIG_SCALE"],
@@ -138,12 +157,128 @@ local function GetOptions()
                         type = "toggle",
                         order = 80,
                     },
+                    hideCooldownPredictions = {
+                        name = L["CONFIG_HIDE_CD_PREDICTIONS"],
+                        desc = L["CONFIG_HIDE_CD_PREDICTIONS_DESC"],
+                        type = "toggle",
+                        order = 85,
+                    },
+                    showRangeIndicator = {
+                        name = L["CONFIG_SHOW_RANGE"],
+                        desc = L["CONFIG_SHOW_RANGE_DESC"],
+                        type = "toggle",
+                        order = 90,
+                    },
+                    showProcGlow = {
+                        name = L["CONFIG_SHOW_PROC"],
+                        desc = L["CONFIG_SHOW_PROC_DESC"],
+                        type = "toggle",
+                        order = 100,
+                    },
+                },
+            },
+            -- Coach attachments: the widgets that separate RotaAssist from the
+            -- seven C_AssistedCombat icon bars (VISION.md). Each ships enabled.
+            -- 教练挂件：本产品区别于 7 个竞品图标条的部分（VISION.md），默认全开。
+            coach = {
+                name = L["CONFIG_HEADER_COACH"],
+                type = "group",
+                order = 3,
+                args = {
+                    phaseIndicator = {
+                        name = L["CONFIG_PHASE_INDICATOR"],
+                        desc = L["CONFIG_PHASE_INDICATOR_DESC"],
+                        type = "toggle",
+                        order = 10,
+                        get = function()
+                            return RA.db.profile.coach and RA.db.profile.coach.enabled ~= false
+                        end,
+                        set = function(_, value)
+                            RA.db.profile.coach = RA.db.profile.coach or {}
+                            RA.db.profile.coach.enabled = value
+                            notifySettingsChanged()
+                        end,
+                    },
+                    resourceBar = {
+                        name = L["CONFIG_RESOURCE_BAR"],
+                        desc = L["CONFIG_RESOURCE_BAR_DESC"],
+                        type = "toggle",
+                        order = 20,
+                        get = function() return RA.db.profile.display.showResourceBar ~= false end,
+                        set = function(_, value)
+                            RA.db.profile.display.showResourceBar = value
+                            notifySettingsChanged()
+                        end,
+                    },
+                    accuracyMeter = {
+                        name = L["CONFIG_ACCURACY_METER"],
+                        desc = L["CONFIG_ACCURACY_METER_DESC"],
+                        type = "toggle",
+                        order = 30,
+                        get = function()
+                            return RA.db.profile.accuracy and RA.db.profile.accuracy.enabled ~= false
+                        end,
+                        set = function(_, value)
+                            RA.db.profile.accuracy = RA.db.profile.accuracy or {}
+                            RA.db.profile.accuracy.enabled = value
+                            notifySettingsChanged()
+                        end,
+                    },
+                    prePullPanel = {
+                        name = L["CONFIG_PREPULL_PANEL"],
+                        desc = L["CONFIG_PREPULL_PANEL_DESC"],
+                        type = "toggle",
+                        order = 40,
+                        get = function() return RA.db.profile.display.showPrePullPanel ~= false end,
+                        set = function(_, value)
+                            RA.db.profile.display.showPrePullPanel = value
+                            notifySettingsChanged()
+                        end,
+                    },
+                },
+            },
+            -- Floating alerts / 独立浮动警报
+            alerts = {
+                name = L["CONFIG_HEADER_ALERTS"],
+                type = "group",
+                order = 4,
+                args = {
+                    defensiveSound = {
+                        name = L["CONFIG_DEFENSIVE_SOUND"],
+                        desc = L["CONFIG_DEFENSIVE_SOUND_DESC"],
+                        type = "toggle",
+                        order = 10,
+                        get = function()
+                            return RA.db.profile.defensive
+                                and RA.db.profile.defensive.soundAlert ~= false
+                        end,
+                        set = function(_, value)
+                            RA.db.profile.defensive = RA.db.profile.defensive or {}
+                            RA.db.profile.defensive.soundAlert = value
+                            notifySettingsChanged()
+                        end,
+                    },
+                    interruptSound = {
+                        name = L["CONFIG_INTERRUPT_SOUND"],
+                        desc = L["CONFIG_INTERRUPT_SOUND_DESC"],
+                        type = "toggle",
+                        order = 20,
+                        get = function()
+                            return RA.db.profile.interrupt
+                                and RA.db.profile.interrupt.soundAlert ~= false
+                        end,
+                        set = function(_, value)
+                            RA.db.profile.interrupt = RA.db.profile.interrupt or {}
+                            RA.db.profile.interrupt.soundAlert = value
+                            notifySettingsChanged()
+                        end,
+                    },
                 },
             },
             cooldowns = {
                 name = L["CONFIG_HEADER_COOLDOWNS"],
                 type = "group",
-                order = 3,
+                order = 5,
                 get = function(info) return RA.db.profile.cooldowns[info[#info]] end,
                 set = function(info, value)
                     RA.db.profile.cooldowns[info[#info]] = value
@@ -175,7 +310,7 @@ local function GetOptions()
             about = {
                 name = L["CONFIG_HEADER_ABOUT"],
                 type = "group",
-                order = 4,
+                order = 6,
                 args = {
                     title = {
                         -- FIX (Issue 4): reference the pre-built string cached in OnInitialize
@@ -201,12 +336,13 @@ function ConfigPanel:OnInitialize()
     -- panel open.  AceConfig calls GetOptions() each open; we avoid the
     -- repeated ".." allocations by pre-building and caching the text.
     local L = RA.L
-    self._aboutText = "|cFF00CCFF" .. RA.name .. "|r\n"
+    local hex = Theme.hex
+    self._aboutText = hex.accent .. RA.name .. hex.reset .. "\n"
         .. string.format(L["ABOUT_VERSION"], RA.version) .. "\n"
         .. L["ABOUT_AUTHOR"] .. "\n"
         .. L["ABOUT_LICENSE"] .. "\n\n"
-        .. "|cFFCCCCCC" .. L["ABOUT_DESCRIPTION"] .. "|r\n\n"
-        .. "|cFF7FAFFF" .. L["ABOUT_WEBSITE"] .. "|r"
+        .. hex.muted .. L["ABOUT_DESCRIPTION"] .. hex.reset .. "\n\n"
+        .. hex.link .. L["ABOUT_WEBSITE"] .. hex.reset
 
     LibStub("AceConfig-3.0"):RegisterOptionsTable("RotaAssist", GetOptions)
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RotaAssist", "RotaAssist")

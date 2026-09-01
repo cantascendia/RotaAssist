@@ -6,25 +6,23 @@
 local _, NS = ...
 local RA = NS.RA
 
+-- Design tokens (D-016) / 设计令牌（D-016）
+-- Round 19: the 12-entry PHASE_COLORS table moved to Theme.phases — it is a
+-- semantic palette, therefore a theme concern. Icons stay here (they are data,
+-- not tokens).
+-- Round 19：12 色的 PHASE_COLORS 已迁入 Theme.phases —— 它是语义色板，属主题范畴。
+-- 图标留在本文件（那是数据，不是令牌）。
+local Theme = RA.Theme
+
 if not RA.UI then RA.UI = {} end
 
 local RA_PhaseIndicator = {}
 RA_PhaseIndicator.__index = RA_PhaseIndicator
 
-local PHASE_COLORS = {
-    BURST_PREPARE    = {1.0, 0.5, 0.0}, -- Orange
-    BURST_ACTIVE     = {1.0, 0.4, 0.0}, -- Darker Orange
-    BURST_COOLDOWN   = {0.4, 0.4, 0.4}, -- Gray
-    AOE              = {0.6, 0.2, 0.8}, -- Purple
-    EMERGENCY        = {0.8, 0.1, 0.1}, -- Red
-    NORMAL           = {0.5, 0.5, 0.5}, -- Gray
-    OPENER           = {0.2, 0.6, 1.0}, -- Blue
-    PREPULL          = {0.1, 0.8, 0.8}, -- Cyan
-    EXECUTE          = {0.8, 0.0, 0.2}, -- Dark Red
-    RESOURCE_CAP     = {1.0, 0.8, 0.2}, -- Yellow
-    RESOURCE_STARVED = {0.8, 0.6, 0.0}, -- Dark Yellow
-    UNKNOWN          = {0.3, 0.3, 0.3}
-}
+-- Badge fill opacity, taken from the theme's "inset element" token so the
+-- phase tint sits at the same weight as every other small filled surface.
+-- 徽章填充不透明度取自主题的"内嵌元素"令牌，与其他小型填充面保持一致。
+local BADGE_ALPHA = Theme.colors.bgLight[4]
 
 local PHASE_ICONS = {
     BURST_PREPARE    = "Interface\\Icons\\Ability_Warrior_InnerRage",
@@ -49,14 +47,7 @@ function RA_PhaseIndicator:Create(parent)
     local frame = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     frame:SetSize(100, 20)
     
-    frame:SetBackdrop({
-        bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        tile = false, tileSize = 0, edgeSize = 8,
-        insets = { left = 2, right = 2, top = 2, bottom = 2 }
-    })
-    frame:SetBackdropColor(0, 0, 0, 0.8)
-    frame:SetBackdropBorderColor(0.2, 0.2, 0.2, 1.0)
+    Theme.ApplyBackdrop(frame, "badge", "bg", "borderDim")
     widget.frame = frame
 
     -- Icon
@@ -69,7 +60,7 @@ function RA_PhaseIndicator:Create(parent)
     -- Text
     local text = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     text:SetPoint("LEFT", icon, "RIGHT", 4, 0)
-    text:SetTextColor(1, 1, 1)
+    Theme.SetTextColor(text, "text")
     text:SetText(RA.L and RA.L["UNKNOWN"] or "Unknown")
     widget.text = text
 
@@ -78,7 +69,7 @@ function RA_PhaseIndicator:Create(parent)
     local alphaIn = widget.agShow:CreateAnimation("Alpha")
     alphaIn:SetFromAlpha(0)
     alphaIn:SetToAlpha(1)
-    alphaIn:SetDuration(0.15)
+    alphaIn:SetDuration(Theme.durations.fadeIn)
     widget.agShow:SetScript("OnPlay", function() frame:SetAlpha(0); frame:Show() end)
     widget.agShow:SetScript("OnFinished", function() frame:SetAlpha(1) end)
 
@@ -86,7 +77,7 @@ function RA_PhaseIndicator:Create(parent)
     local alphaOut = widget.agHide:CreateAnimation("Alpha")
     alphaOut:SetFromAlpha(1)
     alphaOut:SetToAlpha(0)
-    alphaOut:SetDuration(0.15)
+    alphaOut:SetDuration(Theme.durations.fadeIn)
     widget.agHide:SetScript("OnFinished", function() frame:Hide(); frame:SetAlpha(1) end)
 
     frame:Hide()
@@ -116,13 +107,13 @@ function RA_PhaseIndicator:Update(phase, confidence)
         local textWidth = self.text:GetStringWidth()
         self.frame:SetWidth(textWidth + 26) -- 4 + 14 + 4 + text + 4
 
-        -- Colors
-        local color = PHASE_COLORS[phase] or PHASE_COLORS.UNKNOWN
-        self.frame:SetBackdropColor(color[1], color[2], color[3], 0.8)
+        -- Colors / 配色（来自 Theme.phases 语义色板）
+        local color = Theme.PhaseColor(phase)
+        self.frame:SetBackdropColor(color[1], color[2], color[3], BADGE_ALPHA)
         self.frame:SetBackdropBorderColor(color[1] * 0.5, color[2] * 0.5, color[3] * 0.5, 1.0)
 
         -- Icon
-        local tex = PHASE_ICONS[phase] or "Interface\\Icons\\INV_Misc_QuestionMark"
+        local tex = PHASE_ICONS[phase] or Theme.textures.questionMark
         self.icon:SetTexture(tex)
     end
 

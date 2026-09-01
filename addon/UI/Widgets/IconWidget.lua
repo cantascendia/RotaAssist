@@ -1,11 +1,16 @@
 ------------------------------------------------------------------------
 -- RotaAssist - Icon Widget
 -- Encapsulates a single spell icon with cooldown, keybind, confidence,
--- and alert/glow overlay capabilities.
+-- out-of-range and alert/glow overlay capabilities.
+-- 单个技能图标：冷却 / 按键 / 置信度 / 超距 / 警报与高亮。
 ------------------------------------------------------------------------
 
 local _, NS = ...
 local RA = NS.RA
+
+-- Design tokens (D-016). The .toc loads UI\Theme.lua before every widget.
+-- 设计令牌（D-016）。.toc 保证 UI\Theme.lua 先于所有 widget 加载。
+local Theme = RA.Theme
 
 RA.UI = RA.UI or {}
 RA.UI.IconWidget = {}
@@ -19,35 +24,35 @@ IconWidget.__index = IconWidget
 ---@return table widget
 function IconWidget:Create(parent, size, name)
     local obj = setmetatable({}, self)
-    
+
     -- Base frame (Button so it can intercept clicks if needed, but not ActionButton)
     obj.frame = CreateFrame("Button", name, parent, "BackdropTemplate")
     obj.frame:SetSize(size, size)
-    
+
     -- Icon Texture
     obj.icon = obj.frame:CreateTexture(nil, "ARTWORK")
     obj.icon:SetAllPoints(obj.frame)
     obj.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92) -- Zoom in slightly to remove default borders
-    obj.icon:SetTexture(134400) -- Question mark fallback
-    
+    obj.icon:SetTexture(Theme.FALLBACK_ICON)     -- Question mark fallback / 问号占位
+
     -- Cooldown Frame
     obj.cooldown = CreateFrame("Cooldown", nil, obj.frame, "CooldownFrameTemplate")
     obj.cooldown:SetAllPoints(obj.frame)
     obj.cooldown:SetDrawEdge(false)
-    
-    -- Keybind Text (Bottom Right)
+
+    -- Keybind Text (Top Right)
     obj.keybind = obj.frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     obj.keybind:SetPoint("TOPRIGHT", obj.frame, "TOPRIGHT", -1, -1)
     obj.keybind:SetJustifyH("RIGHT")
-    local fontSize = math.max(10, math.floor(size * 0.25))
-    obj.keybind:SetFont(STANDARD_TEXT_FONT, fontSize, "OUTLINE")
-    
-    -- Confidence Text (Top Left)
+    local fontSize = Theme.ScaledFontSize(size, 0.25)
+    Theme.ApplyFont(obj.keybind, fontSize)
+
+    -- Confidence Text (Bottom Left)
     obj.confidence = obj.frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     obj.confidence:SetPoint("BOTTOMLEFT", obj.frame, "BOTTOMLEFT", 2, 2)
     obj.confidence:SetJustifyH("LEFT")
-    obj.confidence:SetFont(STANDARD_TEXT_FONT, math.max(10, math.floor(size * 0.22)), "OUTLINE")
-    obj.confidence:SetTextColor(1, 0.8, 0) -- Gold
+    Theme.ApplyFont(obj.confidence, Theme.ScaledFontSize(size, 0.22))
+    Theme.SetTextColor(obj.confidence, "confidence")
 
     -- Cooldown Timer Text (Bottom center)
     -- FIX (Bug4): 独立于 keybind 的 CD 计时文本。此前 CooldownBar 复用 keybind 字段写
@@ -59,31 +64,47 @@ function IconWidget:Create(parent, size, name)
     obj.cdTimer = obj.frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     obj.cdTimer:SetPoint("BOTTOM", obj.frame, "BOTTOM", 0, 2)
     obj.cdTimer:SetJustifyH("CENTER")
-    obj.cdTimer:SetFont(STANDARD_TEXT_FONT, fontSize, "OUTLINE")
-    
-    -- Alert Frame (Red pulsating border)
+    Theme.ApplyFont(obj.cdTimer, fontSize)
+
+    -- Alert Frame (Red pulsating border) / 红色脉冲边框
     obj.alertFrame = CreateFrame("Frame", nil, obj.frame, "BackdropTemplate")
     obj.alertFrame:SetAllPoints(obj.frame)
     obj.alertFrame:SetFrameLevel(obj.frame:GetFrameLevel() + 2)
-    obj.alertFrame:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 12 })
-    obj.alertFrame:SetBackdropBorderColor(1, 0.1, 0.1, 1)
+    Theme.ApplyBackdrop(obj.alertFrame, "outline", nil, "alert")
     obj.alertFrame:Hide()
-    
+
     obj.alertAnim = obj.alertFrame:CreateAnimationGroup()
     obj.alertAnim:SetLooping("REPEAT")
     local a1 = obj.alertAnim:CreateAnimation("Alpha")
     a1:SetFromAlpha(0.3)
     a1:SetToAlpha(1.0)
-    a1:SetDuration(0.5)
+    a1:SetDuration(Theme.durations.pulse)
     a1:SetOrder(1)
     local a2 = obj.alertAnim:CreateAnimation("Alpha")
     a2:SetFromAlpha(1.0)
     a2:SetToAlpha(0.3)
-    a2:SetDuration(0.5)
+    a2:SetDuration(Theme.durations.pulse)
     a2:SetOrder(2)
-    
+
+    -- Out-of-Range pulse (from round15) / 超距脉冲（来自 round15）
+    -- Red tint + a slow alpha throb so the player sees "you cannot cast this yet".
+    -- 红色着色 + 缓慢的透明度呼吸，提示"当前距离打不到"。
+    obj.oorAnim = obj.frame:CreateAnimationGroup()
+    obj.oorAnim:SetLooping("REPEAT")
+    local o1 = obj.oorAnim:CreateAnimation("Alpha")
+    o1:SetFromAlpha(0.4)
+    o1:SetToAlpha(0.8)
+    o1:SetDuration(Theme.durations.pulse)
+    o1:SetOrder(1)
+    local o2 = obj.oorAnim:CreateAnimation("Alpha")
+    o2:SetFromAlpha(0.8)
+    o2:SetToAlpha(0.4)
+    o2:SetDuration(Theme.durations.pulse)
+    o2:SetOrder(2)
+
     obj.currentSpellID = nil
     obj.fadeTimer = nil
+    obj.outOfRange = false
 
     return obj
 end
@@ -97,7 +118,7 @@ function IconWidget:SetSpell(spellID, texture)
 
     if not texture then
         local ok, info = pcall(C_Spell.GetSpellTexture, spellID)
-        texture = (ok and info) and info or 134400
+        texture = (ok and info) and info or Theme.FALLBACK_ICON
     end
 
     -- Crossfade / 交叉淡入淡出
@@ -113,11 +134,12 @@ function IconWidget:SetSpell(spellID, texture)
         self.fadeTimer:Cancel()
         self.fadeTimer = nil
     end
-    UIFrameFadeOut(self.frame, 0.1)
-    self.fadeTimer = C_Timer.NewTimer(0.1, function()
+    local crossfade = Theme.durations.crossfade
+    UIFrameFadeOut(self.frame, crossfade)
+    self.fadeTimer = C_Timer.NewTimer(crossfade, function()
         self.fadeTimer = nil
         self.icon:SetTexture(texture)
-        UIFrameFadeIn(self.frame, 0.1)
+        UIFrameFadeIn(self.frame, crossfade)
     end)
 end
 
@@ -180,7 +202,7 @@ end
 function IconWidget:SetGlow(enabled)
     local ActionButton_ShowOverlayGlow = _G.ActionButton_ShowOverlayGlow
     local ActionButton_HideOverlayGlow = _G.ActionButton_HideOverlayGlow
-    
+
     if enabled then
         if ActionButton_ShowOverlayGlow then
             ActionButton_ShowOverlayGlow(self.frame)
@@ -207,6 +229,33 @@ function IconWidget:SetAlert(enabled)
     end
 end
 
+---Toggle the out-of-range state (red tint + slow pulse).
+---切换超距状态（红色着色 + 缓慢脉冲）。
+---From round15; the tint now comes from Theme.colors.outOfRange.
+---来自 round15；着色改由 Theme.colors.outOfRange 提供。
+---@param outOfRange boolean
+function IconWidget:SetOutOfRange(outOfRange)
+    outOfRange = outOfRange and true or false
+    -- Guard against re-triggering the animation every UpdateDisplay tick.
+    -- 防止每次 UpdateDisplay 都重启动画（热路径每 0.15–0.6s 跑一次）。
+    if self.outOfRange == outOfRange then return end
+    self.outOfRange = outOfRange
+
+    if outOfRange then
+        self.icon:SetVertexColor(Theme.Unpack(Theme.colors.outOfRange))
+        if not self.oorAnim:IsPlaying() then self.oorAnim:Play() end
+    else
+        -- Identity tint (1,1,1) = "no tint", a maths constant rather than a
+        -- palette choice, so it is deliberately not a theme token.
+        -- 单位着色 (1,1,1) 表示"不着色"，是数学恒等量而非配色选择，故不设令牌。
+        self.icon:SetVertexColor(1, 1, 1)
+        if self.oorAnim:IsPlaying() then
+            self.oorAnim:Stop()
+            self.frame:SetAlpha(1.0)
+        end
+    end
+end
+
 ---Apply desaturation (greyscale) to the icon.
 ---@param desaturated boolean
 function IconWidget:SetDesaturated(desaturated)
@@ -223,12 +272,13 @@ function IconWidget:Clear()
         self.fadeTimer = nil
     end
     self.currentSpellID = nil
-    self.icon:SetTexture(134400)
+    self.icon:SetTexture(Theme.FALLBACK_ICON)
     self.cooldown:Clear()
     self:SetKeybind("")
     self:SetCooldownTimer("")
     self:SetConfidence(nil)
     self:SetGlow(false)
     self:SetAlert(false)
+    self:SetOutOfRange(false)
     self:SetDesaturated(false)
 end

@@ -169,6 +169,23 @@ grep 原始输出；执行 agent 删除前的独立二次 grep 是这次救场�
   跑一次「所有 spellID 经 `C_Spell.GetSpellInfo` 返回非 nil」的校验测试。
 - **铁律依据**: #9 硬编码占位 = 未完成。
 
+### D-015 修订（Round 18，2026-09-01）：改为运行时防御 + 真机抄录
+
+网页权威源全部 anti-bot（Wowhead/Icy Veins 403），桌面无法拿到真实 ID。
+v1.1.0 采用**运行时防御**替代预先修正：`SetAPL` 加载期用 `C_Spell.GetSpellInfo`
+剪除不存在的规则（opener/majorCooldowns 标记跳过），`/ra aplcheck` 列出全部
+unknown spells —— 用户真机跑一次即得到完整错误 ID 清单（SMOKE_TEST_12.1.md §3/§4）。
+
+**已核实的 12.1 真实机制（2026-09 多源交叉，供未来数据修正）**，
+与占位设计的已知差异：
+1. **Reap → Eradicate 是技能替换**：满引导 Void Ray 后 Reap 变 Eradicate
+   （大伤害+正面 AoE）——占位数据无此 override pair，修正时需进 Registry.OVERRIDE_PAIRS
+2. **Voidfall 层数机制**：Consume 35% 概率给 1 层，3 层后 Reap 大 AoE——占位 APL 无此窗口
+3. **Collapsing Star 门槛**：仅 Void Metamorphosis 内可放，耗 30 souls——占位条件不含魂数门槛
+4. Consume 可移动施放；Devourer 是 25 码中距离施法者（类 Evoker）
+方向性结论：占位设计的骨架（Consume 产魂 → Reap 收 → Void Meta 窗口）与真实一致，
+错的是 ID 与细节窗口机制 —— 真机抄录后可低成本修正。
+
 ## D-016: 建立 UI 设计系统（Theme.lua）
 - **日期**: 2026-09-01
 - **现状**: 无任何 theme/token 文件。审计实测：

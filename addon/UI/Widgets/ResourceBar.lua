@@ -8,6 +8,9 @@
 local _, NS = ...
 local RA = NS.RA
 
+-- Design tokens (D-016) / 设计令牌（D-016）
+local Theme = RA.Theme
+
 RA.UI = RA.UI or {}
 RA.UI.ResourceBar = {}
 local ResourceBar = RA.UI.ResourceBar
@@ -27,20 +30,21 @@ function ResourceBar:Create(parent, width, height)
     -- Background Bar
     obj.bg = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     obj.bg:SetSize(width, height)
-    obj.bg:SetBackdrop({ bgFile = "Interface\\ChatFrame\\ChatFrameBackground" })
-    obj.bg:SetBackdropColor(0.1, 0.1, 0.1, 0.8)
+    Theme.ApplyBackdrop(obj.bg, "solid", "bgLight")
 
     -- StatusBar (WOW 12.0 SECRET VALUE SAFE: SetValue accepts secrets)
     obj.statusBar = CreateFrame("StatusBar", nil, obj.bg)
     obj.statusBar:SetAllPoints(obj.bg)
-    obj.statusBar:SetStatusBarTexture("Interface\\ChatFrame\\ChatFrameBackground")
+    obj.statusBar:SetStatusBarTexture(Theme.textures.solidBg)
     obj.statusBar:SetMinMaxValues(0, 1)
     obj.statusBar:SetValue(0)
 
     -- Text Overlay
+    -- Round 19: 9pt was below the legibility floor; Theme pins the minimum at 10.
+    -- Round 19：9pt 低于可读下限，Theme 把最小字号定在 10。
     obj.text = obj.bg:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     obj.text:SetPoint("CENTER", obj.bg, "CENTER", 0, 7) -- slightly above the bar
-    obj.text:SetFont(STANDARD_TEXT_FONT, 9, "OUTLINE")
+    Theme.ApplyFont(obj.text, "small")
 
     obj.width = width
     obj.lastPowerType = nil
@@ -49,26 +53,15 @@ function ResourceBar:Create(parent, width, height)
 end
 
 ---Get color scheme for power type.
+---取资源类型对应的配色。
+---D-016: the 17/0/1/3/8/11/4 magic-number ladder moved into Theme.power,
+---which keys off Enum.PowerType (with literal-id fallbacks).
+---D-016：原本 17/0/1/3/8/11/4 的魔法数字阶梯已移入 Theme.power，
+---改以 Enum.PowerType 为键（并保留字面 id 回落）。
 ---@param powerType number Enum.PowerType
 ---@return number r, number g, number b
 local function getPowerTypeColor(powerType)
-    if powerType == 17 then -- Fury
-        return 0.6, 0.2, 0.8
-    elseif powerType == 0 then -- Mana
-        return 0.2, 0.4, 1.0
-    elseif powerType == 1 then -- Rage
-        return 1.0, 0.2, 0.2
-    elseif powerType == 3 then -- Energy
-        return 1.0, 0.9, 0.2
-    elseif powerType == 8 then -- LunarPower (Astral Power)
-        return 0.3, 0.5, 1.0
-    elseif powerType == 11 then -- Maelstrom
-        return 0.0, 0.5, 1.0
-    elseif powerType == 4 then -- Combo Points
-        return 1.0, 0.6, 0.0
-    else
-        return 0.5, 0.5, 0.5
-    end
+    return Theme.PowerColor(powerType)
 end
 
 ---Update the resource bar for non-secret values (out of combat).

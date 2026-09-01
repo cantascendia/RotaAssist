@@ -38,6 +38,8 @@ L["CONFIG_HEADER_GENERAL"]    = "General"
 L["CONFIG_HEADER_DISPLAY"]    = "Display"
 L["CONFIG_HEADER_COOLDOWNS"]  = "Cooldowns"
 L["CONFIG_HEADER_ABOUT"]      = "About"
+L["CONFIG_HEADER_COACH"]      = "Coach Attachments"
+L["CONFIG_HEADER_ALERTS"]     = "Alerts"
 
 -- General settings
 L["CONFIG_ENABLED"]           = "Enable RotaAssist"
@@ -51,7 +53,9 @@ L["CONFIG_MINIMAP_DESC"]      = "Toggle the minimap icon."
 
 -- Display settings
 L["CONFIG_ICON_COUNT"]        = "Number of Icons"
-L["CONFIG_ICON_COUNT_DESC"]   = "How many future prediction icons to show below the main spell (1-2)."
+L["CONFIG_ICON_COUNT_DESC"]   = "How many lookahead prediction icons to show next to the main spell (1-4)."
+L["CONFIG_ICON_SPACING"]      = "Icon Spacing"
+L["CONFIG_ICON_SPACING_DESC"] = "Gap between icons in the strip, in pixels."
 L["CONFIG_SCALE"]             = "Scale"
 L["CONFIG_SCALE_DESC"]        = "Overall display scale (50% - 200%)."
 L["CONFIG_ALPHA"]             = "Opacity"
@@ -66,6 +70,28 @@ L["CONFIG_KEYBINDS"]          = "Show Keybinds"
 L["CONFIG_KEYBINDS_DESC"]     = "Display keybind text on icons."
 L["CONFIG_COOLDOWN_SWIRL"]    = "Show Cooldown Spiral"
 L["CONFIG_COOLDOWN_SWIRL_DESC"] = "Show the cooldown sweep animation on icons."
+L["CONFIG_HIDE_CD_PREDICTIONS"]      = "Hide Predictions on Cooldown"
+L["CONFIG_HIDE_CD_PREDICTIONS_DESC"] = "Drop predicted spells that are still on cooldown instead of showing them with a sweep."
+L["CONFIG_SHOW_RANGE"]        = "Show Range Indicator"
+L["CONFIG_SHOW_RANGE_DESC"]   = "Pulse the main icon red when the target is out of range."
+L["CONFIG_SHOW_PROC"]         = "Show Proc Glow"
+L["CONFIG_SHOW_PROC_DESC"]    = "Glow the main icon when Blizzard flags the spell as procced."
+
+-- Coach attachments
+L["CONFIG_PHASE_INDICATOR"]      = "Show Phase Indicator"
+L["CONFIG_PHASE_INDICATOR_DESC"] = "Show the combat-phase badge above the icon strip."
+L["CONFIG_RESOURCE_BAR"]         = "Show Resource Bar"
+L["CONFIG_RESOURCE_BAR_DESC"]    = "Show the primary resource bar under the icon strip."
+L["CONFIG_ACCURACY_METER"]       = "Show Accuracy Meter"
+L["CONFIG_ACCURACY_METER_DESC"]  = "Show your live rotation accuracy under the resource bar."
+L["CONFIG_PREPULL_PANEL"]        = "Show Pre-Pull Checklist"
+L["CONFIG_PREPULL_PANEL_DESC"]   = "Show the out-of-combat readiness checklist."
+
+-- Alerts
+L["CONFIG_DEFENSIVE_SOUND"]      = "Defensive Sound Alert"
+L["CONFIG_DEFENSIVE_SOUND_DESC"] = "Play a warning sound when a defensive is recommended."
+L["CONFIG_INTERRUPT_SOUND"]      = "Interrupt Sound Alert"
+L["CONFIG_INTERRUPT_SOUND_DESC"] = "Play a warning sound for high-urgency interrupts."
 
 -- Cooldown panel
 L["CONFIG_CD_ENABLED"]        = "Enable Cooldown Panel"
@@ -253,6 +279,7 @@ L["EMERGENCY"]                = "DANGER!"
 -- UI Toggles & Metrics
 L["SHOW_ACCURACY_METER"]      = "Show Accuracy Meter"
 L["SHOW_PHASE_INDICATOR"]     = "Show Phase Indicator"
+L["SHOW_RESOURCE_BAR"]        = "Show Resource Bar"
 L["ACCURACY"]                 = "Accuracy"
 L["BLIZZARD_ACCURACY"]        = "Blizzard Accuracy"
 L["SMART_ACCURACY"]           = "Smart Accuracy"

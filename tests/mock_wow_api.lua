@@ -130,8 +130,22 @@ C_Spell = {
     GetSpellInfo = function(spellID)
         return { name = "MockSpell" .. tostring(spellID), castTime = 0 }
     end,
+    --- IsSpellInRange: returns true by default (Round 19 / round15 merge)
+    --- 射程判定：默认返回 true（第 19 轮从 round15 合入）
+    IsSpellInRange = function(spellID, unit) return true end,
 }
 _G.C_Spell = C_Spell
+
+-- ============================================================
+-- C_SpellActivationOverlay namespace mock (proc glow)
+-- Round 19: merged from origin/improve/round15-ui-overhaul.
+-- 第 19 轮：从 round15 分支合入，供 proc 高亮测试使用。
+-- ============================================================
+
+C_SpellActivationOverlay = {
+    IsSpellOverlayed = function(spellID) return false end,
+}
+_G.C_SpellActivationOverlay = C_SpellActivationOverlay
 
 -- ============================================================
 -- C_AddOns namespace mock
@@ -198,6 +212,12 @@ C_Timer = {
         -- Return a mock ticker with a Cancel method
         return { Cancel = function(self) end }
     end,
+    --- NewTimer: cancellable one-shot timer (Round 19 / round15 merge)
+    --- 可取消的一次性定时器（第 19 轮从 round15 合入；IconWidget 的
+    --- crossfade 竞态修复与 DefensiveAlert 的自动消失都依赖它）
+    NewTimer = function(delay, callback)
+        return { Cancel = function(self) end }
+    end,
     After = function(delay, callback)
         -- No-op in tests
     end,
@@ -231,7 +251,11 @@ local function makeFrame(frameType, name, parent, template)
     function frame:SetScale(s) self._scale = s end
     function frame:GetScale() return self._scale or 1 end
     function frame:SetFrameStrata(s) end
+    function frame:SetFrameLevel(n) self._frameLevel = n end
     function frame:GetFrameLevel() return self._frameLevel or 1 end
+    -- Round 19 (round15 merge): drag handlers read the current anchor back.
+    -- 第 19 轮（合入 round15）：拖拽结束时要读回当前锚点。
+    function frame:GetPoint() return "CENTER", nil, "CENTER", 0, 0 end
     function frame:SetMovable(b) end
     function frame:EnableMouse(b) end
     function frame:RegisterForDrag(...) end
@@ -249,7 +273,14 @@ local function makeFrame(frameType, name, parent, template)
     function frame:SetJustifyH(j) end
     function frame:SetJustifyV(j) end
     function frame:SetTexture(t) self._texture = t end
-    function frame:SetVertexColor(...) end
+    function frame:GetTexture() return self._texture end
+    -- Round 19 (round15 merge): texture/cooldown widgets used by IconWidget.
+    -- 第 19 轮（合入 round15）：IconWidget 用到的纹理 / 冷却帧接口。
+    function frame:SetTexCoord(...) end
+    function frame:SetDesaturated(b) self._desaturated = b end
+    function frame:IsDesaturated() return self._desaturated end
+    function frame:SetDrawEdge(b) end
+    function frame:SetVertexColor(...) self._vertexColor = { ... } end
     function frame:SetAllPoints(parent) end
     function frame:SetMinMaxValues(min, max) self._min, self._max = min, max end
     function frame:SetValue(v) self._value = v end
@@ -274,6 +305,34 @@ local function makeFrame(frameType, name, parent, template)
     function frame:CreateFontString(name, layer, template)
         return makeFrame("FontString", name, frame)
     end
+    -- Round 19 (round15 merge): animation groups back the alert / out-of-range
+    -- pulses and the phase / accuracy fade in-out.
+    -- 第 19 轮（合入 round15）：动画组支撑警报与超距脉冲、阶段与准确率淡入淡出。
+    function frame:CreateAnimationGroup()
+        local ag = {
+            _looping    = "NONE",
+            _playing    = false,
+            _scripts    = {},
+            _animations = {},
+        }
+        function ag:SetLooping(mode) self._looping = mode end
+        function ag:GetLooping() return self._looping end
+        function ag:Play() self._playing = true end
+        function ag:Stop() self._playing = false end
+        function ag:IsPlaying() return self._playing end
+        function ag:SetScript(event, fn) self._scripts[event] = fn end
+        function ag:GetScript(event) return self._scripts[event] end
+        function ag:CreateAnimation(animType)
+            local anim = { _type = animType }
+            function anim:SetFromAlpha(a) self._fromAlpha = a end
+            function anim:SetToAlpha(a) self._toAlpha = a end
+            function anim:SetDuration(d) self._duration = d end
+            function anim:SetOrder(o) self._order = o end
+            table.insert(ag._animations, anim)
+            return anim
+        end
+        return ag
+    end
     function frame:RegisterEvent(event) end
     function frame:UnregisterEvent(event) end
     function frame:UnregisterAllEvents() end
@@ -282,7 +341,15 @@ local function makeFrame(frameType, name, parent, template)
 end
 
 function CreateFrame(frameType, name, parent, template)
-    return makeFrame(frameType, name, parent, template)
+    local frame = makeFrame(frameType, name, parent, template)
+    -- WoW publishes named frames as globals; tests rely on that to reach
+    -- RotaAssistMainFrame without poking at module internals.
+    -- WoW 会把具名框体挂到全局；测试借此拿到 RotaAssistMainFrame，
+    -- 而不必窥探模块内部状态。
+    if type(name) == "string" and name ~= "" then
+        _G[name] = frame
+    end
+    return frame
 end
 _G.CreateFrame = CreateFrame
 
@@ -292,6 +359,26 @@ _G.CreateFrame = CreateFrame
 
 function PlaySound(soundID, channel, forceNoDuplicates) end
 _G.PlaySound = PlaySound
+
+-- Round 19 (round15 merge): DefensiveAlert plays a sound file, and the UI
+-- fade helpers / action-button glow are used by every alert widget.
+-- 第 19 轮（合入 round15）：减伤提示要播音效；淡入淡出与动作条高亮为各警报挂件所用。
+function PlaySoundFile(file, channel) end
+_G.PlaySoundFile = PlaySoundFile
+
+function UIFrameFadeIn(frame, time, startAlpha, endAlpha)
+    if frame and frame.SetAlpha then frame:SetAlpha(endAlpha or 1) end
+end
+function UIFrameFadeOut(frame, time, startAlpha, endAlpha)
+    if frame and frame.SetAlpha then frame:SetAlpha(endAlpha or 0) end
+end
+_G.UIFrameFadeIn = UIFrameFadeIn
+_G.UIFrameFadeOut = UIFrameFadeOut
+
+function ActionButton_ShowOverlayGlow(frame) end
+function ActionButton_HideOverlayGlow(frame) end
+_G.ActionButton_ShowOverlayGlow = ActionButton_ShowOverlayGlow
+_G.ActionButton_HideOverlayGlow = ActionButton_HideOverlayGlow
 
 SOUNDKIT = setmetatable({}, { __index = function(_, k) return 0 end })
 _G.SOUNDKIT = SOUNDKIT

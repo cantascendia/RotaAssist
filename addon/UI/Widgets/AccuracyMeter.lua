@@ -6,6 +6,9 @@
 local _, NS = ...
 local RA = NS.RA
 
+-- Design tokens (D-016) / 设计令牌（D-016）
+local Theme = RA.Theme
+
 if not RA.UI then RA.UI = {} end
 
 local RA_AccuracyMeter = {}
@@ -29,21 +32,14 @@ function RA_AccuracyMeter:Create(parent, width, height)
     -- Background
     local bg = CreateFrame("Frame", nil, frame, "BackdropTemplate")
     bg:SetAllPoints()
-    bg:SetBackdrop({
-        bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        tile = false, tileSize = 0, edgeSize = 8,
-        insets = { left = 2, right = 2, top = 2, bottom = 2 }
-    })
-    bg:SetBackdropColor(0, 0, 0, 0.6)
-    bg:SetBackdropBorderColor(0.2, 0.2, 0.2, 0.8)
+    Theme.ApplyBackdrop(bg, "badge", "bg", "borderDim")
     widget.bg = bg
 
     -- StatusBar
     local bar = CreateFrame("StatusBar", nil, frame)
     bar:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
     bar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
-    bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+    bar:SetStatusBarTexture(Theme.textures.statusBar)
     bar:SetMinMaxValues(0, 100)
     bar:SetValue(100)
     widget.bar = bar
@@ -51,7 +47,7 @@ function RA_AccuracyMeter:Create(parent, width, height)
     -- Label
     local text = bar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     text:SetPoint("CENTER", bar, "CENTER", 0, 0)
-    text:SetTextColor(1, 1, 1)
+    Theme.SetTextColor(text, "text")
     text:SetText("100%")
     widget.text = text
 
@@ -68,7 +64,7 @@ function RA_AccuracyMeter:Create(parent, width, height)
     local alphaIn = widget.agShow:CreateAnimation("Alpha")
     alphaIn:SetFromAlpha(0)
     alphaIn:SetToAlpha(1)
-    alphaIn:SetDuration(0.15)
+    alphaIn:SetDuration(Theme.durations.fadeIn)
     widget.agShow:SetScript("OnPlay", function() frame:SetAlpha(0); frame:Show() end)
     widget.agShow:SetScript("OnFinished", function() frame:SetAlpha(1) end)
 
@@ -76,7 +72,7 @@ function RA_AccuracyMeter:Create(parent, width, height)
     local alphaOut = widget.agHide:CreateAnimation("Alpha")
     alphaOut:SetFromAlpha(1)
     alphaOut:SetToAlpha(0)
-    alphaOut:SetDuration(0.15)
+    alphaOut:SetDuration(Theme.durations.fadeIn)
     widget.agHide:SetScript("OnFinished", function() frame:Hide(); frame:SetAlpha(1) end)
 
     frame:Hide()
@@ -94,13 +90,13 @@ function RA_AccuracyMeter:Update(accuracy)
     
     self.bar:SetValue(accuracy)
     
-    -- Color rules
+    -- Color rules / 配色规则（全部走 Theme 语义令牌，不再自带三套绿/黄/红）
     if accuracy >= 80 then
-        self.bar:SetStatusBarColor(0.2, 0.8, 0.2) -- Green
+        self.bar:SetStatusBarColor(Theme.Unpack(Theme.colors.success))
     elseif accuracy >= 60 then
-        self.bar:SetStatusBarColor(0.9, 0.8, 0.1) -- Yellow
+        self.bar:SetStatusBarColor(Theme.Unpack(Theme.colors.warning))
     else
-        self.bar:SetStatusBarColor(0.9, 0.2, 0.2) -- Red
+        self.bar:SetStatusBarColor(Theme.Unpack(Theme.colors.alert))
     end
 
     -- 模式后缀走 i18n：S = SmartQueue 融合推荐，B = 暴雪原生推荐

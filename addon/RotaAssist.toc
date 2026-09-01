@@ -126,7 +126,9 @@ Engine\InterruptAdvisor.lua
 Engine\DefensiveAdvisor.lua
 Engine\PrePullChecker.lua
 
-# UI last — Widgets must load before MainDisplay
+# UI last — Theme must load before every widget; Widgets before MainDisplay
+# UI 最后加载 —— Theme 必须先于所有 widget，widget 必须先于 MainDisplay
+UI\Theme.lua
 UI\Widgets\GlowWidget.lua
 UI\Widgets\IconWidget.lua
 UI\Widgets\ResourceBar.lua
@@ -134,6 +136,7 @@ UI\Widgets\PhaseIndicator.lua
 UI\Widgets\AccuracyMeter.lua
 UI\Widgets\PrePullPanel.lua
 UI\Widgets\DefensiveAlert.lua
+UI\Widgets\InterruptAlert.lua
 UI\Widgets\CooldownBar.lua
 UI\Widgets.lua
 UI\MainDisplay.lua

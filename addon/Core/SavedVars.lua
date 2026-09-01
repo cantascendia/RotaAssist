@@ -22,7 +22,7 @@ local defaults = {
             minimapButton = true,
         },
         display = {
-            iconCount   = 2,         -- number of prediction icons (1-2)
+            iconCount   = 2,         -- number of prediction icons (1-4)
             iconSize    = 48,        -- pixels per icon
             iconSpacing = 4,         -- gap between icons
             scale       = 1.0,       -- overall scale (0.5 – 2.0)
@@ -42,6 +42,19 @@ local defaults = {
             hideBackground  = false, -- remove backdrop panel
             bgAlpha         = 0.5,   -- background opacity
             point           = nil,   -- saved frame anchor: {point, relPoint, x, y} or nil
+            -- Round 19 (UI fusion) / 第 19 轮 UI 融合
+            showRangeIndicator = true,  -- pulse the main icon red when out of range
+                                        -- 目标超距时主图标红色脉冲
+            showProcGlow       = true,  -- glow the main icon on Blizzard proc overlays
+                                        -- 暴雪 proc 覆盖时主图标高亮
+            hideCooldownPredictions = false,
+                                        -- OFF by default: main's lookahead shows spells
+                                        -- that are on cooldown (greyed + sweep). Turning
+                                        -- this on adopts round15's "hide them" behaviour.
+                                        -- 默认关闭：main 的前瞻会显示冷却中的技能（灰显+转圈）。
+                                        -- 开启后采用 round15 的"直接隐去"行为。
+            showResourceBar    = true,  -- resource bar under the strip / 条下方资源条
+            showPrePullPanel   = true,  -- out-of-combat checklist / 战前清单
         },
         cooldowns = {
             enabled        = true,
@@ -70,7 +83,24 @@ local defaults = {
         },
         interrupt = {
             enabled    = true,
-            soundAlert = true
+            soundAlert = true,
+            point      = nil,        -- floating InterruptAlert anchor / 打断浮窗位置
+        },
+        -- Round 19: the defensive alert used to call PlaySoundFile unconditionally
+        -- with no way to silence it. It now reads defensive.soundAlert.
+        -- 第 19 轮：减伤提示此前无条件 PlaySoundFile 且无法关闭，现读取 defensive.soundAlert。
+        defensive = {
+            enabled    = true,
+            soundAlert = true,
+            point      = nil,        -- floating DefensiveAlert anchor / 减伤浮窗位置
+        },
+        -- Combat-phase coaching. This table had NO defaults before Round 19,
+        -- so `db.profile.coach.enabled` was always nil and the PhaseIndicator
+        -- could never be shown.
+        -- 战斗阶段教练。第 19 轮前本表无默认值，coach.enabled 恒为 nil，
+        -- 导致阶段徽章永远无法显示。
+        coach = {
+            enabled = true
         }
     }
 }
