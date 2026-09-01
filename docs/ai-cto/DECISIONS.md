@@ -126,6 +126,24 @@
   保留注释状态的代价：修 secret 合规时它们是绊脚石，且 CooldownTracker 在真实消耗 CPU。
 - **前置条件**: 删除前用 grep 二次确认零调用方，并在同一 commit 中删除对应测试。
 
+### D-013 修正（Round 17 执行时发现，2026-09-01）
+
+**本决策的前提有一处事实错误**：「CooldownTracker 唯一消费者是 RecommendationManager」
+不成立 —— `addon/UI/CooldownPanel.lua`（活跃、TOC 加载、默认启用的 UI 模块）在
+4 处消费它（tooltip / 图标构建 / 过滤 / `ROTAASSIST_COOLDOWNS_UPDATED` 订阅）。
+盲删会让 CD 面板变成空黑框。这是**第二例单 critic 审计误报**（第一例：阶段 i18n 键）。
+
+实际执行方案：**CooldownPanel 迁移到 CooldownOverlay**（超集数据源，5Hz，
+按当前专精追踪而非全白名单——对用户反而更准确）：
+- `GetCooldownState(id)` → `GetCooldownStates()[id]`；`state.start` → `state.startTime`
+- `IsSpellTracked` → 面板本地 helper，保留 `db.profile.cooldowns.trackedSpells` 用户覆盖
+- 事件 → `ROTAASSIST_CD_UPDATED`（EventHandler 对 SPELL_UPDATE_COOLDOWN 的中央转发）
+- **补 1s ticker**：纯事件驱动会让脱战倒计时文本冻结（旧 10Hz 轮询无此问题），
+  ticker 只在面板可见时实际刷新，OnDisable 取消
+
+**流程教训（第 2 次）**：审计 agent 对「唯一消费者 / 全部缺失」类断言必须附
+grep 原始输出；执行 agent 删除前的独立二次 grep 是这次救场的机制，保留为强制步骤。
+
 ## D-014: 产品面收窄 — 20 专精 → 3 专精
 - **日期**: 2026-09-01
 - **决策**: TOC 只注册 DH Havoc(577) / Vengeance(581) / Devourer(1480)。

@@ -14,7 +14,17 @@ RA:RegisterModule("SmartQueueManager", SmartQueueManager)
 -- Configuration & Throttling
 ------------------------------------------------------------------------
 
-local THROTTLE_UPDATE = 0.15
+-- Queue rebuild cadence. The frame is never hidden: MainDisplay still needs a
+-- live queue out of combat (fade-out, target-dummy practice), but polling at the
+-- in-combat rate while idling in a city is wasted CPU, so the interval is widened.
+-- 队列重建节奏。更新帧永不隐藏——脱战时 MainDisplay 仍需要数据（淡出显示、打木桩），
+-- 但站城时按战斗频率轮询纯属浪费 CPU，因此脱战放宽间隔。
+local THROTTLE_COMBAT = 0.15
+local THROTTLE_IDLE   = 0.6
+
+--- Active rebuild interval; swapped by PLAYER_REGEN_DISABLED/ENABLED.
+--- 当前生效的重建间隔，由进出战斗事件切换。
+local throttleInterval = THROTTLE_IDLE
 
 local defaultWeights = {
     blizzardWeight = 1.0,
@@ -268,6 +278,92 @@ end
 SmartQueueManager._CalculateScore = CalculateScore
 
 ------------------------------------------------------------------------
+-- Charge Scanning
+-- Only a handful of the ~130 whitelisted spells actually have charges, but
+-- every queue rebuild used to call C_Spell.GetSpellCharges on all of them
+-- (~870 calls/sec at the in-combat cadence). The first scan after a spec or
+-- talent change records which spellIDs really carry charges; later scans walk
+-- only that subset.
+-- 充能扫描：白名单约 130 条技能里真正有充能的只有少数几个，但过去每次重建
+-- 队列都对全部技能调用 C_Spell.GetSpellCharges（战斗节奏下约 870 次/秒）。
+-- 专精或天赋变更后的首次扫描记录哪些 spellID 真的有充能，后续只遍历该子集。
+------------------------------------------------------------------------
+
+--- spellID -> true for spells confirmed (or presumed) to have charges.
+--- Reused across rebuilds; wiped rather than reallocated.
+--- 确认（或保守推定）有充能的技能集合，复用不重新分配。
+local chargeSpells = {}
+
+--- False until the next scan must re-derive chargeSpells from the full whitelist.
+--- 为 false 时下次扫描需要从完整白名单重建 chargeSpells。
+local chargeSubsetValid = false
+
+---Decide whether a spell belongs in the charge subset.
+--- WOW 12.0 SECRET VALUE SAFE: maxCharges can be secret in combat, so
+--- issecretvalue() runs before any comparison. When the value is secret or
+--- absent we cannot prove the spell is charge-less, so it is kept in the
+--- subset — over-inclusion only costs a call, exclusion would lose data.
+--- WOW 12.0 SECRET VALUE 安全：战斗中 maxCharges 可能是 secret，
+--- 因此在任何比较之前先过 issecretvalue()。值为 secret 或缺失时无法证明该技能
+--- 没有充能，保守保留在子集中——多留只多一次调用，误删则会丢数据。
+---@param chargeInfo table
+---@return boolean hasCharges
+local function ShouldTrackCharges(chargeInfo)
+    local mc = chargeInfo.maxCharges
+    if issecretvalue(mc) then return true end
+    if type(mc) == "number" then return mc > 1 end
+    return true
+end
+
+---Read current charges into limitedState.charges.
+---Rebuilds the tracked subset when it has been invalidated.
+---把当前充能数写入 limitedState.charges；子集失效时先重建。
+---@param limitedState table
+local function ScanCharges(limitedState)
+    if not (C_Spell and C_Spell.GetSpellCharges and RA.WhitelistSpells) then return end
+
+    local source
+    if chargeSubsetValid then
+        source = chargeSpells
+    else
+        wipe(chargeSpells)
+        source = RA.WhitelistSpells
+    end
+
+    for sid in pairs(source) do
+        local okCharges, chargeInfo = pcall(C_Spell.GetSpellCharges, sid)
+        if okCharges and type(chargeInfo) == "table" then
+            if not chargeSubsetValid and ShouldTrackCharges(chargeInfo) then
+                chargeSpells[sid] = true
+            end
+
+            -- WOW 12.0 SECRET VALUE SAFE: currentCharges is a secret value in combat.
+            -- The old `and chargeInfo.currentCharges then` truth-tested it before any
+            -- guard and then stored the tainted value, which APLEngine later compared.
+            -- Gate on issecretvalue() first; leave the entry nil when unreadable so
+            -- APLEngine can treat it as "unknown" instead of a bogus number.
+            -- WOW 12.0 SECRET VALUE 安全：战斗中 currentCharges 是 secret 值。原写法
+            -- `and chargeInfo.currentCharges then` 在无任何守卫的情况下对其做真值判断，
+            -- 并把被污染的值存起来供 APLEngine 比较。改为先过 issecretvalue()；读不到时
+            -- 保持该项为 nil，让 APLEngine 按"未知"处理而不是拿到一个假数字。
+            local cc = chargeInfo.currentCharges
+            if not issecretvalue(cc) and type(cc) == "number" then
+                limitedState.charges[sid] = cc
+            end
+        end
+    end
+
+    chargeSubsetValid = true
+end
+
+---Force the next scan to re-derive the charge subset from the full whitelist.
+---Charge counts are spec- and talent-dependent, so both invalidate it.
+---让下次扫描从完整白名单重建充能子集。充能数受专精与天赋影响，两者都需失效。
+local function InvalidateChargeSubset()
+    chargeSubsetValid = false
+end
+
+------------------------------------------------------------------------
 -- Update Loop
 ------------------------------------------------------------------------
 
@@ -391,26 +487,7 @@ local function AssembleQueue()
             end
         end
 
-        if C_Spell and C_Spell.GetSpellCharges and RA.WhitelistSpells then
-            for sid in pairs(RA.WhitelistSpells) do
-                local okCharges, chargeInfo = pcall(C_Spell.GetSpellCharges, sid)
-                if okCharges and type(chargeInfo) == "table" then
-                    -- WOW 12.0 SECRET VALUE SAFE: currentCharges is a secret value in combat.
-                    -- The old `and chargeInfo.currentCharges then` truth-tested it before any
-                    -- guard and then stored the tainted value, which APLEngine later compared.
-                    -- Gate on issecretvalue() first; leave the entry nil when unreadable so
-                    -- APLEngine can treat it as "unknown" instead of a bogus number.
-                    -- WOW 12.0 SECRET VALUE 安全：战斗中 currentCharges 是 secret 值。原写法
-                    -- `and chargeInfo.currentCharges then` 在无任何守卫的情况下对其做真值判断，
-                    -- 并把被污染的值存起来供 APLEngine 比较。改为先过 issecretvalue()；读不到时
-                    -- 保持该项为 nil，让 APLEngine 按"未知"处理而不是拿到一个假数字。
-                    local cc = chargeInfo.currentCharges
-                    if not issecretvalue(cc) and type(cc) == "number" then
-                        limitedState.charges[sid] = cc
-                    end
-                end
-            end
-        end
+        ScanCharges(limitedState)
 
         -- Populate inMeta from APLEngine state
         limitedState.inMeta = mAPLEngine:IsMetaActive()
@@ -870,7 +947,7 @@ end
 
 local function onUpdate(_, elapsed_dt)
     lastUpdate = lastUpdate + elapsed_dt
-    if lastUpdate >= THROTTLE_UPDATE then
+    if lastUpdate >= throttleInterval then
         lastUpdate = 0
         AssembleQueue()
     end
@@ -895,8 +972,11 @@ function SmartQueueManager:GetLastRecommendedSpellID()
     return lastRecommendedSpellID
 end
 
----Backward compatible wrapper for existing UI modules expecting RecommendationManager:GetDisplayData()
----荳ｺ譛滓悍莉・RecommendationManager 諡ｿ蛻ｰ邀ｻ莨ｼ譬ｼ蠑乗焚謐ｮ逧・立 UI 讓｡蝮玲署萓帛・螳ｹ縲・
+---Flatten finalQueue into a plain display-oriented snapshot.
+---Legacy shape kept for the integration tests; no addon module reads it today
+---(UI consumes ROTAASSIST_QUEUE_UPDATED / GetFinalQueue instead).
+---把 finalQueue 拍平成面向显示的快照。该格式为集成测试保留；
+---当前插件内已无模块读取（UI 走 ROTAASSIST_QUEUE_UPDATED / GetFinalQueue）。
 ---@return table
 function SmartQueueManager:GetDisplayData()
     local data = {
@@ -942,6 +1022,10 @@ function SmartQueueManager:OnEnable()
     mDefensiveAdvisor = RA:GetModule("DefensiveAdvisor")
     mNeuralPredictor  = RA:GetModule("NeuralPredictor")
 
+    -- Seed the cadence from the current combat state, then keep it in sync below.
+    -- 按当前战斗状态初始化节奏，随后由事件保持同步。
+    throttleInterval = InCombatLockdown() and THROTTLE_COMBAT or THROTTLE_IDLE
+
     updateFrame:SetScript("OnUpdate", onUpdate)
     updateFrame:Show()
 
@@ -950,6 +1034,34 @@ function SmartQueueManager:OnEnable()
     -- 譁ｽ豕墓・蜉溷錘・壽峩譁ｰ蜿倩ｺｫ迥ｶ諤√∬ｽｯ螻剰反縲∝､ｱ謨・Bridge 郛灘ｭ倥・㍾蟒ｺ髦溷・
     local eh = RA:GetModule("EventHandler")
     if eh then
+        -- Combat cadence: full rate in combat, widened out of combat. The queue keeps
+        -- being rebuilt either way so MainDisplay never goes stale.
+        -- 战斗节奏：战斗内全速，脱战放宽。两种状态下队列都持续重建，MainDisplay 不会失效。
+        eh:Subscribe("PLAYER_REGEN_DISABLED", "SmartQueueManager_Throttle", function()
+            throttleInterval = THROTTLE_COMBAT
+            -- Rebuild on the very next frame so the pull is not delayed by the idle interval.
+            -- 立刻在下一帧重建，避免起手被脱战间隔拖慢。
+            lastUpdate = THROTTLE_COMBAT
+        end)
+
+        eh:Subscribe("PLAYER_REGEN_ENABLED", "SmartQueueManager_Throttle", function()
+            throttleInterval = THROTTLE_IDLE
+        end)
+
+        -- Which spells have charges is spec- and talent-dependent, so both events
+        -- force the next scan back over the full whitelist. PLAYER_ENTERING_WORLD is
+        -- included because SpecDetector fires ROTAASSIST_SPEC_CHANGED from its own
+        -- OnEnable — earlier in MODULE_ORDER than this module, so the login-time
+        -- broadcast lands before this subscription exists. Without it the very first
+        -- subset could be derived while the spellbook is still populating.
+        -- 哪些技能有充能取决于专精与天赋，这些事件都让下次扫描回到完整白名单。
+        -- 之所以加 PLAYER_ENTERING_WORLD：SpecDetector 在自己的 OnEnable 里就广播了
+        -- ROTAASSIST_SPEC_CHANGED，而它在 MODULE_ORDER 中位于本模块之前，登录时那次
+        -- 广播早于本订阅建立。缺了这道保险，首个子集可能在法术书尚未加载完时就被推导出来。
+        eh:Subscribe("ROTAASSIST_SPEC_CHANGED",  "SmartQueueManager_Charges", InvalidateChargeSubset)
+        eh:Subscribe("PLAYER_TALENT_UPDATE",     "SmartQueueManager_Charges", InvalidateChargeSubset)
+        eh:Subscribe("PLAYER_ENTERING_WORLD",    "SmartQueueManager_Charges", InvalidateChargeSubset)
+
         eh:Subscribe("ROTAASSIST_SPELLCAST_SUCCEEDED", "SmartQueueManager", function(_, unit, _, spellID)
             if unit ~= "player" then return end
 
@@ -1001,7 +1113,7 @@ function SmartQueueManager:OnEnable()
 
             -- 5. Trigger an immediate queue rebuild.
             --    遶句綾驥榊ｻｺ髦溷・
-            lastUpdate = THROTTLE_UPDATE
+            lastUpdate = throttleInterval
             AssembleQueue()
         end)
 
@@ -1010,7 +1122,7 @@ function SmartQueueManager:OnEnable()
         eh:Subscribe("ROTAASSIST_CD_UPDATED", "SmartQueueManager", function()
             if next(softBlockedSpells) then
                 wipe(softBlockedSpells)
-                lastUpdate = THROTTLE_UPDATE
+                lastUpdate = throttleInterval
                 AssembleQueue()
             end
         end)

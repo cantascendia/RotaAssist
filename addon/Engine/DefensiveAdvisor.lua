@@ -25,6 +25,13 @@ local elapsed = 0
 local updateFrame = nil
 local isTracking = false
 
+--- Whether the player is currently in combat. Defensive advice is only
+--- meaningful in combat, so the HP poll is fully suspended out of combat
+--- (unlike the queue/cooldown scanners, which merely slow down).
+--- 是否处于战斗中。防御建议只在战斗中有意义，因此脱战时完全暂停 HP 轮询
+--- （与仅降频的队列/冷却扫描不同）。
+local inCombat = false
+
 --- Last alert spellID (prevent spam — only alert once per defensive per event)
 ---@type number|nil
 local lastAlertSpellID = nil
@@ -171,6 +178,22 @@ local function onUpdate(_, dt)
     checkHealth()
 end
 
+---Attach the HP poll only while a spec is loaded AND the player is in combat.
+---The frame itself is never hidden: the secret-value probe frames are its
+---children and must stay shown for C_CurveUtil alpha readback to work.
+---仅在「已加载专精配置」且「处于战斗中」时挂载 HP 轮询。
+---注意不隐藏 updateFrame 本身——secret value 探针帧是它的子帧，
+---必须保持 Show 状态，否则 C_CurveUtil 的 alpha 回读会失效。
+local function applyUpdateScript()
+    if not updateFrame then return end
+    if isTracking and inCombat then
+        updateFrame:SetScript("OnUpdate", onUpdate)
+    else
+        updateFrame:SetScript("OnUpdate", nil)
+        elapsed = 0
+    end
+end
+
 ------------------------------------------------------------------------
 -- Module Lifecycle
 ------------------------------------------------------------------------
@@ -188,8 +211,18 @@ function DefensiveAdvisor:OnEnable()
             self:LoadForSpec(specInfo and specInfo.specID)
         end)
 
-        -- Reset alert state when leaving combat
+        -- Start polling HP on pull.
+        -- 进入战斗时开始 HP 轮询。
+        eh:Subscribe("PLAYER_REGEN_DISABLED", "DefensiveAdvisor", function()
+            inCombat = true
+            applyUpdateScript()
+        end)
+
+        -- Reset alert state and stop polling when leaving combat
+        -- 脱战：重置提示状态并停止轮询
         eh:Subscribe("PLAYER_REGEN_ENABLED", "DefensiveAdvisor", function()
+            inCombat = false
+            applyUpdateScript()
             -- WOW 12.0 SECRET VALUE SAFE: may remain secret in M+/PvP
             local pct = RA:GetPlayerHealthPercentSafe()
             if pct then lastHpPct = pct end
@@ -197,6 +230,10 @@ function DefensiveAdvisor:OnEnable()
             lastActiveAlert = nil
         end)
     end
+
+    -- Reloading UI mid-combat must not leave the poll detached.
+    -- 战斗中重载界面时不能让轮询处于脱挂状态。
+    inCombat = InCombatLockdown() and true or false
 
     -- Try loading immediately
     local sd = RA:GetModule("SpecDetector")
@@ -253,12 +290,12 @@ function DefensiveAdvisor:LoadForSpec(specID)
         table.sort(defensives, function(a, b) return a.hpThreshold > b.hpThreshold end)
 
         isTracking = true
-        updateFrame:SetScript("OnUpdate", onUpdate)
         RA:PrintDebug(string.format("DefensiveAdvisor: %d defensives for specID %d (12.0 curve-safe)",
             #defensives, specID))
-    else
-        updateFrame:SetScript("OnUpdate", nil)
     end
+    -- Poll runs only when a spec is loaded and combat is active.
+    -- 仅在已加载专精配置且处于战斗中时轮询。
+    applyUpdateScript()
 end
 
 ------------------------------------------------------------------------
@@ -289,6 +326,7 @@ end
 
 function DefensiveAdvisor:OnDisable()
     isTracking = false
+    inCombat = false
     if updateFrame then
         updateFrame:SetScript("OnUpdate", nil)
     end
@@ -306,6 +344,7 @@ function DefensiveAdvisor:OnDisable()
     local eh = RA:GetModule("EventHandler")
     if eh then
         eh:Unsubscribe("ROTAASSIST_SPEC_CHANGED", "DefensiveAdvisor")
+        eh:Unsubscribe("PLAYER_REGEN_DISABLED",   "DefensiveAdvisor")
         eh:Unsubscribe("PLAYER_REGEN_ENABLED",    "DefensiveAdvisor")
     end
 end

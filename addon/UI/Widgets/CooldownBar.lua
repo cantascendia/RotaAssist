@@ -42,7 +42,11 @@ function CooldownBar:Create(parent, maxIcons)
 end
 
 ---Update the cooldowns shown in the bar.
----@param cooldownStates table[] (Array from RecommendationManager)
+---Entries originate from CooldownOverlay:GetCooldownStates() and reach this
+---widget via SmartQueueManager's finalQueue.cooldowns array.
+---数据源为 CooldownOverlay:GetCooldownStates()，经 SmartQueueManager 的
+---finalQueue.cooldowns 数组传入本控件。
+---@param cooldownStates table[] Array of { spellID, texture, ready, remaining, startTime, duration }
 function CooldownBar:Update(cooldownStates)
     if not cooldownStates or #cooldownStates == 0 then
         for i = 1, self.maxIcons do self.icons[i].frame:Hide() end

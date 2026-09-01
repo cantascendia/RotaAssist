@@ -209,7 +209,11 @@ function Bridge:OnEnable()
         RA:PrintDebug("AssistedCombatBridge: C_AssistedCombat is available")
     else
         RA:PrintDebug("AssistedCombatBridge: Not available - " .. tostring(reason))
-        RA:PrintDebug("AssistedCombatBridge: AssistCapture glow hooks will be used as fallback")
+        -- No Blizzard suggestion available: SmartQueueManager still builds a queue from
+        -- APL + AI Inference + NeuralPredictor scoring, just without the blizzardWeight term.
+        -- 无暴雪推荐时：SmartQueueManager 仍用 APL + AI 推断 + 神经预测评分构建队列，
+        -- 只是缺少 blizzardWeight 这一项。
+        RA:PrintDebug("AssistedCombatBridge: falling back to APL + AI scoring only")
     end
 
     local eh = RA:GetModule("EventHandler")

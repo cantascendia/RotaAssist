@@ -47,6 +47,24 @@ local function formatCooldown(remaining)
     return string.format(RA.L and RA.L["CD_SECONDS"] or "%ds", math.floor(remaining + 0.5))
 end
 
+---Whether a spell should be shown in the panel.
+---Honours the user's per-spell override in db.profile.cooldowns.trackedSpells;
+---otherwise every spell CooldownOverlay tracks for the current spec is shown.
+---判断技能是否应显示在面板中：优先用户的逐技能覆盖设置，
+---否则显示 CooldownOverlay 为当前专精追踪的全部技能。
+---@param spellID number
+---@return boolean isTracked
+local function isSpellTracked(spellID)
+    local cdDb = RA.db and RA.db.profile and RA.db.profile.cooldowns
+    if cdDb and cdDb.trackedSpells then
+        local override = cdDb.trackedSpells[spellID]
+        if override ~= nil then
+            return override
+        end
+    end
+    return true
+end
+
 ------------------------------------------------------------------------
 -- Frame Construction
 ------------------------------------------------------------------------
@@ -83,9 +101,9 @@ local function createCDWidget(spellID, index)
     -- Tooltip
     widget.frame:EnableMouse(true)
     widget.frame:SetScript("OnEnter", function(self)
-        local cdTracker = RA:GetModule("CooldownTracker")
-        if cdTracker then
-            local state = cdTracker:GetCooldownState(spellID)
+        local cdOverlay = RA:GetModule("CooldownOverlay")
+        if cdOverlay then
+            local state = cdOverlay:GetCooldownStates()[spellID]
             if state then
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 -- 技能名缺失时的占位符走 i18n / Localized placeholder when the spell name is unknown
@@ -157,7 +175,8 @@ local function createPanel()
     isLocked = db.panelLocked or false
 end
 
----Populate cooldown icon widgets from CooldownTracker's tracked spells.
+---Populate cooldown icon widgets from CooldownOverlay's tracked spells.
+---从 CooldownOverlay 追踪的技能构建冷却图标。
 local function populateIcons()
     if not container then return end
 
@@ -167,10 +186,10 @@ local function populateIcons()
     end
     cdWidgets = {}
 
-    local cdTracker = RA:GetModule("CooldownTracker")
-    if not cdTracker then return end
+    local cdOverlay = RA:GetModule("CooldownOverlay")
+    if not cdOverlay then return end
 
-    local allCD = cdTracker:GetAllCooldowns()
+    local allCD = cdOverlay:GetCooldownStates()
     -- Sort by spellID for consistent ordering
     local sortedIDs = {}
     for spellID in pairs(allCD) do
@@ -181,7 +200,7 @@ local function populateIcons()
     local index = 0
     for _, spellID in ipairs(sortedIDs) do
         if index >= MAX_ICONS then break end
-        if cdTracker:IsSpellTracked(spellID) then
+        if isSpellTracked(spellID) then
             index = index + 1
             cdWidgets[spellID] = createCDWidget(spellID, index)
         end
@@ -202,11 +221,12 @@ end
 local function refreshCooldowns()
     if not container or not isVisible then return end
 
-    local cdTracker = RA:GetModule("CooldownTracker")
-    if not cdTracker then return end
+    local cdOverlay = RA:GetModule("CooldownOverlay")
+    if not cdOverlay then return end
 
+    local states = cdOverlay:GetCooldownStates()
     for spellID, widget in pairs(cdWidgets) do
-        local state = cdTracker:GetCooldownState(spellID)
+        local state = states[spellID]
         if state then
             if state.ready then
                 widget.timeText:SetText("")
@@ -218,9 +238,14 @@ local function refreshCooldowns()
                 widget.timeText:SetText(formatCooldown(state.remaining))
                 widget:SetDesaturated(true)
                 widget:SetAlert(false)
-                -- Drive the cooldown swirl using start/duration from state
-                if state.start and state.duration and state.duration > 1.5 then
-                    widget.cooldown:SetCooldown(state.start, state.duration)
+                -- Drive the cooldown swirl using startTime/duration from state.
+                -- CooldownOverlay's secret-value estimation path can leave startTime
+                -- at 0; clear the swirl rather than render a permanently wrong one.
+                -- CooldownOverlay 的 secret value 估算路径可能把 startTime 留在 0，
+                -- 此时清空转圈，而不是画一个恒定错误的转圈。
+                if state.startTime and state.duration
+                   and state.startTime > 0 and state.duration > 1.5 then
+                    widget.cooldown:SetCooldown(state.startTime, state.duration)
                 else
                     widget.cooldown:Clear()
                 end
@@ -247,12 +272,19 @@ function CooldownPanel:OnEnable()
 
     local eh = RA:GetModule("EventHandler")
     if eh then
-        eh:Subscribe("ROTAASSIST_COOLDOWNS_UPDATED", "CooldownPanel", function()
+        -- ROTAASSIST_CD_UPDATED is EventHandler's central SPELL_UPDATE_COOLDOWN relay.
+        -- ROTAASSIST_CD_UPDATED 是 EventHandler 对 SPELL_UPDATE_COOLDOWN 的中央转发。
+        eh:Subscribe("ROTAASSIST_CD_UPDATED", "CooldownPanel", function()
             refreshCooldowns()
         end)
         eh:Subscribe("ROTAASSIST_SPEC_CHANGED", "CooldownPanel", function()
-            -- Rebuild icons when spec changes (different spells tracked)
-            C_Timer.After(0.5, populateIcons)
+            -- Rebuild icons when spec changes (different spells tracked).
+            -- The delay lets CooldownOverlay:LoadForSpec repopulate its state table first.
+            -- 延迟让 CooldownOverlay:LoadForSpec 先重建状态表。
+            C_Timer.After(0.5, function()
+                populateIcons()
+                refreshCooldowns()
+            end)
         end)
         eh:Subscribe("ROTAASSIST_SETTINGS_RESET", "CooldownPanel", function()
             if container then
@@ -261,6 +293,25 @@ function CooldownPanel:OnEnable()
                 isLocked = dbNow.panelLocked or false
             end
         end)
+    end
+
+    -- ROTAASSIST_CD_UPDATED only fires when a cooldown CHANGES (cast/charge/GCD).
+    -- Out of combat nothing fires, so the remaining-seconds text would freeze
+    -- mid-countdown (the swirl is client-drawn and unaffected). A 1s ticker keeps
+    -- the text live; refreshCooldowns() self-guards on container/isVisible.
+    -- ROTAASSIST_CD_UPDATED 只在 CD 变化时触发；脱战无事件会导致剩余秒数文本
+    -- 冻结（转圈由客户端自绘不受影响）。1 秒 ticker 保证文本持续倒数。
+    if not self.textTicker then
+        self.textTicker = C_Timer.NewTicker(1, function()
+            refreshCooldowns()
+        end)
+    end
+end
+
+function CooldownPanel:OnDisable()
+    if self.textTicker then
+        self.textTicker:Cancel()
+        self.textTicker = nil
     end
 end
 

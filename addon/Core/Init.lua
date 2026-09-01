@@ -34,11 +34,9 @@ RA.modules = {}
 -- Add modules here in the exact sequence they should be OnInitialize'd /
 -- OnEnable'd. Modules not listed will still be called, but AFTER these.
 local MODULE_ORDER = {
-    -- Core (data layer first, then event infrastructure, then capture)
+    -- Core (data layer first, then event infrastructure)
     "SavedVars",
     "EventHandler",
-    "AssistCapture",
-    "CooldownTracker",
     -- Engine (depends on Data + Core modules)
     "SpecDetector",
     "AssistedCombatBridge",
@@ -52,6 +50,7 @@ local MODULE_ORDER = {
     "CooldownOverlay",
     "CDMHook",
     "DefensiveAdvisor",
+    "InterruptAdvisor",
     "PrePullChecker",
     -- UI (depends on everything above)
     "Widgets",
@@ -359,20 +358,45 @@ end
 -- Helpers
 ------------------------------------------------------------------------
 
+---Reusable scratch set for iterModulesOrdered. Module-level so the ordered
+---walk allocates nothing per call (it runs twice on every OnEnable).
+---iterModulesOrdered 复用的临时集合；提到模块级避免每次调用都分配 table。
+---@type table<string, boolean>
+local orderVisited = {}
+
+---Modules already reported as missing from MODULE_ORDER, so the drift warning
+---is printed at most once per module per session.
+---已经报告过「不在 MODULE_ORDER 中」的模块，保证每个模块每会话只警告一次。
+---@type table<string, boolean>
+local orderDriftReported = {}
+
 ---Iterate modules in stable MODULE_ORDER, then any extras not in the list.
+---
+---Modules missing from MODULE_ORDER still run, but only AFTER every listed
+---module — including all UI modules — which silently breaks dependency order.
+---That drift is invisible today, so emit a one-shot debug warning per module.
+---不在 MODULE_ORDER 中的模块仍会执行，但会被排到所有已列模块（含全部 UI）之后，
+---静默破坏依赖顺序。此处对每个漂移模块打印一次 debug 警告，让问题自动暴露。
 ---@param callback function(name, mod)
 local function iterModulesOrdered(callback)
-    local visited = {}
+    wipe(orderVisited)
     for _, name in ipairs(MODULE_ORDER) do
         local mod = RA.modules[name]
         if mod then
-            visited[name] = true
+            orderVisited[name] = true
             callback(name, mod)
         end
     end
     -- Any module registered but NOT in the order list runs last
     for name, mod in pairs(RA.modules) do
-        if not visited[name] then
+        if not orderVisited[name] then
+            if not orderDriftReported[name] then
+                orderDriftReported[name] = true
+                RA:PrintDebug(string.format(
+                    "Module '%s' is not in MODULE_ORDER (Core/Init.lua) — it runs after every listed module. "
+                    .. "模块 '%s' 不在 MODULE_ORDER 中，会被排到所有已列模块之后。",
+                    name, name))
+            end
             callback(name, mod)
         end
     end

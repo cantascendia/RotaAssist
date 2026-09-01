@@ -240,8 +240,21 @@ function InterruptAdvisor:OnEnable()
 
     -- 定时探测：如果战斗内无敌方施法者，或陋出战斗，自动消断提示
     -- Periodic poller: auto-dismiss when no enemy is casting or after leaving combat.
+    --
+    -- The ticker itself stays at 0.5s (recreating it would allocate a new ticker
+    -- object on every combat transition). Out of combat the body is skipped on 3 of
+    -- every 4 ticks, giving an effective 2s cadence — enough to clear a stale prompt
+    -- without polling nameplates while idle.
+    -- ticker 本身保持 0.5s（按进出战斗重建会每次分配新的 ticker 对象）。
+    -- 脱战时每 4 次只执行 1 次，等效 2s 节奏——足以清掉残留提示，
+    -- 又不会在挂机时轮询 nameplate。
+    local IDLE_TICK_SKIP = 4
+    local idleTick = 0
     self.dismissTimer = C_Timer.NewTicker(0.5, function()
         if not InCombatLockdown() then
+            idleTick = idleTick + 1
+            if idleTick < IDLE_TICK_SKIP then return end
+            idleTick = 0
             if interruptState.shouldInterrupt then
                 interruptState.shouldInterrupt = false
                 interruptState.urgency = 0

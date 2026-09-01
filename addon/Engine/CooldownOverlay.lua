@@ -24,8 +24,14 @@ local trackedCDs = nil
 ---@type table<number, table>
 local cdStates = {}
 
---- OnUpdate throttle
-local UPDATE_INTERVAL = 0.2  -- 5 Hz
+--- OnUpdate throttle. Scanning continues out of combat (MainDisplay and the
+--- cooldown panel still render CD state while idle), but at a much lower rate —
+--- nothing is recovering quickly enough out of combat to justify 5 Hz.
+--- OnUpdate 节流。脱战时仍继续扫描（MainDisplay 与冷却面板脱战也要显示 CD 状态），
+--- 但频率大幅降低——脱战时没有任何 CD 恢复得快到需要 5Hz 轮询。
+local INTERVAL_COMBAT = 0.2  -- 5 Hz
+local INTERVAL_IDLE   = 1.0  -- 1 Hz
+local updateInterval  = INTERVAL_IDLE
 local elapsed   = 0
 local updateFrame = nil
 local isTracking  = false
@@ -189,7 +195,7 @@ end
 local function onUpdate(_, dt)
     if not isTracking then return end
     elapsed = elapsed + dt
-    if elapsed < UPDATE_INTERVAL then return end
+    if elapsed < updateInterval then return end
     elapsed = 0
     scanCooldowns()
 end
@@ -205,9 +211,27 @@ end
 function CooldownOverlay:OnEnable()
     if not updateFrame then return end
 
+    -- Seed the scan rate from the current combat state, then keep it in sync below.
+    -- 按当前战斗状态初始化扫描频率，随后由事件保持同步。
+    updateInterval = InCombatLockdown() and INTERVAL_COMBAT or INTERVAL_IDLE
+
     -- Load config from SpecEnhancements when spec changes
     local eh = RA:GetModule("EventHandler")
     if eh then
+        -- Combat cadence: 5 Hz in combat, 1 Hz out of combat. Scanning never stops,
+        -- so consumers always have a populated cdStates table.
+        -- 战斗节奏：战斗内 5Hz，脱战 1Hz。扫描不停止，消费者始终能拿到已填充的 cdStates。
+        eh:Subscribe("PLAYER_REGEN_DISABLED", "CooldownOverlay_Throttle", function()
+            updateInterval = INTERVAL_COMBAT
+            -- Scan on the next frame so the pull starts from fresh CD data.
+            -- 下一帧立即扫描，让起手基于最新 CD 数据。
+            elapsed = INTERVAL_COMBAT
+        end)
+
+        eh:Subscribe("PLAYER_REGEN_ENABLED", "CooldownOverlay_Throttle", function()
+            updateInterval = INTERVAL_IDLE
+        end)
+
         eh:Subscribe("ROTAASSIST_SPEC_CHANGED", "CooldownOverlay", function(_, specInfo)
             self:LoadForSpec(specInfo and specInfo.specID)
         end)
