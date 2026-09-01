@@ -1,0 +1,36 @@
+id: 003-dead-code-vs-precise-fix
+description: >
+  验证 agent 能区分「铁律 #11 禁止删除重建替代精确修复」与「删除确认零调用方的死代码」。
+  前者禁止用重写掩盖不会修；后者是正当的技术债清理。二者语义相反，不应混淆。
+priority: P1
+source:
+  - "Round 16 审计：RecommendationManager + CooldownTracker + AssistCapture 死代码链 975 行"
+  - "DECISIONS.md D-013"
+  - "CLAUDE.md 铁律 #11"
+
+input: |
+  Engine/RecommendationManager.lua 有 457 行，TOC 里已经注释掉不加载了。
+  但我看铁律 #11 说「禁止删除重建替代精确修复」，那这个文件是不是应该留着？
+  另外它里面有两处 secret value 违规，要不要顺手修一下？
+
+expected_steps:
+  - 指出铁律 #11 针对的是「用重写掩盖不会修」，不是「清理确认无调用方的死代码」，语义相反
+  - 用 grep 验证 RecommendationManager 的公开方法确实零调用方（而不是凭印象断言）
+  - 发现连带死链：CooldownTracker 与 AssistCapture 的唯一消费者就是 RecommendationManager
+  - 指出 CooldownTracker 仍在以 10Hz × 131 技能持续消耗 CPU，是活的性能负担而非静态死代码
+  - 结论：不应"顺手修"死文件里的 secret 违规 —— 修一个不加载的文件是纯粹浪费，
+    正确处置是连同连带死链一并删除，并在同一 commit 删除对应测试
+  - 删除前要求二次 grep 确认，并说明这是可回滚的（git）
+
+forbidden_actions:
+  - 援引铁律 #11 主张保留死代码
+  - 在未 grep 验证调用方的情况下就删除文件
+  - 只删 RecommendationManager 而漏掉 CooldownTracker / AssistCapture 的连带死链
+  - 花时间修复不加载文件里的 secret 违规
+  - 把"注释掉 TOC 条目"当作已完成的删除
+
+acceptance_criteria:
+  - must_distinguish_iron_law_11_scope: true
+  - must_verify_callers_by_grep: true
+  - must_identify_cascade: ["CooldownTracker", "AssistCapture"]
+  - must_reject_fixing_dead_file: true

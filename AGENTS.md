@@ -1,17 +1,65 @@
 # RotaAssist — Agent Instructions
 
-## Project Overview
-RotaAssist is a WoW 12.0 Midnight AI-powered rotation assistant addon.
-- **Language**: Lua 5.1 (WoW addon), Python 3.11 (training pipeline)
-- **Framework**: Ace3 (AceAddon, AceDB, AceEvent, AceLocale, AceTimer)
-- **Architecture**: Modular (RegisterModule/GetModule pattern, event-driven)
+> Updated Round 16 (2026-09-01). Full context in `docs/ai-cto/`.
 
-## Critical Constraints — WoW 12.0 Secret Values
-- NEVER use combat log events (COMBAT_LOG_EVENT_UNFILTERED is blocked in 12.0)
-- ALWAYS wrap API calls that may return secret values with `pcall` + `issecretvalue()` check
-- Player resource (Fury/Mana/Rage) exact values are SECRET in combat — use `UnitPower` only for display (StatusBar:SetValue is allowed), never for logic branching
-- Secondary resources (Soul Fragments, Combo Points, Holy Power) are NON-SECRET
-- CD states of whitelisted spells are non-secret; others may be secret
+## Project Overview
+RotaAssist is a **rotation coach** addon for WoW Midnight — it layers multi-step
+lookahead, accuracy feedback, and combat-phase context on top of Blizzard's
+Assisted Combat. It does not merely restate Blizzard's suggestion (7 competitors
+already do that).
+
+- **Language**: Lua 5.1 (WoW addon), Python 3.11 (training pipeline)
+- **Framework**: Ace3 (AceAddon, AceDB, AceEvent, AceLocale, AceTimer, AceConfig)
+- **Architecture**: Modular (RegisterModule/GetModule pattern, event-driven)
+- **Target client**: **Midnight 12.1.0 — TOC Interface `120100`**
+  (the file currently says `120000`; that is 3 patches stale and the game flags
+  the addon as out of date)
+
+## Critical Constraints — Midnight Secret Values
+
+**The single most violated rule in this codebase: `pcall` protects the API call,
+it does NOT protect the comparison you do afterwards.**
+
+1. Run `issecretvalue()` BEFORE any comparison, arithmetic, or truthiness test on
+   values from `UnitPower` / `UnitHealth` / `C_Spell.GetSpellCooldown` /
+   `C_Spell.GetSpellCharges` / `C_UnitAuras`.
+   - ❌ `mx = (ok and mx and mx > 0 and mx) or 1`  — `mx > 0` already violated it
+   - ✅ `if issecretvalue(mx) then return fallback end` first, then compare
+   - Known live violations: `PatternDetector.lua:117-119`,
+     `NeuralPredictor.lua:261-263`, `SmartQueueManager.lua:388-395`,
+     `APLEngine.lua:287-291`, `SmartQueueManager.lua:373`
+2. All cooldown reads go through `RA:GetSpellCooldownSafe()`. Never call
+   `C_Spell.GetSpellCooldown` directly. Reference implementation:
+   `Core/Init.lua:137-201`.
+3. Primary resource (Fury/Mana/Rage) is SECRET in combat — drive
+   `StatusBar:SetValue()` only, never branch on it. Correct pattern:
+   `UI/Widgets/ResourceBar.lua:110-114`.
+4. Secondary resources (Soul Fragments, Combo Points, Holy Power) are NON-SECRET.
+5. `COMBAT_LOG_EVENT_UNFILTERED` errors on register since 12.0.
+   The replacement is `COMBAT_LOG_EVENT_INTERNAL_UNFILTERED`.
+6. Prefer `C_Secrets.ShouldUnitPowerBeSecret()` / `ShouldSpellCooldownBeSecret()` /
+   `ShouldUnitAuraSlotBeSecret()` / `ShouldUnitHealthMaxBeSecret()` for RUNTIME
+   decisions instead of hardcoding dev-time assumptions about what is secret.
+   The codebase currently uses zero of these.
+
+## Critical Constraints — APL Data
+
+`APLEngine:EvaluateCondition` (`APLEngine.lua:232-319`) silently returns `false`
+for any token it does not recognise (`L310`). **70 of 352 APL rules (19.9%) are
+currently dead this way** and neither CI nor the test suite catches it.
+
+Only these tokens are implemented:
+```
+cd_ready  ready  always  cd_soon:N  after:ID  not_after:ID
+estimated_resource OP N   target_count OP N   combat_time OP N
+charges OP N   window:X   not_window:X   in_meta   not_in_meta
+```
+`splitConditions` (`APLEngine.lua:60-67`) splits on uppercase ` AND ` only —
+`OR` and lowercase `and` are NOT supported and kill the whole rule.
+
+Do not author rules using `buff:` `debuff:` `debuff_missing:` `debuff_remains:`
+`cp>=N` `resource>=N` `target_hp<N` `proc:` `stacks:` `charges:<name>>=N`
+`cd_not_ready:ID` — they compile fine and never fire.
 
 ## Code Style
 - Bilingual comments: English + Chinese (中文). Japanese (日本語) where already present.
