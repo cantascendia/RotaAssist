@@ -1,0 +1,145 @@
+## Interface: 120100
+## Title: RotaAssist
+## Notes: AI-powered rotation assistant for WoW Midnight 12.1 | 智能循环助手 | ローテアシスト
+## Author: RotaAssist Team
+## Version: 1.1.0
+## SavedVariables: RotaAssistDB
+## OptionalDeps: Ace3
+## IconTexture: Interface\Icons\Ability_Mage_BrainFreeze
+## X-License: MIT
+## X-Localizations: enUS, zhCN, jaJP
+## X-Category: Combat
+
+embeds.xml
+
+# Locales first
+Locales\enUS.lua
+Locales\zhCN.lua
+Locales\jaJP.lua
+
+# Core
+Core\Init.lua
+Data\Registry.lua
+Core\SavedVars.lua
+Core\EventHandler.lua
+
+# Data (MUST load before Engine)
+Data\SpecInfo.lua
+Data\WhitelistSpells.lua
+Data\APL\APL_Template.lua
+Data\APL\DemonHunter_Havoc.lua
+Data\APL\DemonHunter_Vengeance.lua
+Data\APL\DemonHunter_Devourer.lua
+# v1.1.0 ships DH-only (D-014): non-DH spec data is incubating — validated but not loaded. Re-enable per-spec after its APL passes /ra aplcheck with zero unsupported tokens.
+# v1.1.0 仅发布恶魔猎手（D-014）：非 DH 专精数据处于孵化期 —— 已校验但不加载。待该专精的 APL 通过 /ra aplcheck 且零不支持 token 后再逐个恢复。
+# Data\APL\Warrior_Arms.lua
+# Data\APL\Warrior_Fury.lua
+# Data\APL\DeathKnight_Frost.lua
+# Data\APL\DK_Unholy.lua
+# Data\APL\Mage_Arcane.lua
+# Data\APL\Mage_Fire.lua
+# Data\APL\Mage_Frost.lua
+# Data\APL\Paladin_Retribution.lua
+# Data\APL\Priest_Shadow.lua
+# Data\APL\Warlock_Demonology.lua
+# Data\APL\Evoker_Augmentation.lua
+# Data\APL\Evoker_Devastation.lua
+# Data\APL\Evoker_Preservation.lua
+# Data\APL\Rogue_Subtlety.lua
+# Data\APL\Shaman_Elemental.lua
+# Data\APL\Shaman_Enhancement.lua
+# Data\APL\Druid_Balance.lua
+# SpecEnhancements (CD/defensive/resource config per spec)
+Data\SpecEnhancements\DemonHunter.lua
+# v1.1.0 ships DH-only (D-014): non-DH spec data is incubating — validated but not loaded. Re-enable per-spec after its APL passes /ra aplcheck with zero unsupported tokens.
+# v1.1.0 仅发布恶魔猎手（D-014）：非 DH 专精数据处于孵化期 —— 已校验但不加载。待该专精的 APL 通过 /ra aplcheck 且零不支持 token 后再逐个恢复。
+# Data\SpecEnhancements\DeathKnight.lua
+# Data\SpecEnhancements\Evoker.lua
+# Data\SpecEnhancements\Mage.lua
+# Data\SpecEnhancements\Paladin.lua
+# Data\SpecEnhancements\Priest.lua
+# Data\SpecEnhancements\Rogue.lua
+# Data\SpecEnhancements\Shaman.lua
+# Data\SpecEnhancements\Warlock.lua
+# Data\SpecEnhancements\Druid.lua
+# Data\SpecEnhancements\Warrior.lua
+# DecisionTrees (auto-generated or hand-crafted)
+Data\DecisionTrees\DH_Havoc_DT.lua
+Data\DecisionTrees\DH_Vengeance_DT.lua
+Data\DecisionTrees\DH_Devourer_DT.lua
+# v1.1.0 ships DH-only (D-014): non-DH spec data is incubating — validated but not loaded. Re-enable per-spec after its APL passes /ra aplcheck with zero unsupported tokens.
+# v1.1.0 仅发布恶魔猎手（D-014）：非 DH 专精数据处于孵化期 —— 已校验但不加载。待该专精的 APL 通过 /ra aplcheck 且零不支持 token 后再逐个恢复。
+# Data\DecisionTrees\DK_Frost_DT.lua
+# Data\DecisionTrees\DK_Unholy_DT.lua
+# Data\DecisionTrees\Mage_Arcane_DT.lua
+# Data\DecisionTrees\Mage_Fire_DT.lua
+# Data\DecisionTrees\Mage_Frost_DT.lua
+# Data\DecisionTrees\Paladin_Ret_DT.lua
+# Data\DecisionTrees\Priest_Shadow_DT.lua
+# Data\DecisionTrees\Warlock_Demo_DT.lua
+# Data\DecisionTrees\ROG_Subtlety_DT.lua
+# Data\DecisionTrees\SHA_Elemental_DT.lua
+# Data\DecisionTrees\Shaman_Enh_DT.lua
+# Data\DecisionTrees\WAR_Arms_DT.lua
+# Data\DecisionTrees\WAR_Fury_DT.lua
+# Data\DecisionTrees\DRU_Balance_DT.lua
+# Data\DecisionTrees\EVO_Augmentation_DT.lua
+# Data\DecisionTrees\EVO_Devastation_DT.lua
+# Data\DecisionTrees\EVO_Preservation_DT.lua
+# TransitionMatrices (auto-generated or hand-crafted)
+Data\TransitionMatrix\DH_Havoc_TM.lua
+Data\TransitionMatrix\DH_Vengeance_TM.lua
+Data\TransitionMatrix\DH_Devourer_TM.lua
+# v1.1.0 ships DH-only (D-014): non-DH spec data is incubating — validated but not loaded. Re-enable per-spec after its APL passes /ra aplcheck with zero unsupported tokens.
+# v1.1.0 仅发布恶魔猎手（D-014）：非 DH 专精数据处于孵化期 —— 已校验但不加载。待该专精的 APL 通过 /ra aplcheck 且零不支持 token 后再逐个恢复。
+# Data\TransitionMatrix\DK_Frost_TM.lua
+# Data\TransitionMatrix\DK_Unholy_TM.lua
+# Data\TransitionMatrix\Mage_Arcane_TM.lua
+# Data\TransitionMatrix\Mage_Fire_TM.lua
+# Data\TransitionMatrix\Mage_Frost_TM.lua
+# Data\TransitionMatrix\Paladin_Ret_TM.lua
+# Data\TransitionMatrix\Priest_Shadow_TM.lua
+# Data\TransitionMatrix\Warlock_Demo_TM.lua
+# Data\TransitionMatrix\ROG_Subtlety_TM.lua
+# Data\TransitionMatrix\SHA_Elemental_TM.lua
+# Data\TransitionMatrix\Shaman_Enh_TM.lua
+# Data\TransitionMatrix\WAR_Arms_TM.lua
+# Data\TransitionMatrix\WAR_Fury_TM.lua
+# Data\TransitionMatrix\DRU_Balance_TM.lua
+# Data\TransitionMatrix\EVO_Augmentation_TM.lua
+# Data\TransitionMatrix\EVO_Devastation_TM.lua
+# Data\TransitionMatrix\EVO_Preservation_TM.lua
+
+# Engine
+Engine\SpecDetector.lua
+Engine\AssistedCombatBridge.lua
+Engine\AccuracyTracker.lua
+Engine\AIInference.lua
+Engine\CastHistoryRecorder.lua
+Engine\CDMHook.lua
+Engine\PatternDetector.lua
+Engine\NeuralPredictor.lua
+Engine\APLEngine.lua
+Engine\SmartQueueManager.lua
+Engine\CooldownOverlay.lua
+Engine\InterruptAdvisor.lua
+Engine\DefensiveAdvisor.lua
+Engine\PrePullChecker.lua
+
+# UI last — Theme must load before every widget; Widgets before MainDisplay
+# UI 最后加载 —— Theme 必须先于所有 widget，widget 必须先于 MainDisplay
+UI\Theme.lua
+UI\Widgets\GlowWidget.lua
+UI\Widgets\IconWidget.lua
+UI\Widgets\ResourceBar.lua
+UI\Widgets\PhaseIndicator.lua
+UI\Widgets\AccuracyMeter.lua
+UI\Widgets\PrePullPanel.lua
+UI\Widgets\DefensiveAlert.lua
+UI\Widgets\InterruptAlert.lua
+UI\Widgets\CooldownBar.lua
+UI\Widgets.lua
+UI\MainDisplay.lua
+UI\CooldownPanel.lua
+UI\MinimapButton.lua
+UI\ConfigPanel.lua
