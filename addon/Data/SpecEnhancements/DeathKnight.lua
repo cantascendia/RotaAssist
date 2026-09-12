@@ -23,7 +23,20 @@ RA.SpecEnhancements[251] = {
         { spellID = 49998, hpThreshold = 0.40, name = "Death Strike" },
         { spellID = 48707, hpThreshold = 0.60, name = "Anti-Magic Shell" },
     },
-    resource = { type = 6, maxBase = 100, spellCosts = {} },  -- Runic Power
+    resource = {
+        powerType = 6,  -- Enum.PowerType.RunicPower
+        maxBase   = 100,
+        spellCosts = {
+            [49143]  = { cost = 25 },   -- Frost Strike
+            [49020]  = { cost = 0  },   -- Obliterate (Rune-only)
+            [49184]  = { cost = 0  },   -- Howling Blast (Rune-only)
+            [196770] = { cost = 0  },   -- Remorseless Winter (Rune-only)
+            [279302] = { cost = 0  },   -- Frostwyrm's Fury (no RP cost)
+            [51271]  = { cost = 0  },   -- Pillar of Frost (no cost)
+            [47568]  = { cost = 0  },   -- Empower Rune Weapon (no cost)
+            [47528]  = { cost = 0  },   -- Mind Freeze (free)
+        },
+    },
     burstWindows = {
         pillar = { trigger = 51271, duration = 12, label = "Pillar of Frost" }
     },
@@ -63,16 +76,22 @@ RA.SpecEnhancements[252] = {
         { spellID = 49039,  name = "Lichborne",           hpThreshold = 0.40 },
     },
     resource = {
-        type = 6,   -- Runic Power
-        maxBase  = 100,
-        runes = { max = 6, simultaneous_recharge = 3 },
+        powerType = 6,  -- Enum.PowerType.RunicPower
+        maxBase   = 100,
+        runes     = { max = 6, simultaneousRecharge = 3 },
         spellCosts = {
-            [47541] = 30,
-            [207317] = 30,
-            [85948] = "2 Runes",
-            [460461] = "1 Rune",
-            [55090] = "1 Rune",
-            [460463] = "1 Rune",
+            [47541]  = { cost = 30 },   -- Death Coil
+            [207317] = { cost = 30 },   -- Epidemic
+            [85948]  = { cost = 0  },   -- Festering Strike (Rune-only)
+            [460461] = { cost = 0  },   -- Festering Scythe (Rune-only)
+            [55090]  = { cost = 0  },   -- Scourge Strike (Rune-only)
+            [460463] = { cost = 0  },   -- Putrefy (Rune-only)
+            [77575]  = { cost = 0  },   -- Outbreak (free)
+            [42650]  = { cost = 0  },   -- Army of the Dead (no cost)
+            [63560]  = { cost = 0  },   -- Dark Transformation (no cost)
+            [49206]  = { cost = 0  },   -- Summon Gargoyle (no cost)
+            [343294] = { cost = 30 },   -- Soul Reaper
+            [47528]  = { cost = 0  },   -- Mind Freeze (free)
         },
     },
     burstWindows = {
