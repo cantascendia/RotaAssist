@@ -71,6 +71,13 @@ local defaults = {
         interrupt = {
             enabled    = true,
             soundAlert = true
+        },
+        cdm = {
+            -- EssentialCooldownViewer hook (Phase 2 v1.1).
+            -- Default disabled — opt-in. See ROADMAP §CDM Hook.
+            enabled        = false,
+            trackInterrupt = true,
+            trackMajorCD   = true,
         }
     }
 }

@@ -117,6 +117,7 @@ Engine\APLEngine.lua
 # Engine\RecommendationManager.lua  -- DEPRECATED: replaced by SmartQueueManager (Phase 0)
 Engine\SmartQueueManager.lua
 Engine\CooldownOverlay.lua
+Engine\CDMHook.lua
 Engine\InterruptAdvisor.lua
 Engine\DefensiveAdvisor.lua
 Engine\PrePullChecker.lua

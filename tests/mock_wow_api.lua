@@ -493,3 +493,63 @@ _G.UnitHealthPercent = _G.UnitHealthPercent or function() return nil end
 
 -- GetSpecialization for multi-spec mock support
 _G.GetNumSpecializations = _G.GetNumSpecializations or function() return 2 end
+
+-- ============================================================
+-- hooksecurefunc mock (used by CDMHook)
+-- ============================================================
+-- Real WoW: replaces the function with a wrapper that calls the original
+-- then fires the post-hook. Mock equivalent — same observable behaviour.
+_G.hooksecurefunc = _G.hooksecurefunc or function(target, methodName, post)
+    if type(target) == "function" and type(methodName) == "function" then
+        -- Two-arg form: hooksecurefunc(originalFn, postFn)
+        local original = target
+        return function(...) original(...); methodName(...) end
+    end
+    if type(target) == "table" and type(methodName) == "string" then
+        local original = rawget(target, methodName)
+        if type(original) ~= "function" then return end
+        target[methodName] = function(self, ...)
+            original(self, ...)
+            post(self, ...)
+        end
+        return
+    end
+end
+
+-- ============================================================
+-- Enum.CooldownViewerAlertEventType (12.0 CDM)
+-- ============================================================
+_G.Enum = _G.Enum or {}
+_G.Enum.CooldownViewerAlertEventType =
+    _G.Enum.CooldownViewerAlertEventType
+    or { Available = 0, OnCooldown = 1 }
+
+-- ============================================================
+-- EssentialCooldownViewer mock helper (for CDMHook tests)
+-- ============================================================
+-- Tests opt-in by calling _G.RotaAssistTest_InstallCDV(spellIDs).
+-- Default state: not installed (so OnEnable's hook attempt fails gracefully).
+function _G.RotaAssistTest_InstallCDV(spellIDs)
+    local children = {}
+    for _, sid in ipairs(spellIDs or {}) do
+        local child = {
+            _spellID = sid,
+            GetSpellID = function(self) return self._spellID end,
+            TriggerAlertEvent = function(self, ev)
+                self._lastEvent = ev
+            end,
+        }
+        children[#children + 1] = child
+    end
+    _G.EssentialCooldownViewer = {
+        _children = children,
+        GetChildren = function(self)
+            return unpack(self._children)
+        end,
+    }
+    return _G.EssentialCooldownViewer
+end
+
+function _G.RotaAssistTest_UninstallCDV()
+    _G.EssentialCooldownViewer = nil
+end
