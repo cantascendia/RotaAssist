@@ -101,8 +101,10 @@ function Observer:Observe(state)
             elseif usable==true and remaining==0 and inRange==true then sample.ready[id]=true end
         end
     end
-    -- SimC virtual Demonsurge flags are deliberately absent. Missing is unknown.
-    -- SimC 内部强化消耗标志没有伪造对应光环；缺失仍然保持未知。
+    -- Explicit cast-model provenance, not fabricated client aura observations.
+    -- 强化标志来自有期限的施法模型；无记录或变身不可读时仍未知。
+    local surge=RA:GetModule("HavocSurgeTracker")
+    if surge then status.surgeTrackedFacts,status.surgeSource=surge:Populate(sample.facts) end
     local consensus=RA:GetModule("IndependentConsensus")
     local evaluated=(consensus or evaluator):Evaluate(policy,sample)
     status.status=evaluated.status

@@ -4,7 +4,10 @@ import hashlib
 import json
 import math
 from pathlib import Path
-from independent_policy import canonical
+if __package__:
+    from .independent_policy import canonical
+else:
+    from independent_policy import canonical
 
 
 def lua(value):

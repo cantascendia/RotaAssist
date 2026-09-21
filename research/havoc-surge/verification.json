@@ -1,0 +1,158 @@
+{
+  "sourceCommit": "774babde5ddc7c5fc9f1abb129b473f8a076df70",
+  "engineSha256": "8c6df94966798cabf6864664c2648de9252e396a5ea90188c115c17c8b5339de",
+  "profileSha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+  "runs": [
+    {
+      "targets": 1,
+      "seed": 20261012,
+      "duration": 180,
+      "iterations": 1,
+      "checked": 247,
+      "unknown": 218,
+      "samples": 155,
+      "castModelChecked": 157,
+      "publicAbsenceChecked": 90,
+      "traceSha256": "43ff1eca04823d7799535fbfda51bfb0e443c368402fa211157258af13b99369",
+      "fixtureSha256": "57eb983ecc3d5c30fa5545cf160a9a888ded53f0c1236931b074c7f96295a7eb",
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\reference.simc",
+        "iterations=1",
+        "threads=1",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "desired_targets=1",
+        "seed=20261012",
+        "debug=1",
+        "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\trace-1t-20261012.log"
+      ]
+    },
+    {
+      "targets": 1,
+      "seed": 20261013,
+      "duration": 180,
+      "iterations": 1,
+      "checked": 264,
+      "unknown": 213,
+      "samples": 159,
+      "castModelChecked": 156,
+      "publicAbsenceChecked": 108,
+      "traceSha256": "18e03586e9aa6a1e8379688d6c6f9020cabd7ca5a6dbde9b34164c8d007d49c6",
+      "fixtureSha256": "2bd9c328bafdf07b8d33e2b0ae9471290683752b8eb110cce1394ffdc95450e0",
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\reference.simc",
+        "iterations=1",
+        "threads=1",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "desired_targets=1",
+        "seed=20261013",
+        "debug=1",
+        "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\trace-1t-20261013.log"
+      ]
+    },
+    {
+      "targets": 5,
+      "seed": 20261012,
+      "duration": 180,
+      "iterations": 1,
+      "checked": 259,
+      "unknown": 221,
+      "samples": 160,
+      "castModelChecked": 154,
+      "publicAbsenceChecked": 105,
+      "traceSha256": "e5622e82cbc9783ed78d946b5e04be7668a5380c2760937b598e678d31620dda",
+      "fixtureSha256": "8c60c408b3cc91489aba6154a4f9e355b9dd657e016d97f9f0961d62bc2161b0",
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\reference.simc",
+        "iterations=1",
+        "threads=1",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "desired_targets=5",
+        "seed=20261012",
+        "debug=1",
+        "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\trace-5t-20261012.log"
+      ]
+    },
+    {
+      "targets": 5,
+      "seed": 20261013,
+      "duration": 180,
+      "iterations": 1,
+      "checked": 251,
+      "unknown": 226,
+      "samples": 159,
+      "castModelChecked": 161,
+      "publicAbsenceChecked": 90,
+      "traceSha256": "2eae4f6c99ae7245db4adfb5deda5b92391027932de06a184fb426f25023e75e",
+      "fixtureSha256": "e4ecc2b43ae50bbd33fdb81414f16f0059c908c4038cd6d04608b8a2d59810bc",
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\reference.simc",
+        "iterations=1",
+        "threads=1",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "desired_targets=5",
+        "seed=20261013",
+        "debug=1",
+        "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-surge\\traces\\trace-5t-20261013.log"
+      ]
+    }
+  ],
+  "liveValidated": false,
+  "dpsGainMeasured": false,
+  "limitation": "Simulator event replay supplies readable Meta; it does not validate live event order or restricted APIs.",
+  "version": "1.1.1-rc.11",
+  "luaTests": 705,
+  "pythonTests": 102,
+  "luaSyntaxFiles": 168,
+  "generatedTemporalCases": 60,
+  "sourceFileSha256": "1a6483f99714e99d6bde7c073dc62e43fa7caf4ee82e411f3fe737b77b6979cc",
+  "mutations": [
+    {
+      "mutation": "ignore_consumption",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_duplicate_cast",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "rearm_aura_on_eye",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_demonic_selection",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "retain_expired_flags",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "unknown_form_is_active",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "retain_dead_history",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "retain_cancelled_form",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "disconnect_observer",
+      "killedByBehaviorTest": true
+    }
+  ]
+}

@@ -5,6 +5,19 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.11] - 2026-09-22
+
+[Havoc burst-state tracking](docs/RELEASE_1.1.1-rc.11.md), implemented by Astra.
+
+- Track Fel-Scarred Demonsurge flags from selected talents and public cast events,
+  with conservative expiry and confirmation from the real Meta aura.
+- Model manual Meta refresh, Demonic spender refresh, per-action consumption and
+  invalidation after death, build changes or unconfirmed aura transitions.
+- Feed explicit cast-model provenance to the existing experimental independent
+  evaluator; do not change the frozen policy or its default-off setting.
+- Replay four actual pinned SimC traces: 628 cast-model assertions and 393 public
+  absence assertions agree; 878 observations remain unknown. No DPS gain claim.
+
 ## [1.1.1-rc.10] - 2026-09-22
 
 [Automatic runtime context](docs/RELEASE_1.1.1-rc.10.md), implemented by Astra.

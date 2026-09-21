@@ -46,5 +46,15 @@ RA.Registry.HAVOC_TRANSITIONS = {
     resetCooldowns = {198013, 188499, 210152},
 }
 
+-- Model flags from SimC 774babd, not client aura IDs / 模型标志不是光环 ID。
+RA.Registry.HAVOC_SURGE = {
+    specID = 577, talent = 452402, demonicTalent = 213410, metaAura = 162264,
+    metamorphosis = 191427, eyeBeam = 198013, abyssalGaze = 452497,
+    manualMinimum = 20, demonicMinimum = 5,
+    facts = {"action.annihilation.demonsurge_available", "action.death_sweep.demonsurge_available",
+        "action.immolation_aura.demonsurge_available"},
+    consumers = {[201427]=1, [162794]=1, [210152]=2, [188499]=2, [258920]=3},
+}
+
 -- Backward compatibility for legacy callers.
 RA.KNOWN_OVERRIDE_PAIRS = RA.Registry.OVERRIDE_PAIRS

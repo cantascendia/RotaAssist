@@ -54,6 +54,7 @@ local MODULE_ORDER = {
     "IndependentConsensus",
     "ResourceEvidence",
     "PublicAuraFacts",
+    "HavocSurgeTracker",
     "IndependentObserver",
     "SmartQueueManager",
     "CooldownOverlay",

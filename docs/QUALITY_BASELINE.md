@@ -5,6 +5,12 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.11 adds bounded Fel-Scarred Demonsurge cast-state tracking. Four pinned SimC
+  trajectories validate the 628 model values emitted by the tracker (plus 393
+  public-form-absence values); 878 values remain unknown. The replay supplies
+  readable Meta and simulator event ordering, not real-client API evidence.
+  This improves a known missing state input, not a measured DPS result.
+
 - rc.10 automatically discovers learned active spells and applies current-target
   range filtering without personal exports across specs. Per-spell enemy counts
   are visible, engaged, targetable lower bounds, not cleave/cone/splash hit counts.
