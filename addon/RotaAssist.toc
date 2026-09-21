@@ -2,7 +2,7 @@
 ## Title: RotaAssist
 ## Notes: AI-powered rotation assistant for WoW Midnight 12.1 | 智能循环助手 | ローテアシスト
 ## Author: RotaAssist Team
-## Version: 1.1.1-rc.7
+## Version: 1.1.1-rc.8
 ## SavedVariables: RotaAssistDB
 ## OptionalDeps: Ace3
 ## IconTexture: Interface\Icons\Ability_Mage_BrainFreeze
@@ -111,6 +111,7 @@ Data\TransitionMatrix\DH_Devourer_TM.lua
 # Data\TransitionMatrix\EVO_Preservation_TM.lua
 
 # Engine
+Engine\CharacterState.lua
 Engine\SpecDetector.lua
 Engine\AssistedCombatBridge.lua
 Engine\TargetContext.lua

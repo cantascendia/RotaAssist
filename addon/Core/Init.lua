@@ -37,6 +37,7 @@ local MODULE_ORDER = {
     -- Core (data layer first, then event infrastructure)
     "SavedVars",
     "EventHandler",
+    "CharacterState",
     -- Engine (depends on Data + Core modules)
     "SpecDetector",
     "AssistedCombatBridge",
@@ -533,6 +534,7 @@ function RA:SlashCommand(input)
         self:Print("  /ra aplcheck — Report APL rules with unsupported conditions or unknown spellIDs")
         self:Print("  /ra version  — " .. L["SLASH_HELP_VERSION"])
         self:Print(L["INDEPENDENT_USAGE"])
+        self:Print(L["BUILD_USAGE"])
     elseif cmd == "config" or cmd == "options" or cmd == "settings" then
         LibStub("AceConfigDialog-3.0"):Open("RotaAssist")
     elseif cmd == "toggle" then
@@ -573,6 +575,9 @@ function RA:SlashCommand(input)
         else
             self:PrintWarning("APLEngine is not available. / APLEngine 不可用。")
         end
+    elseif cmd == "build" then
+        local character = self:GetModule("CharacterState")
+        if character then character:PrintSummary() else self:Print(L["BUILD_UNKNOWN"]) end
     elseif cmd == "independent" then
         if rest ~= "on" and rest ~= "off" then
             self:Print(L["INDEPENDENT_USAGE"])

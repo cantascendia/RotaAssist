@@ -48,6 +48,12 @@ bounds are never represented as exact observations. See
 
 ## Release requirements
 
+Rc.8 adds guarded current-character talent/rank, equipment and attribute context.
+Recognition is not calibration: a matching hero profile or complete talent key
+does not certify a policy for that exact gear/build. Deliberate mismatched-hero
+SimC negative controls establish sensitivity, not user gains. See
+[rc.8 notes](RELEASE_1.1.1-rc.8.md).
+
 Rc.7 adds symbolic consensus over feasible hidden completions. This can establish
 that missing facts are irrelevant to a particular policy decision; it does not
 establish that this policy maximizes damage. Its synthetic 782-to-792 decided

@@ -1,0 +1,22 @@
+{
+  "checked": "2026-09-22",
+  "apiCommit": "78282522143e25c3540583734fd192c3d69be910",
+  "files": {
+    "ClassTalentsDocumentation.lua": {
+      "sha256": "f78a3c8af0b812a6f705c078f18a70a763687cb9217b09f8aaf20e5c45510358",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/ClassTalentsDocumentation.lua"
+    },
+    "SharedTraitsDocumentation.lua": {
+      "sha256": "ea60282e77ec208b96218dfaae6e076826510714204b36a7b7aff9c2aa4187e1",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SharedTraitsDocumentation.lua"
+    },
+    "SpellDocumentation.lua": {
+      "sha256": "fbedb3cf4b82d623b49a7fa170c982de2e4b005d2bcd5db3068bfb6211e51007",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SpellDocumentation.lua"
+    },
+    "TraitConfigDocumentation.lua": {
+      "sha256": "8b0a77fc582291e605f9ed5d03695c39cf2f926608300c5c8f66e67e018c5009",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/TraitConfigDocumentation.lua"
+    }
+  }
+}

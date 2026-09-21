@@ -167,6 +167,12 @@ end
 -- Collect selected trait IDs before resolving any localized display name.
 -- 先收集已选天赋的稳定 ID；名字仅为旧配置的兼容路径。
 local function getActiveTalentSpellNames()
+    local character = RA:GetModule("CharacterState")
+    if character then
+        local observed = character:GetSnapshot()
+        if observed.talentsComplete then return observed end
+        return nil
+    end
     if not C_ClassTalents or not C_ClassTalents.GetActiveConfigID then
         return nil
     end
@@ -1239,7 +1245,16 @@ end
 ------------------------------------------------------------------------
 
 function APLEngine:OnInitialize() end
-function APLEngine:OnEnable() end
+function APLEngine:OnEnable()
+    local events = RA:GetModule("EventHandler")
+    if events then events:Subscribe("ROTAASSIST_CHARACTER_CHANGED", "APLEngine", function()
+        self:RefreshProfileFromTalents()
+    end) end
+end
+function APLEngine:OnDisable()
+    local events = RA:GetModule("EventHandler")
+    if events then events:UnsubscribeAll("APLEngine") end
+end
 
 ------------------------------------------------------------------------
 -- Public API

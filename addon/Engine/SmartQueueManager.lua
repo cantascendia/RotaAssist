@@ -1184,6 +1184,18 @@ function SmartQueueManager:OnEnable()
     -- 譁ｽ豕墓・蜉溷錘・壽峩譁ｰ蜿倩ｺｫ迥ｶ諤√∬ｽｯ螻剰反縲∝､ｱ謨・Bridge 郛灘ｭ倥・㍾蟒ｺ髦溷・
     local eh = RA:GetModule("EventHandler")
     if eh then
+        eh:Subscribe("ROTAASSIST_CHARACTER_CHANGED", "SmartQueueManager", function()
+            local independent = RA:GetModule("IndependentObserver")
+            if independent then independent:Reset() end
+            lastKnownBlizzSpell, channelNextSpell, lastRecommendedSpellID = nil, nil, nil
+            wipe(softBlockedSpells)
+            wipe(aplPredictions)
+            wipe(finalQueue.next)
+            finalQueue.main = nil
+            InvalidateChargeSubset()
+            lastUpdate = throttleInterval
+            eh:Fire("ROTAASSIST_QUEUE_UPDATED", nil)
+        end)
         eh:Subscribe("ROTAASSIST_TARGET_CONTEXT_CHANGED", "SmartQueueManager", function()
             local independent = RA:GetModule("IndependentObserver")
             if independent then independent:Reset() end

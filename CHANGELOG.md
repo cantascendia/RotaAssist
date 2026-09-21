@@ -5,6 +5,19 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.8] - 2026-09-22
+
+[Character-specific context](docs/RELEASE_1.1.1-rc.8.md), implemented by Astra.
+
+### Added
+- Guarded talent ranks/choices, hero subtree, gear identity, public attributes and
+  relevant spell metadata with separate completeness and snapshot provenance.
+- Complete-build profile resolution and independent talent-rank facts; immediately
+  invalidate old recommendations and caches on configuration changes.
+- Localized `/ra build` diagnostics and independent dynamic-stat refresh.
+- Two-build SimC negative controls, generated identity checks and seven behavioral
+  mutations. The policy and maximum-DPS qualification remain unchanged.
+
 ## [1.1.1-rc.7] - 2026-09-22
 
 [Symbolic state consensus](docs/RELEASE_1.1.1-rc.7.md), implemented by Astra.

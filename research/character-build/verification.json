@@ -1,0 +1,40 @@
+{
+  "luaTestsPassed": 666,
+  "pythonTestsIncludingTraining": 79,
+  "addonLuaSyntaxFiles": 165,
+  "mutationChecks": [
+    {
+      "mutation": "retain_stale_dynamic_stats",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "accept_staged_edits",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_configuration_race",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "select_every_choice",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_gear_modifiers",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "accept_unknown_build",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "disconnect_queue_invalidation",
+      "killedByBehaviorTest": true
+    }
+  ],
+  "simcRuns": 8,
+  "actualSimcSamples": 15992,
+  "actualPlayerCharacterCaptured": false,
+  "retailRuntimeValidated": false,
+  "maximumDpsEstablished": false
+}

@@ -36,8 +36,23 @@ function Observer:Observe(state)
     if not policy or not evaluator or not spec or spec.specID~=policy.specID
        or not apl or not apl.GetProfileName or apl:GetProfileName()~=policy.heroProfile then return status end
     if not state or state.targetValid~=true then status.status="target_unknown"; return status end
+    local character=RA:GetModule("CharacterState")
+    if character then
+        local build=character:GetSnapshot()
+        if not build.talentsComplete or build.specID~=policy.specID then
+            status.status="build_unknown"; return status
+        end
+        status.talentKey,status.equipmentKey=build.talentKey,build.equipmentKey
+        status.characterGeneration=build.generation
+    end
     for _,values in pairs(sample) do wipe(values) end
     wipe(seen)
+    if character then
+        for _,rule in ipairs(policy.rules) do for _,condition in ipairs(rule.conditions) do
+            local talentID=condition[1]:match("^talent%.(%d+)%.rank$")
+            if talentID then sample.facts[condition[1]]=character:GetTalentRank(tonumber(talentID)) end
+        end end
+    end
     if state.resourceKnown==true then sample.facts.fury=finite(state.resource) end
     local config=RA.Registry and RA.Registry.HAVOC_CONTEXT
     local resource=RA:GetModule("ResourceEvidence")

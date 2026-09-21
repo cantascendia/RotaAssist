@@ -42,6 +42,10 @@ local function minimumCost(spellID, powerType)
 end
 
 -- Borrowed result, rebuilt on each call. No state is propagated through casts.
+function Evidence:GetMinimumCost(spellID, powerType)
+    return minimumCost(spellID,powerType)
+end
+
 -- 返回复用缓冲区；每次重建，不把旧推断延续到施法后的状态。
 function Evidence:Observe(rules, powerType)
     result.min,result.max,result.observations,result.inconsistent=0,nil,0,false
