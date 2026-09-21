@@ -69,13 +69,13 @@ local function scanCooldowns()
         local chargeHandled = false
         do
             local chOk, chInfo = pcall(C_Spell.GetSpellCharges, spellID)
-            if chOk and chInfo and type(chInfo) == "table" then
+            if chOk and type(chInfo) == "table" then
                 local mc = chInfo.maxCharges
                 -- SECRET VALUE GUARD: maxCharges 和 currentCharges 可能是 secret
-                if mc and not issecretvalue(mc) and mc > 1 then
+                if not issecretvalue(mc) and type(mc) == "number" and mc > 1 then
                     chargeHandled = true
                     local cc = chInfo.currentCharges
-                    if cc and not issecretvalue(cc) and cc > 0 then
+                    if not issecretvalue(cc) and type(cc) == "number" and cc > 0 then
                         state.remaining = 0
                         state.ready = true
                         state.startTime = 0
@@ -83,8 +83,8 @@ local function scanCooldowns()
                     else
                         local cst = chInfo.cooldownStartTime
                         local cdur = chInfo.cooldownDuration
-                        if cst and cdur
-                           and not issecretvalue(cst) and not issecretvalue(cdur)
+                        if not issecretvalue(cst) and not issecretvalue(cdur)
+                           and type(cst) == "number" and type(cdur) == "number"
                            and cdur > 0 then
                             local cRem = (cst + cdur) - GetTime()
                             if cRem <= 0 then
@@ -285,6 +285,12 @@ function CooldownOverlay:LoadForSpec(specID)
     isTracking  = false
 
     if not specID or not RA.SpecEnhancements then return end
+    local specDetector = RA:GetModule("SpecDetector")
+    if specDetector and specDetector.IsPredictiveSpecSupported
+       and not specDetector:IsPredictiveSpecSupported(specID) then
+        if updateFrame then updateFrame:SetScript("OnUpdate", nil) end
+        return
+    end
 
     local enhData  = RA.SpecEnhancements[specID]
     local combined = {}

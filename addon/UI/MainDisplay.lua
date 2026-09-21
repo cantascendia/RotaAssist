@@ -810,6 +810,65 @@ function MainDisplay:OnEnable()
     checkVisibility()
 end
 
+function MainDisplay:OnDisable()
+    local eh = RA:GetModule("EventHandler")
+    if eh then
+        eh:UnsubscribeAll("MainDisplay")
+    end
+
+    if outOfCombatTimer then
+        outOfCombatTimer:Cancel()
+        outOfCombatTimer = nil
+    end
+
+    -- Stop every delayed visual path before hiding. IconWidget:Clear cancels
+    -- crossfade timers; the immediate helpers stop animation callbacks that could
+    -- otherwise revive a child after the module was disabled.
+    -- 隐藏前先终止所有延迟视觉路径：Clear 取消图标交叉淡入，Immediate helper
+    -- 停止可能在模块停用后重新显示子框体的动画回调。
+    if elements.mainIcon then
+        elements.mainIcon:Clear()
+        elements.mainIcon.frame:Hide()
+    end
+    for i = 1, MAX_PREDICTIONS do
+        local pred = elements.predictions[i]
+        if pred then
+            pred:Clear()
+            pred.frame:Hide()
+        end
+        lastDisplayed.predSpells[i] = nil
+    end
+    lastDisplayed.mainSpell = nil
+
+    if elements.phaseIndicator then
+        elements.phaseIndicator:HideImmediate()
+    end
+    if elements.accuracy then
+        elements.accuracy:HideImmediate()
+    end
+    if elements.resource and elements.resource.bg then
+        elements.resource.bg:Hide()
+    end
+    if elements.prePull then
+        elements.prePull:Hide()
+    end
+    if elements.defensive then
+        elements.defensive:Dismiss(true)
+    end
+    if elements.interruptAlert then
+        elements.interruptAlert:Dismiss()
+    end
+
+    if mainFrame then
+        mainFrame:SetScript("OnMouseUp", nil)
+        mainFrame:Hide()
+    end
+
+    wipe(keybindCache)
+    keybindCacheDirty = true
+    inCombat = false
+end
+
 ---Public API
 function MainDisplay:Toggle()
     if RA.db then

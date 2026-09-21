@@ -326,6 +326,7 @@ function NeuralPredictor:GetCombinedPrediction()
         -- Usability check: catches "enhanced passive" spells that IsSpellPassive misses
         if C_Spell and C_Spell.IsSpellUsable then
             local okU, usable = pcall(C_Spell.IsSpellUsable, spellID)
+            if okU and issecretvalue(usable) then return end
             if okU and usable == false then return end
         end
 
@@ -388,6 +389,16 @@ end
 ---为指定专精加载决策树和转移矩阵。
 ---@param specID number
 function NeuralPredictor:OnSpecChanged(specID)
+    local specDetector = RA:GetModule("SpecDetector")
+    if specDetector and specDetector.IsPredictiveSpecSupported
+       and not specDetector:IsPredictiveSpecSupported(specID) then
+        activeDT = nil
+        activeTM = nil
+        dirtyMatrix = true
+        lastNormTime = 0
+        return
+    end
+
     -- Load decision tree
     if RA.DecisionTrees and RA.DecisionTrees[specID] then
         activeDT = RA.DecisionTrees[specID]

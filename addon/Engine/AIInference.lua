@@ -102,6 +102,10 @@ local function GetInferenceRules()
     if not specDetector then return nil end
     local currentSpec = specDetector:GetCurrentSpec()
     if not currentSpec then return nil end
+    if specDetector.IsPredictiveSpecSupported
+       and not specDetector:IsPredictiveSpecSupported(currentSpec.specID) then
+        return nil
+    end
     local specData = RA.SpecEnhancements[currentSpec.specID]
     if specData and specData.inferenceRules then
         return specData.inferenceRules

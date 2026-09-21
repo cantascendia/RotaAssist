@@ -1,31 +1,8 @@
-#!/bin/bash
-# RotaAssist Release Packager
-# Usage: ./scripts/package.sh [version]
-# Example: ./scripts/package.sh 1.0.1
-
+#!/usr/bin/env bash
 set -euo pipefail
-
-VERSION="${1:-$(awk '/^## Version:/{gsub(/^## Version: */, ""); print}' addon/RotaAssist.toc)}"
-ADDON_NAME="RotaAssist"
-BUILD_DIR="build"
-PACKAGE_DIR="${BUILD_DIR}/${ADDON_NAME}"
-
-echo "📦 Packaging ${ADDON_NAME} v${VERSION}..."
-
-rm -rf "${BUILD_DIR}"
-mkdir -p "${PACKAGE_DIR}"
-
-# Copy addon files (exclude dev-only content)
-cp -r addon/* "${PACKAGE_DIR}/"
-
-# Remove any __pycache__ or .pyc that somehow got in
-find "${PACKAGE_DIR}" -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
-find "${PACKAGE_DIR}" -name "*.pyc" -delete 2>/dev/null || true
-
-# Create zip
-cd "${BUILD_DIR}"
-zip -r "../${ADDON_NAME}-${VERSION}.zip" "${ADDON_NAME}/"
-cd ..
-
-echo "✅ Created ${ADDON_NAME}-${VERSION}.zip"
-echo "📏 Size: $(du -h "${ADDON_NAME}-${VERSION}.zip" | cut -f1)"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+if command -v pwsh >/dev/null 2>&1; then PS=(pwsh -NoProfile); elif command -v powershell.exe >/dev/null 2>&1; then PS=(powershell.exe -NoProfile -ExecutionPolicy Bypass); else echo "PowerShell is required." >&2; exit 1; fi
+args=(-File "$SCRIPT_DIR/package_release.ps1")
+[[ -n "${1:-}" ]] && args+=(-Version "$1")
+[[ -n "${2:-}" ]] && args+=(-OutputDir "$2")
+"${PS[@]}" "${args[@]}"

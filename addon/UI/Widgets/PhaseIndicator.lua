@@ -134,4 +134,14 @@ function RA_PhaseIndicator:Hide()
     self.agHide:Play()
 end
 
+---Hide immediately and cancel pending animation callbacks during module teardown.
+---模块停用时立即隐藏，并取消未完成的动画回调。
+function RA_PhaseIndicator:HideImmediate()
+    self.isVisible = false
+    self.agShow:Stop()
+    self.agHide:Stop()
+    self.frame:SetAlpha(1)
+    self.frame:Hide()
+end
+
 RA.UI.PhaseIndicator = RA_PhaseIndicator

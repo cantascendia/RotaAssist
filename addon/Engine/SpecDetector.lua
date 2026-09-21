@@ -51,6 +51,16 @@ end
 ---已提示过"不支持"的专精 ID，避免每次天赋变更都刷屏
 local notifiedUnsupportedSpecs = {}
 
+---Predictive data that is present in the package but is not safe to execute yet.
+---Spell existence is insufficient validation: a placeholder ID can resolve to a real,
+---unrelated spell. These specs stay in Blizzard-only mode until their spell identity
+---and priority list have been checked in the live client.
+---包内存在但尚不能安全执行的预测数据。ID 能解析不等于技能身份正确；占位 ID 可能恰好
+---指向另一个真实技能。完成真机技能身份与优先级验证前，这些专精只使用暴雪建议。
+local UNVERIFIED_PREDICTIVE_SPECS = {
+    [1480] = true, -- Devourer Demon Hunter / 吞噬者恶魔猎手
+}
+
 ---Fall back to pure Blizzard-recommendation mode for a spec we ship no APL for.
 ---v1.1.0 loads Demon Hunter data only (D-014), so this is the normal path for the
 ---other 17 specs — it must be silent-safe, produce no Lua error, and leave
@@ -90,6 +100,12 @@ end
 
 ---@param specInfo SpecInfo
 local function loadAPLForSpec(specInfo)
+    if UNVERIFIED_PREDICTIVE_SPECS[specInfo.specID] then
+        degradeToBlizzardOnly(specInfo, string.format(
+            "Predictive APL for specID %d is packaged but not live-verified", specInfo.specID))
+        return
+    end
+
     if not RA.APLData then
         degradeToBlizzardOnly(specInfo, "No APL data table found")
         return
@@ -194,6 +210,19 @@ end
 ---@return number|nil
 function SpecDetector:GetSpecID()
     return currentSpec and currentSpec.specID
+end
+
+---Whether local predictive/advisory data is approved for runtime use.
+---Unloaded specs and explicitly unverified specs must stay in Blizzard-only mode.
+---本地预测/建议数据是否获准在运行时使用。未加载或明确未验证的专精必须保持暴雪-only。
+---@param specID number|nil
+---@return boolean
+function SpecDetector:IsPredictiveSpecSupported(specID)
+    local id = specID or (currentSpec and currentSpec.specID)
+    return id ~= nil
+       and not UNVERIFIED_PREDICTIVE_SPECS[id]
+       and RA.APLData ~= nil
+       and RA.APLData[id] ~= nil
 end
 
 ---@return number|nil

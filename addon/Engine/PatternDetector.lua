@@ -383,9 +383,14 @@ end
 function PatternDetector:OnEnable()
     -- 加载专精数据 / load spec enhancement data
     local function loadSpecData()
+        specData = nil
         local sd = RA:GetModule("SpecDetector")
         if not sd then return end
         local spec = sd:GetCurrentSpec()
+        if spec and sd.IsPredictiveSpecSupported
+           and not sd:IsPredictiveSpecSupported(spec.specID) then
+            return
+        end
         if spec and RA.SpecEnhancements and RA.SpecEnhancements[spec.specID] then
             local enh = RA.SpecEnhancements[spec.specID]
             -- 统一 inferenceRules 和顶级字段 / merge inferenceRules with top-level fields

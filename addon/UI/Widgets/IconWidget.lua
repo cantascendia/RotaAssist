@@ -134,6 +134,9 @@ function IconWidget:SetSpell(spellID, texture)
         self.fadeTimer:Cancel()
         self.fadeTimer = nil
     end
+    if UIFrameFadeRemoveFrame then
+        UIFrameFadeRemoveFrame(self.frame)
+    end
     local crossfade = Theme.durations.crossfade
     UIFrameFadeOut(self.frame, crossfade)
     self.fadeTimer = C_Timer.NewTimer(crossfade, function()
@@ -271,6 +274,13 @@ function IconWidget:Clear()
         self.fadeTimer:Cancel()
         self.fadeTimer = nil
     end
+    if UIFrameFadeRemoveFrame then
+        UIFrameFadeRemoveFrame(self.frame)
+    end
+    -- Cancelling a crossfade while the frame is faded out must not leave the
+    -- widget permanently transparent when it is reused after module re-enable.
+    -- 在淡出阶段取消交叉淡入时恢复透明度，避免模块重新启用后图标永久透明。
+    self.frame:SetAlpha(1.0)
     self.currentSpellID = nil
     self.icon:SetTexture(Theme.FALLBACK_ICON)
     self.cooldown:Clear()

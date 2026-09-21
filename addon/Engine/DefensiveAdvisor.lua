@@ -260,6 +260,12 @@ function DefensiveAdvisor:LoadForSpec(specID)
     wipe(THRESHOLD_CURVES)
 
     if not specID or not RA.SpecEnhancements then return end
+    local specDetector = RA:GetModule("SpecDetector")
+    if specDetector and specDetector.IsPredictiveSpecSupported
+       and not specDetector:IsPredictiveSpecSupported(specID) then
+        applyUpdateScript()
+        return
+    end
 
     local enhData = RA.SpecEnhancements[specID]
     if enhData and enhData.defensives and #enhData.defensives > 0 then

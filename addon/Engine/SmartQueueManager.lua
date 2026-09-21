@@ -38,17 +38,12 @@ local defaultWeights = {
 -- Known passive/non-castable spell blacklist (fast-path backup for API queries)
 local PASSIVE_BLACKLIST = RA.Registry.PASSIVE_BLACKLIST
 
--- 謚玲竃蜉ｨ驟咲ｽｮ / Anti-flicker config
-local FLICKER_THRESHOLD = 2
-local previousNextSpells = {} -- [index] = spellID
-local flickerCounters   = {}  -- [index] = count
 -- Engine Module References (cached for speed)
 local mBridge
 local mAIInference
 local mAPLEngine
 local mCooldownOverlay
 local mDefensiveAdvisor
-local mNeuralPredictor
 
 --- Check if a spell is currently on significant cooldown (> 1.0s remaining).
 --- 譽譟･謚閭ｽ譏ｯ蜷ｦ蝨ｨ譛画譜 CD 荳ｭ・郁ｶ・ｿ・1.0遘抵ｼ会ｼ檎畑莠手ｿ・ｻ､ next[] 荳ｭ逧・｢・ｵ九・
@@ -138,6 +133,7 @@ local function IsSpellCastable(spellID)
     -- 4. 荳榊庄譁ｽ謾ｾ譽豬具ｼ郁ｦ・尠 Hero Talent 蠅槫ｼｺ蝙玖｢ｫ蜉ｨ遲・IsSpellPassive 貍丞愛逧・ュ蜀ｵ・・
     if C_Spell and C_Spell.IsSpellUsable then
         local okU, usable = pcall(C_Spell.IsSpellUsable, spellID)
+        if okU and issecretvalue(usable) then return false end
         if okU and usable == false then return false end
     end
     -- 5. 蜀ｷ蜊ｴ荳ｭ・・1.0遘抵ｼ・
@@ -146,6 +142,40 @@ local function IsSpellCastable(spellID)
 end
 
 SmartQueueManager._IsSpellCastable = IsSpellCastable
+
+---Static safety gate for a future simulated action.
+---Do not inspect current cooldown/usability here: the preceding simulated cast may
+---make the spell ready or provide its resource. An invalid step truncates the tail
+---instead of compacting later actions into an impossible sequence.
+---未来模拟步骤的静态安全门。这里不能读取当前冷却/可用性，因为前一步模拟施法可能
+---让技能转好或提供资源。无效步骤会截断后续，不能把更后的动作压缩成错误序列。
+---@param spellID number
+---@return boolean safe
+local function IsFutureSpellSafe(spellID)
+    if issecretvalue(spellID) then return false end
+    if type(spellID) ~= "number" or spellID <= 0 or spellID == 6603 then return false end
+    if PASSIVE_BLACKLIST[spellID] or (RA.IsSpellPassive and RA:IsSpellPassive(spellID)) then
+        return false
+    end
+
+    if RA.ResolveSpellOverride then
+        local resolved, wasOverridden = RA:ResolveSpellOverride(spellID)
+        if wasOverridden and RA:IsSpellPassive(resolved) then return false end
+    end
+
+    if IsPlayerSpell then
+        local okKnown, known = pcall(IsPlayerSpell, spellID)
+        if not okKnown or known ~= true then return false end
+    end
+
+    if C_Spell and C_Spell.GetSpellInfo then
+        local okInfo, info = pcall(C_Spell.GetSpellInfo, spellID)
+        if not okInfo or type(info) ~= "table" then return false end
+    end
+    return true
+end
+
+SmartQueueManager._IsFutureSpellSafe = IsFutureSpellSafe
 
 ------------------------------------------------------------------------
 -- Internal State
@@ -195,6 +225,7 @@ local channelNextSpell = nil
 
 local context_reuse = {
     blizzSpell=nil, aplPred=nil, aplState=nil,
+    predictiveEnabled=false,
     cdReadyList={}, blindSpotCandidates={},
     defSpell=nil, defUrgency=0,
     aiPhase="NORMAL", aiTip=nil,
@@ -276,6 +307,27 @@ end
 
 -- Expose for unit testing (module-level reference)
 SmartQueueManager._CalculateScore = CalculateScore
+
+---Move the current Blizzard recommendation to the head of the scored list.
+---Its API owns slot 1; local APL blind-spot scores are look-ahead hints and must
+---never displace an available, runtime-validated Blizzard action.
+---将当前暴雪建议移到评分列表首位。slot 1 由暴雪 API 决定；本地 APL 的盲区分数
+---只是前瞻提示，不能覆盖可用且经过运行时验证的暴雪动作。
+---@param scored table[]
+---@param blizzSpell number|nil
+local function PromoteAuthoritativeMain(scored, blizzSpell)
+    if not blizzSpell then return end
+    for i = 1, #scored do
+        if scored[i].spellID == blizzSpell then
+            if i ~= 1 then
+                scored[1], scored[i] = scored[i], scored[1]
+            end
+            return
+        end
+    end
+end
+
+SmartQueueManager._PromoteAuthoritativeMain = PromoteAuthoritativeMain
 
 ------------------------------------------------------------------------
 -- Charge Scanning
@@ -374,8 +426,6 @@ local function AssembleQueue()
         finalQueue.cooldowns = {}
         finalQueue.defensive = nil
         lastKnownBlizzSpell  = nil -- Clear cache out of combat
-        wipe(previousNextSpells)   -- 貂・ｩｺ謚玲竃蜉ｨ郛灘ｭ・
-        wipe(flickerCounters)
         return
     end
 
@@ -386,6 +436,7 @@ local function AssembleQueue()
     context.blizzSpell = nil
     context.aplPred = nil
     context.aplState = nil
+    context.predictiveEnabled = false
     wipe(context.cdReadyList)
     wipe(context.blindSpotCandidates)
     context.defSpell = nil
@@ -441,6 +492,7 @@ local function AssembleQueue()
     end
     wipe(aplPredictions)  -- reset module-level table each frame
     if mAPLEngine and mAPLEngine.HasAPL and mAPLEngine:HasAPL() then
+        context.predictiveEnabled = true
         -- FIX (P0-Bug2): Build a valid limitedState table from context
         local limitedState = {
             resource        = 0,
@@ -575,15 +627,17 @@ local function AssembleQueue()
     if context.blizzSpell and not PASSIVE_BLACKLIST[context.blizzSpell] and not RA:IsSpellPassive(context.blizzSpell) then
         candidates[context.blizzSpell] = true
     end
-    if context.aplPred and context.aplPred.spellID then
-        candidates[context.aplPred.spellID] = true
+    if context.predictiveEnabled then
+        if context.aplPred and context.aplPred.spellID then
+            candidates[context.aplPred.spellID] = true
+        end
+        if context.defSpell then candidates[context.defSpell] = true end
+        for sid, _ in pairs(context.cdReadyList) do candidates[sid] = true end
     end
-    if context.defSpell then candidates[context.defSpell] = true end
-    for sid, _ in pairs(context.cdReadyList) do candidates[sid] = true end
 
     -- Blind-spot detection: APL rules that are CD-ready but absent from Blizzard's rotation list
     -- 逶ｲ蛹ｺ譽豬具ｼ哂PL 荳ｭ莨伜・郤ｧ霎・ｫ倅ｸ・CD 蟆ｱ扈ｪ縲∽ｽ・Blizzard 蠕ｪ邇ｯ蛻苓｡ｨ荳ｭ郛ｺ螟ｱ逧・橿閭ｽ
-    if mAPLEngine and mAPLEngine:HasAPL() then
+    if context.predictiveEnabled then
         local actionList = mAPLEngine:GetCurrentAPL()
         -- GetCurrentAPL returns the raw APL table; try to get a flat rule list
         local rules = nil
@@ -777,6 +831,11 @@ local function AssembleQueue()
         end
     end
 
+    -- Score still ranks fallback candidates, but an available Blizzard action owns
+    -- slot 1. In particular, the heuristic blind-spot bonus must not outrank it.
+    -- 评分仍用于排列后备候选，但可用的暴雪动作固定占据 slot 1；盲区启发式不能压过它。
+    PromoteAuthoritativeMain(scored, context.blizzSpell)
+
     -- 4. Populate Final Queue
     if #scored > 0 then
         local topScore = scored[1].score
@@ -800,125 +859,43 @@ local function AssembleQueue()
             prevMainSpellID = newMainID
         end
 
-        -- FIX (Bug1): Populate next[] using APL predictions (steps 2+) first,
-        -- then fill remaining slots from scored candidates (rank 2+).
-        -- 菫ｮ螟搾ｼ壻ｼ伜・逕ｨ APL 鬚・ｵ狗ｬｬ 2縲・豁･ 蝪ｫ蜈・next[]・悟・陦･蜈・scored 謗貞錐隨ｬ 2+ 逧・咎峨・
+        -- Populate next[] only from the ordered APL simulation.
+        -- 后续栏只使用有序 APL 模拟，不能用独立评分候选伪装成施法序列。
         local nIdx = 1
 
-        -- Priority 1: APL predictions (steps 1 to 3)
-        for i = 1, #aplPredictions do
-            if nIdx > 5 then break end
-            local sid = aplPredictions[i].spellID
-            if IsSpellCastable(sid) then
-                if not finalQueue.next[nIdx] then
-                    finalQueue.next[nIdx] = { spellID = 0, confidence = 0 }
-                end
-                finalQueue.next[nIdx].spellID    = sid
-                finalQueue.next[nIdx].confidence = aplPredictions[i].confidence or 0.7
-                nIdx = nIdx + 1
-            end
+        -- When Blizzard is absent, APL step 1 becomes the head and only that exact
+        -- entry is consumed. A later repeated spellID remains a valid sequence step.
+        -- 无暴雪建议时，APL 第一步成为主位，只消费这一条记录；后续相同 spellID
+        -- 仍可能是合法的连续施法。
+        local aplStartIndex = 1
+        local tailIsSeeded = context.blizzSpell == finalQueue.main.spellID
+        if not tailIsSeeded and aplPredictions[1]
+           and aplPredictions[1].spellID == finalQueue.main.spellID then
+            aplStartIndex = 2
+            tailIsSeeded = true
         end
 
-        -- Priority 2: scored candidates rank 2+ (deduplicate against next[] internal entries)
-        -- 蜴ｻ驥埼ｻ霎托ｼ壻ｻ・宙蟇ｹ next[] 蜀・Κ蜴ｻ驥搾ｼ悟・隶ｸ荳・main 逶ｸ蜷・
-        for i = 2, math.min(#scored, 6) do
-            if nIdx > 5 then break end
-            local sid = scored[i].spellID
-            local dominated = false
-            for j = 1, nIdx - 1 do
-                if finalQueue.next[j] and finalQueue.next[j].spellID == sid then
-                    dominated = true
+        if tailIsSeeded then
+            for i = aplStartIndex, #aplPredictions do
+                if nIdx > 5 then break end
+                local sid = aplPredictions[i].spellID
+                if IsFutureSpellSafe(sid) then
+                    if not finalQueue.next[nIdx] then
+                        finalQueue.next[nIdx] = { spellID = 0, confidence = 0 }
+                    end
+                    finalQueue.next[nIdx].spellID    = sid
+                    finalQueue.next[nIdx].confidence = aplPredictions[i].confidence or 0.7
+                    nIdx = nIdx + 1
+                else
                     break
                 end
             end
-            if not dominated then
-                if not finalQueue.next[nIdx] then
-                    finalQueue.next[nIdx] = { spellID = 0, confidence = 0 }
-                end
-                finalQueue.next[nIdx].spellID    = sid
-                finalQueue.next[nIdx].confidence = math.min(1.0, scored[i].score / 1.5)
-                nIdx = nIdx + 1
-            end
         end
 
-        -- Priority 3: NeuralPredictor 陦･蜈・｢・ｵ具ｼ亥ｽ・APL + scored 荳崎ｶｳ譌ｶ・・
-        -- NeuralPredictor 陞榊粋莠・・遲匁代｀arkov體ｾ蜥・Blizzard 謗ｨ闕撰ｼ御ｽ應ｸｺ蜈懷ｺ暮｢・ｵ区ｺ・
-        if nIdx <= 3 and mNeuralPredictor then
-            local npOk, npResult = pcall(mNeuralPredictor.GetCombinedPrediction, mNeuralPredictor)
-            if npOk and npResult then
-                -- 蜈亥ｰ晁ｯ・primary・亥ｦよ棡荳榊惠髦溷・荳ｭ・・
-                local npPrimary = npResult.primary
-                if npPrimary and npPrimary.spellID and npPrimary.spellID ~= 0 then
-                    if IsSpellCastable(npPrimary.spellID) then
-                        local dominated = false
-                        for j = 1, nIdx - 1 do
-                            if finalQueue.next[j] and finalQueue.next[j].spellID == npPrimary.spellID then
-                                dominated = true
-                                break
-                            end
-                        end
-                        if not dominated and nIdx <= 5 then
-                            if not finalQueue.next[nIdx] then
-                                finalQueue.next[nIdx] = { spellID = 0, confidence = 0 }
-                            end
-                            finalQueue.next[nIdx].spellID    = npPrimary.spellID
-                            finalQueue.next[nIdx].confidence = npPrimary.confidence or 0.5
-                            nIdx = nIdx + 1
-                        end
-                    end
-                end
-                -- 蜀肴ｷｻ蜉 alternatives
-                if npResult.alternatives then
-                    for _, alt in ipairs(npResult.alternatives) do
-                        if nIdx > 5 then break end
-                        if IsSpellCastable(alt.spellID) then
-                            local dominated = false
-                            for j = 1, nIdx - 1 do
-                                if finalQueue.next[j] and finalQueue.next[j].spellID == alt.spellID then
-                                    dominated = true
-                                    break
-                                end
-                            end
-                            if not dominated then
-                                if not finalQueue.next[nIdx] then
-                                    finalQueue.next[nIdx] = { spellID = 0, confidence = 0 }
-                                end
-                                finalQueue.next[nIdx].spellID    = alt.spellID
-                                finalQueue.next[nIdx].confidence = alt.confidence or 0.4
-                                nIdx = nIdx + 1
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        -- 5. Anti-Flicker Logic for next[]
-        -- 謚玲竃蜉ｨ螟・炊・壼宵譛牙ｽ馴｢・ｵ句序蛹匁戟扈ｭ荳､蟶ｧ莉･荳頑慮謇肴峩譁ｰ UI
-        for i = 1, 5 do
-            local proposed = finalQueue.next[i] and finalQueue.next[i].spellID or 0
-            local previous = previousNextSpells[i] or 0
-
-            if proposed ~= previous then
-                flickerCounters[i] = (flickerCounters[i] or 0) + 1
-                if flickerCounters[i] >= FLICKER_THRESHOLD then
-                    previousNextSpells[i] = proposed
-                    flickerCounters[i] = 0
-                else
-                    -- Revert to previous to stabilize
-                    if previous == 0 then
-                        finalQueue.next[i] = nil
-                    else
-                        if not finalQueue.next[i] then
-                            finalQueue.next[i] = { spellID = 0, confidence = 0.5 }
-                        end
-                        finalQueue.next[i].spellID = previous
-                    end
-                end
-            else
-                flickerCounters[i] = 0
-            end
-        end
+        -- NeuralPredictor remains available for offline diagnostics and accuracy
+        -- research, but its synthetic DT/Markov output is not an authoritative action
+        -- source. Do not put it in the actionable queue until it is calibrated against
+        -- live outcomes. 可继续用于离线诊断，但未经真机校准的学习结果不进入动作队列。
 
         for i = nIdx, #finalQueue.next do
             finalQueue.next[i] = nil
@@ -933,8 +910,6 @@ local function AssembleQueue()
         lastRecommendedSpellID = finalQueue.main and finalQueue.main.spellID or nil
         finalQueue.main = nil
         for i = 1, #finalQueue.next do finalQueue.next[i] = nil end
-        wipe(previousNextSpells)
-        wipe(flickerCounters)
         -- 髦溷・貂・ｩｺ・壽峩譁ｰ霑ｽ雕ｪ蛟ｼ蟷ｶ譌譚｡莉ｶ騾夂衍 UI
         -- Queue cleared: update tracking and always notify UI.
         if prevMainSpellID ~= nil then
@@ -952,6 +927,10 @@ local function onUpdate(_, elapsed_dt)
         AssembleQueue()
     end
 end
+
+-- Exposed only for deterministic integration tests; production updates still run
+-- through the frame/event path. 仅供确定性集成测试使用。
+SmartQueueManager._AssembleQueue = AssembleQueue
 
 ------------------------------------------------------------------------
 -- Public API
@@ -1020,7 +999,6 @@ function SmartQueueManager:OnEnable()
     mAPLEngine        = RA:GetModule("APLEngine")
     mCooldownOverlay  = RA:GetModule("CooldownOverlay")
     mDefensiveAdvisor = RA:GetModule("DefensiveAdvisor")
-    mNeuralPredictor  = RA:GetModule("NeuralPredictor")
 
     -- Seed the cadence from the current combat state, then keep it in sync below.
     -- 按当前战斗状态初始化节奏，随后由事件保持同步。
@@ -1059,6 +1037,14 @@ function SmartQueueManager:OnEnable()
         -- ROTAASSIST_SPEC_CHANGED，而它在 MODULE_ORDER 中位于本模块之前，登录时那次
         -- 广播早于本订阅建立。缺了这道保险，首个子集可能在法术书尚未加载完时就被推导出来。
         eh:Subscribe("ROTAASSIST_SPEC_CHANGED",  "SmartQueueManager_Charges", InvalidateChargeSubset)
+        eh:Subscribe("ROTAASSIST_SPEC_CHANGED",  "SmartQueueManager_SpecReset", function()
+            -- Never carry the previous spec's sticky or simulated tail across a swap.
+            -- 切换专精时绝不沿用上一专精的粘滞建议或模拟后续。
+            lastKnownBlizzSpell = nil
+            channelNextSpell = nil
+            wipe(softBlockedSpells)
+            for i = 1, #finalQueue.next do finalQueue.next[i] = nil end
+        end)
         eh:Subscribe("PLAYER_TALENT_UPDATE",     "SmartQueueManager_Charges", InvalidateChargeSubset)
         eh:Subscribe("PLAYER_ENTERING_WORLD",    "SmartQueueManager_Charges", InvalidateChargeSubset)
 
@@ -1146,15 +1132,38 @@ function SmartQueueManager:OnEnable()
 end
 
 function SmartQueueManager:OnDisable()
+    local eh = RA:GetModule("EventHandler")
+    if eh then
+        -- Each key owns a distinct subset of subscriptions. Remove all of them so
+        -- a disabled queue cannot react to casts/spec changes, and re-enable starts
+        -- from exactly one callback per event.
+        -- 每个 key 管理一组独立订阅；全部解绑，确保禁用后不再响应事件，重新启用时
+        -- 每个事件也只恢复一个回调。
+        eh:UnsubscribeAll("SmartQueueManager")
+        eh:UnsubscribeAll("SmartQueueManager_Throttle")
+        eh:UnsubscribeAll("SmartQueueManager_Charges")
+        eh:UnsubscribeAll("SmartQueueManager_SpecReset")
+        eh:UnsubscribeAll("SmartQueueManager_Chan")
+    end
+
     if updateFrame then
         updateFrame:SetScript("OnUpdate", nil)
         updateFrame:Hide()
     end
     prevMainSpellID        = nil
     lastRecommendedSpellID = nil
-    mNeuralPredictor       = nil
+    lastKnownBlizzSpell    = nil
+    channelNextSpell       = nil
+    wipe(softBlockedSpells)
+    wipe(aplPredictions)
     for i = 1, #finalQueue.next do finalQueue.next[i] = nil end
-    wipe(previousNextSpells)
-    wipe(flickerCounters)
     finalQueue.main = nil
+    finalQueue.defensive = nil
+    finalQueue.aiContext = nil
+
+    mBridge           = nil
+    mAIInference      = nil
+    mAPLEngine        = nil
+    mCooldownOverlay  = nil
+    mDefensiveAdvisor = nil
 end

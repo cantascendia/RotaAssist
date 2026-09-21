@@ -1,40 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# RotaAssist Install Test Script (macOS/Linux)
-# Creates a symlink of the addon directory to the WoW AddOns folder.
-
-ADDON_NAME="RotaAssist"
-SOURCE_DIR="$(pwd)/addon"
-
-# Default WoW path for macOS
-DEFAULT_WOW_PATH="/Applications/World of Warcraft/_retail_/Interface/AddOns"
-
-TARGET_PATH="${1:-$DEFAULT_WOW_PATH}"
-
-echo "Checking for WoW AddOns folder at: $TARGET_PATH"
-
-if [ ! -d "$TARGET_PATH" ]; then
-    echo "❌ Error: WoW AddOns directory not found!"
-    echo "Please provide the path as an argument, e.g.:"
-    echo "./scripts/install_test.sh \"/Path/To/World of Warcraft/_retail_/Interface/AddOns\""
-    exit 1
-fi
-
-DEST_PATH="$TARGET_PATH/$ADDON_NAME"
-
-# Remove existing symlink or directory
-if [ -L "$DEST_PATH" ] || [ -d "$DEST_PATH" ]; then
-    echo "Removing existing installation at $DEST_PATH..."
-    rm -rf "$DEST_PATH"
-fi
-
-# Create symlink
-echo "Creating symlink: $SOURCE_DIR -> $DEST_PATH"
-ln -s "$SOURCE_DIR" "$DEST_PATH"
-
-if [ $? -eq 0 ]; then
-    echo "✅ RotaAssist installed! /reload in game to activate."
-    echo "✅ RotaAssist 已安装！在游戏中输入 /reload 激活。"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+if command -v pwsh >/dev/null 2>&1; then
+  PS=(pwsh -NoProfile)
+elif command -v powershell.exe >/dev/null 2>&1; then
+  PS=(powershell.exe -NoProfile -ExecutionPolicy Bypass)
 else
-    echo "❌ Failed to create symlink. Try running with sudo or check permissions."
+  echo "PowerShell 7 or Windows PowerShell is required for the verified installer." >&2
+  exit 1
 fi
+
+args=(-File "$SCRIPT_DIR/install_test.ps1")
+[[ -n "${1:-}" ]] && args+=(-AddOnsPath "$1")
+[[ -n "${2:-}" ]] && args+=(-PackagePath "$2")
+"${PS[@]}" "${args[@]}"

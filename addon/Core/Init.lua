@@ -135,6 +135,16 @@ end
 --- @return number|nil start CD 开始时间，nil=secret
 --- @return number|nil duration CD 总时长，nil=secret
 function RA:GetSpellCooldownSafe(spellID)
+    if issecretvalue(spellID) then
+        return nil, nil, nil, nil
+    end
+    if type(spellID) ~= "number" or spellID <= 0 then
+        return 0, true, 0, 0
+    end
+    if not (C_Spell and C_Spell.GetSpellCooldown) then
+        return nil, nil, nil, nil
+    end
+
     local ok, cdInfo = pcall(C_Spell.GetSpellCooldown, spellID)
     if not ok or type(cdInfo) ~= "table" then
         return nil, nil, nil, nil
@@ -159,11 +169,11 @@ function RA:GetSpellCooldownSafe(spellID)
     -- check C_Spell.GetSpellCharges for the real cooldown state.
     if dur > 0 and dur < 2.5 then
         local chOk, chInfo = pcall(C_Spell.GetSpellCharges, spellID)
-        if chOk and chInfo and type(chInfo) == "table" then
+        if chOk and type(chInfo) == "table" then
             local mc = chInfo.maxCharges
-            if mc and not issecretvalue(mc) and mc > 1 then
+            if not issecretvalue(mc) and type(mc) == "number" and mc > 1 then
                 local cc = chInfo.currentCharges
-                if cc and not issecretvalue(cc) and cc > 0 then
+                if not issecretvalue(cc) and type(cc) == "number" and cc > 0 then
                     local now = GetTime()
                     local gcdRemain = (st + dur) - now
                     if gcdRemain <= 0 then
@@ -173,8 +183,8 @@ function RA:GetSpellCooldownSafe(spellID)
                 else
                     local cst = chInfo.cooldownStartTime
                     local cdur = chInfo.cooldownDuration
-                    if cst and cdur
-                       and not issecretvalue(cst) and not issecretvalue(cdur)
+                    if not issecretvalue(cst) and not issecretvalue(cdur)
+                       and type(cst) == "number" and type(cdur) == "number"
                        and cdur > 0 then
                         local now = GetTime()
                         local realRemaining = (cst + cdur) - now
@@ -293,6 +303,7 @@ function RA:IsSpellRecommendable(spellID)
         -- Check both original and resolved ID to be safe
         local checkID = wasOverridden and resolvedID or spellID
         local okU, usable = pcall(C_Spell.IsSpellUsable, checkID)
+        if okU and issecretvalue(usable) then return false end
         if okU and usable == false then return false end
     end
 
@@ -413,7 +424,15 @@ function RA:OnInitialize()
     -- for every subsequent module that may read it in OnInitialize.
     local savedVarsModule = self:GetModule("SavedVars")
     if savedVarsModule and savedVarsModule.OnInitialize then
-        savedVarsModule:OnInitialize()
+        local ok, err = pcall(savedVarsModule.OnInitialize, savedVarsModule)
+        if ok then
+            savedVarsModule._initialized = true
+            savedVarsModule._initializationFailed = nil
+        else
+            savedVarsModule._initialized = false
+            savedVarsModule._initializationFailed = tostring(err)
+            self:PrintError("Failed to initialize SavedVars: " .. tostring(err))
+        end
     end
 
     self:RegisterChatCommand("ra", "SlashCommand")
@@ -421,6 +440,12 @@ function RA:OnInitialize()
 end
 
 function RA:OnEnable()
+    local savedVarsModule = self:GetModule("SavedVars")
+    if savedVarsModule and savedVarsModule._initializationFailed then
+        self:PrintError("RotaAssist modules were not started because SavedVars failed to initialize.")
+        return
+    end
+
     -- FIX (Issue 3): Use stable MODULE_ORDER so dependencies are always
     -- initialized before the modules that rely on them.
     iterModulesOrdered(function(name, mod)
@@ -429,20 +454,31 @@ function RA:OnEnable()
 
         if mod.OnInitialize and not mod._initialized then
             local ok, err = pcall(mod.OnInitialize, mod)
-            if not ok then
+            if ok then
+                mod._initialized = true
+                mod._initializationFailed = nil
+            else
+                mod._initialized = false
+                mod._initializationFailed = tostring(err)
                 self:PrintError("Failed to initialize " .. name .. ": " .. tostring(err))
             end
-            mod._initialized = true
         end
     end)
 
     iterModulesOrdered(function(name, mod)
-        if mod.OnEnable and not mod._enabled then
+        -- A module whose initialization failed cannot safely run OnEnable. Keep both
+        -- lifecycle flags truthful so a future reload/retry can diagnose the failure.
+        -- 初始化失败的模块不能继续启用；保持状态标志真实，便于后续重试与诊断。
+        if mod.OnEnable and not mod._enabled and not mod._initializationFailed then
             local ok, err = pcall(mod.OnEnable, mod)
-            if not ok then
+            if ok then
+                mod._enabled = true
+                mod._enableFailed = nil
+            else
+                mod._enabled = false
+                mod._enableFailed = tostring(err)
                 self:PrintError("Failed to enable " .. name .. ": " .. tostring(err))
             end
-            mod._enabled = true
         end
     end)
 

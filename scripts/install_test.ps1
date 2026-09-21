@@ -1,55 +1,126 @@
-# RotaAssist Install Test Script (Windows PowerShell)
-# Creates a symbolic link of the addon directory to the WoW AddOns folder.
-
-$AddonName = "RotaAssist"
-$SourceDir = Join-Path (Get-Location) "addon"
-
-# Common WoW paths for Windows
-$DefaultPaths = @(
-    "C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns",
-    "C:\Program Files\World of Warcraft\_retail_\Interface\AddOns",
-    "D:\Games\World of Warcraft\_retail_\Interface\AddOns"
+<# Safely install a verified release ZIP, preserving the previous installation. #>
+[CmdletBinding()]
+param(
+    [Parameter(Position = 0)] [string] $AddOnsPath,
+    [Parameter(Position = 1)] [string] $PackagePath
 )
 
-$TargetPath = $args[0]
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version 2.0
+$AddonName = 'RotaAssist'
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$RepoRoot = Split-Path -Parent $ScriptDir
+$Verifier = Join-Path $ScriptDir 'verify_package.py'
+$Python = Get-Command python -ErrorAction SilentlyContinue
+if ($null -eq $Python) { throw 'Python 3 is required for package verification.' }
 
-if (-not $TargetPath) {
-    foreach ($path in $DefaultPaths) {
-        if (Test-Path $path) {
-            $TargetPath = $path
-            break
-        }
+if ([string]::IsNullOrWhiteSpace($PackagePath)) {
+    $toc = [IO.File]::ReadAllText((Join-Path $RepoRoot 'addon\RotaAssist.toc'))
+    $match = [regex]::Match($toc, '(?m)^##\s*Version:\s*(\S+)\s*$')
+    if (-not $match.Success) { throw 'Cannot resolve the default package version from the TOC.' }
+    $version = $match.Groups[1].Value
+    $PackagePath = Join-Path (Join-Path (Join-Path $RepoRoot 'dist') $version) "$AddonName-$version.zip"
+}
+$PackagePath = (Resolve-Path -LiteralPath $PackagePath -ErrorAction Stop).Path
+
+if ([string]::IsNullOrWhiteSpace($AddOnsPath)) {
+    $candidates = @(
+        'C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns',
+        'C:\Program Files\World of Warcraft\_retail_\Interface\AddOns',
+        'D:\Games\World of Warcraft\_retail_\Interface\AddOns'
+    )
+    $AddOnsPath = $candidates | Where-Object { Test-Path -LiteralPath $_ -PathType Container } | Select-Object -First 1
+}
+if ([string]::IsNullOrWhiteSpace($AddOnsPath)) { throw 'WoW AddOns directory not found; pass -AddOnsPath explicitly.' }
+$AddOnsPath = (Resolve-Path -LiteralPath $AddOnsPath -ErrorAction Stop).Path
+$parentItem = Get-Item -LiteralPath $AddOnsPath -Force
+if (-not $parentItem.PSIsContainer) { throw "AddOnsPath is not a directory: $AddOnsPath" }
+if (($parentItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
+    throw "Refusing a reparse-point AddOns directory: $AddOnsPath"
+}
+
+$Destination = Join-Path $AddOnsPath $AddonName
+if (Test-Path -LiteralPath $Destination) {
+    $destinationItem = Get-Item -LiteralPath $Destination -Force
+    if (($destinationItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
+        throw "Refusing to replace a reparse-point installation: $Destination"
     }
 }
 
-if (-not $TargetPath -or -not (Test-Path $TargetPath)) {
-    Write-Host "❌ Error: WoW AddOns directory not found!" -ForegroundColor Red
-    Write-Host "Please provide the path as an argument, e.g.:"
-    Write-Host ".\scripts\install_test.ps1 'C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns'"
-    exit 1
+Write-Host 'Validating package before touching the installation...' -ForegroundColor Cyan
+& $Python.Source $Verifier --archive $PackagePath --require-manifest
+if ($LASTEXITCODE -ne 0) { throw 'Package verification failed; installation was not changed.' }
+
+$TempRoot = Join-Path ([IO.Path]::GetTempPath()) ('rota-install-' + [guid]::NewGuid().ToString('N'))
+$ExtractRoot = Join-Path $TempRoot 'payload'
+$BackupPath = $null
+$Installed = $false
+
+function Get-TreeDigest([string] $Path) {
+    $lines = Get-ChildItem -LiteralPath $Path -Recurse -Force -File | ForEach-Object {
+        $relative = $_.FullName.Substring($Path.Length + 1).Replace('\', '/')
+        $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+        "$hash  $relative"
+    } | Sort-Object
+    $joined = $lines -join "`n"
+    $bytes = [Text.Encoding]::UTF8.GetBytes($joined)
+    $sha = [Security.Cryptography.SHA256]::Create()
+    try { return ([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace('-', '').ToLowerInvariant() }
+    finally { $sha.Dispose() }
 }
 
-$DestPath = Join-Path $TargetPath $AddonName
-
-Write-Host "Checking installation at: $DestPath"
-
-# Remove existing link or directory
-if (Test-Path $DestPath) {
-    Write-Host "Removing existing installation..."
-    Remove-Item -Path $DestPath -Recurue -Force
-}
-
-# Create Symbolic Link (requires Developer Mode or Admin)
-Write-Host "Creating symlink: $SourceDir -> $DestPath"
 try {
-    New-Item -ItemType SymbolicLink -Path $DestPath -Target $SourceDir -ErrorAction Stop
-    Write-Host ""
-    Write-Host "✅ RotaAssist installed! /reload in game to activate." -ForegroundColor Green
-    Write-Host "✅ RotaAssist 已安装！在游戏中输入 /reload 激活。" -ForegroundColor Green
-} catch {
-    Write-Host "❌ Failed to create symbolic link." -ForegroundColor Red
-    Write-Host "Try running PowerShell as Administrator."
-    Write-Host "Alternatively, copying files instead..."
-    Copy-Item -Path $SourceDir -Destination $DestPath -Recurse
-    Write-Host "✅ RotaAssist copied! /reload in game to activate." -ForegroundColor Green
+    [IO.Directory]::CreateDirectory($ExtractRoot) | Out-Null
+    Expand-Archive -LiteralPath $PackagePath -DestinationPath $ExtractRoot
+    $ExtractedAddon = Join-Path $ExtractRoot $AddonName
+    & $Python.Source $Verifier --addon-dir $ExtractedAddon --require-manifest
+    if ($LASTEXITCODE -ne 0) { throw 'Extracted payload verification failed; installation was not changed.' }
+
+    if (Test-Path -LiteralPath $Destination) {
+        $beforeDigest = Get-TreeDigest $Destination
+        do {
+            $suffix = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss-fff')
+            $BackupPath = Join-Path $AddOnsPath "$AddonName.backup.$suffix"
+        } while (Test-Path -LiteralPath $BackupPath)
+        Move-Item -LiteralPath $Destination -Destination $BackupPath
+        $afterDigest = Get-TreeDigest $BackupPath
+        if ($beforeDigest -ne $afterDigest) {
+            Move-Item -LiteralPath $BackupPath -Destination $Destination
+            $BackupPath = $null
+            throw 'Backup verification failed; the original installation was restored.'
+        }
+        Write-Host "Backup: $BackupPath" -ForegroundColor Yellow
+    }
+
+    try {
+        Copy-Item -LiteralPath $ExtractedAddon -Destination $Destination -Recurse
+        & $Python.Source $Verifier --addon-dir $Destination --require-manifest
+        if ($LASTEXITCODE -ne 0) { throw 'Installed payload verification failed.' }
+        $Installed = $true
+    } catch {
+        if (Test-Path -LiteralPath $Destination) {
+            $resolvedDestination = (Resolve-Path -LiteralPath $Destination).Path
+            if ($resolvedDestination -ne $Destination) { throw "Refusing rollback cleanup of unexpected path: $resolvedDestination" }
+            Remove-Item -LiteralPath $Destination -Recurse -Force
+        }
+        if ($null -ne $BackupPath -and (Test-Path -LiteralPath $BackupPath)) {
+            Move-Item -LiteralPath $BackupPath -Destination $Destination
+            $BackupPath = $null
+        }
+        throw
+    }
+
+    Write-Host "Installed and verified: $Destination" -ForegroundColor Green
+    if ($null -ne $BackupPath) { Write-Host "Previous version retained at: $BackupPath" }
+} finally {
+    if (Test-Path -LiteralPath $TempRoot) {
+        $resolvedTemp = (Resolve-Path -LiteralPath $TempRoot).Path
+        $systemTemp = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\')
+        if (-not $resolvedTemp.StartsWith($systemTemp + '\', [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Refusing cleanup outside the system temp directory: $resolvedTemp"
+        }
+        Remove-Item -LiteralPath $resolvedTemp -Recurse -Force
+    }
 }
+
+if (-not $Installed) { exit 1 }

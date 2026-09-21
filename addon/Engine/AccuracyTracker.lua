@@ -34,11 +34,16 @@ local sessionStartTime = 0
 ---@param spellID number
 ---@return boolean
 local function IsGCDSpell(spellID)
-    local ok, cdInfo = pcall(C_Spell.GetSpellCooldown, spellID)
-    if not ok or not cdInfo then return false end
-    
     if spellID == 6603 then return false end -- Filter auto-attack
-    return true
+    if not (C_Spell and C_Spell.GetSpellInfo) then return false end
+
+    -- Cooldown data may be secret in combat and all reads belong in
+    -- RA:GetSpellCooldownSafe(). This filter only needs to reject invalid spell IDs,
+    -- so non-secret spell metadata is the correct API.
+    -- 战斗中冷却数据可能为 secret，且必须统一走 GetSpellCooldownSafe；这里仅需剔除
+    -- 无效技能 ID，因此读取非 secret 的技能元数据即可。
+    local ok, spellInfo = pcall(C_Spell.GetSpellInfo, spellID)
+    return ok and type(spellInfo) == "table"
 end
 
 ---Generate a star rating string based on accuracy percentage.

@@ -142,7 +142,6 @@ end
 function InterruptAlert:Dismiss()
     self.activeSpell = nil
     self.iconWidget:SetAlert(false)
-    if not self.container:IsShown() then return end
     self.iconWidget:Clear()
     self.container:Hide()
 end

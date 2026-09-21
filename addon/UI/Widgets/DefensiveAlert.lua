@@ -135,14 +135,28 @@ function DefensiveAlert:Trigger(spellID, texture, name)
 end
 
 ---Dismiss the defensive alert.
-function DefensiveAlert:Dismiss()
-    if not self.container:IsShown() then return end
-
+---@param immediate boolean|nil Skip the fade during module teardown
+function DefensiveAlert:Dismiss(immediate)
+    if self.fadeTimer then
+        self.fadeTimer:Cancel()
+        self.fadeTimer = nil
+    end
     self.activeSpell = nil
     self.iconWidget:SetAlert(false)
 
+    if immediate then
+        if UIFrameFadeRemoveFrame then
+            UIFrameFadeRemoveFrame(self.container)
+        end
+        self.iconWidget:Clear()
+        self.container:SetAlpha(1)
+        self.container:Hide()
+        return
+    end
+
+    if not self.container:IsShown() then return end
+
     UIFrameFadeOut(self.container, Theme.durations.fadeOut, self.container:GetAlpha(), 0)
-    if self.fadeTimer then self.fadeTimer:Cancel() end
     self.fadeTimer = C_Timer.NewTimer(Theme.durations.fadeOut, function()
         self.fadeTimer = nil
         self.container:Hide()

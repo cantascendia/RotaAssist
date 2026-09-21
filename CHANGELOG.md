@@ -5,9 +5,39 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.1] - 2026-09-21
+
+Local installation candidate. No public marketplace release or live-client/DPS
+acceptance is claimed. See [delivery notes](docs/RELEASE_1.1.1-rc.1.md) and
+[quality evidence requirements](docs/QUALITY_BASELINE.md).
+
+### Changed
+- Keep a valid Blizzard suggestion in the main action slot. APL lookahead is a
+  sequence; unrelated scored candidates and uncalibrated neural output must not
+  fill later steps as though they had been simulated.
+- Disable unverified Devourer APL prediction in favor of Blizzard-only behavior.
+- Preserve truthful module initialization/enabling status on failure.
+- Replace unverified marketplace installation instructions with local ZIP delivery.
+
+### Fixed
+- Seed the cooldown panel after its data becomes available; avoid a permanently
+  empty panel and repeated rebuilds beyond the icon limit.
+- Clean up UI and queue subscriptions, timers, global fades and independent alerts
+  on disable. Public empty resource values and protected values are handled safely.
+- Preserve repeated lookahead steps through the displayed queue.
+- Report the recommendation-following metric as adherence in all three UI locales.
+- Package in an isolated staging directory, verify nested TOC/XML dependencies and
+  per-file SHA-256 hashes, and retain the previous installation during upgrades.
+
+### Known limitations
+- No live client or independent DPS benchmark was available for this delivery.
+- Havoc talent profile selection may fall back to default on zhCN/jaJP because
+  the current signatures use English talent names.
+
 ## [1.1.0] - 2026-09-01
 
-**First public release.** 1.0.0 was an internal build and was never published.
+**Release-preparation build.** A public upload is not verified by the current
+delivery audit. 1.0.0 was an internal build.
 Target client: **World of Warcraft: Midnight 12.1** (Interface `120100`).
 
 Scope note: this release ships **Demon Hunter only** — Havoc (577), Vengeance (581),

@@ -103,16 +103,38 @@ function ResourceBar:UpdateSecretSafe(powerType)
     local okCur, curPowerRaw = pcall(UnitPower, "player", powerType)
     local okMax, maxPowerRaw = pcall(UnitPowerMax, "player", powerType)
 
-    local curPower = (okCur and curPowerRaw and not issecretvalue(curPowerRaw)) and curPowerRaw or 0
-    local maxPower = (okMax and maxPowerRaw and not issecretvalue(maxPowerRaw) and maxPowerRaw > 0) and maxPowerRaw or 1
+    -- `pcall` does not make a protected value safe to truth-test. Check secrecy
+    -- before every type/comparison operation, and only pass a secret current value
+    -- directly to StatusBar:SetValue(), which is permitted by the Midnight API.
+    -- `pcall` 不会让受保护值变得可比较。所有类型/大小判断前先查 secret；
+    -- secret 当前值只直传给 Midnight 允许的 StatusBar:SetValue()。
+    local curIsSecret = okCur and issecretvalue(curPowerRaw) or false
+    local maxIsSecret = okMax and issecretvalue(maxPowerRaw) or false
 
-    local displayCur = (okCur and curPowerRaw) and curPowerRaw or 0
+    local maxPower = 1
+    if okMax and not maxIsSecret
+       and type(maxPowerRaw) == "number" and maxPowerRaw > 0 then
+        maxPower = maxPowerRaw
+    end
+
+    local displayCur = 0
+    if okCur and (curIsSecret or type(curPowerRaw) == "number") then
+        -- Assignment is safe: it does not inspect or branch on the value.
+        -- 赋值不会检查该值，可安全把 secret 值送入状态条。
+        displayCur = curPowerRaw
+    end
 
     self.statusBar:SetMinMaxValues(0, maxPower)
     self.statusBar:SetValue(displayCur)
 
-    -- WOW 12.0 SECRET VALUE SAFE: Use string.format with secrets (produces secret string)
-    self.text:SetText(string.format("%.0f/%.0f", displayCur, maxPower))
+    -- Numeric text is optional. Avoid formatting a secret value; the bar remains
+    -- useful while preventing protected data from entering string operations.
+    -- 数字文字是辅助信息；secret 值不做字符串格式化，资源条本身仍正常显示。
+    if okCur and not curIsSecret and type(curPowerRaw) == "number" then
+        self.text:SetText(string.format("%.0f/%.0f", curPowerRaw, maxPower))
+    else
+        self.text:SetText("")
+    end
 
     -- Set color based on power type (non-secret color choice)
     if self.lastPowerType ~= powerType then

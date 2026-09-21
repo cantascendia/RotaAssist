@@ -19,6 +19,7 @@ local container = nil
 local cdWidgets = {}
 local isVisible = true
 local isLocked  = false
+local specRefreshTimer = nil
 
 ------------------------------------------------------------------------
 -- Constants
@@ -75,8 +76,10 @@ end
 ---@return table widget   IconWidget instance
 local function createCDWidget(spellID, index)
     -- Use the RA.UI.IconWidget class (same as MainDisplay / CooldownBar)
-    local widget = RA.UI.IconWidget:Create(container, ICON_SIZE,
-        "RotaAssistCD_" .. spellID)
+    -- Keep these frames unnamed. The panel is rebuilt on specialization/profile
+    -- changes, and WoW global frame names cannot safely be reused.
+    -- 图标会随专精/配置重建；WoW 全局框体名不可安全复用，因此保持匿名。
+    local widget = RA.UI.IconWidget:Create(container, ICON_SIZE)
 
     -- Position: first icon left-anchored, rest relative to previous
     if index == 1 then
@@ -210,6 +213,12 @@ local function populateIcons()
     if index > 0 then
         local totalWidth = (ICON_SIZE * index) + (ICON_SPACING * (index - 1)) + 4
         container:SetSize(totalWidth, ICON_SIZE + 4)
+        if isVisible then container:Show() end
+    else
+        -- Never leave an empty backdrop on screen while CooldownOverlay is still
+        -- seeding (or when the current spec has no tracked cooldowns).
+        -- CooldownOverlay 尚在填充或当前专精无追踪项时，不显示空白面板。
+        container:Hide()
     end
 end
 
@@ -225,6 +234,35 @@ local function refreshCooldowns()
     if not cdOverlay then return end
 
     local states = cdOverlay:GetCooldownStates()
+
+    -- CooldownOverlay seeds its state table on its first OnUpdate, after this
+    -- panel's OnEnable has already run. Reconcile lazily so the first states
+    -- create widgets instead of leaving the shipped panel permanently blank.
+    -- CooldownOverlay 在本面板启用后才于首个 OnUpdate 填充状态；此处惰性同步，
+    -- 让首次出现的状态创建图标，而不是让发布版面板永久空白。
+    local needsRebuild = false
+    local trackedCount = 0
+    for spellID in pairs(states) do
+        if isSpellTracked(spellID) then
+            trackedCount = trackedCount + 1
+        end
+    end
+    local widgetCount = 0
+    for spellID in pairs(cdWidgets) do
+        widgetCount = widgetCount + 1
+        if not states[spellID] or not isSpellTracked(spellID) then
+            needsRebuild = true
+            break
+        end
+    end
+    -- The panel intentionally caps itself at MAX_ICONS; extra tracked states
+    -- must not force a full rebuild on every one-second refresh.
+    -- 面板最多显示 MAX_ICONS；额外状态不能导致每秒重复重建。
+    if widgetCount ~= math.min(trackedCount, MAX_ICONS) then needsRebuild = true end
+    if needsRebuild then
+        populateIcons()
+    end
+
     for spellID, widget in pairs(cdWidgets) do
         local state = states[spellID]
         if state then
@@ -266,9 +304,13 @@ end
 function CooldownPanel:OnEnable()
     local db = RA.db and RA.db.profile.cooldowns or {}
     -- Respect user preference; default to showing panel
-    if db.enabled == false or db.showPanel == false then return end
+    if db.enabled == false or db.showPanel == false then
+        if container then container:Hide() end
+        return
+    end
 
     createPanel()
+    populateIcons()
 
     local eh = RA:GetModule("EventHandler")
     if eh then
@@ -281,7 +323,9 @@ function CooldownPanel:OnEnable()
             -- Rebuild icons when spec changes (different spells tracked).
             -- The delay lets CooldownOverlay:LoadForSpec repopulate its state table first.
             -- 延迟让 CooldownOverlay:LoadForSpec 先重建状态表。
-            C_Timer.After(0.5, function()
+            if specRefreshTimer then specRefreshTimer:Cancel() end
+            specRefreshTimer = C_Timer.NewTimer(0.5, function()
+                specRefreshTimer = nil
                 populateIcons()
                 refreshCooldowns()
             end)
@@ -309,14 +353,29 @@ function CooldownPanel:OnEnable()
 end
 
 function CooldownPanel:OnDisable()
+    local eh = RA:GetModule("EventHandler")
+    if eh then
+        eh:UnsubscribeAll("CooldownPanel")
+    end
     if self.textTicker then
         self.textTicker:Cancel()
         self.textTicker = nil
     end
+    if specRefreshTimer then
+        specRefreshTimer:Cancel()
+        specRefreshTimer = nil
+    end
+    for _, widget in pairs(cdWidgets) do
+        widget:Clear()
+        widget.frame:Hide()
+    end
+    if container then container:Hide() end
 end
 
 function CooldownPanel:OnPlayerEnteringWorld()
-    C_Timer.After(1.5, function()
+    if specRefreshTimer then specRefreshTimer:Cancel() end
+    specRefreshTimer = C_Timer.NewTimer(1.5, function()
+        specRefreshTimer = nil
         populateIcons()
         refreshCooldowns()
     end)
