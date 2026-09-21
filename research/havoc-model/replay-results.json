@@ -1,0 +1,487 @@
+{
+  "schema": "rotaassist.havoc.replay-matrix.v1",
+  "baselineCommit": "dba4dc328b79468967a158360634ce47b4c4277b",
+  "rowsPerRevision": 874,
+  "comparison": "same-row nil-head depth1, not Blizzard head or DPS",
+  "runs": [
+    {
+      "revision": "rc2",
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260922.raw.json",
+      "traceSha256": "7585130d0fe2125fc466f4e0acbdf9384ac50e14638483998309561246f15ccf",
+      "report": "dist/research/havoc-replay/final/rc2-stock-full-1t-120s-seed20260922.raw.json",
+      "reportSha256": "f0c371be7ae468bd70e01dc302c6daecd2aa97743a684f50d5e3eb850bc12da6",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 140,
+          "mappedActionRows": 116,
+          "predictedRows": 116,
+          "exactAgreement": 21,
+          "overrideEquivalentAgreement": 43,
+          "mismatches": 52,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5517241379310345,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 140,
+          "mappedActionRows": 116,
+          "predictedRows": 116,
+          "exactAgreement": 21,
+          "overrideEquivalentAgreement": 43,
+          "mismatches": 52,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5517241379310345,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc3",
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260922.raw.json",
+      "traceSha256": "7585130d0fe2125fc466f4e0acbdf9384ac50e14638483998309561246f15ccf",
+      "report": "dist/research/havoc-replay/final/rc3-stock-full-1t-120s-seed20260922.raw.json",
+      "reportSha256": "29f23256460f50b0b0ff49cd03e87a8b9b38feffe0aedaa26cbcb931e64cd616",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 140,
+          "mappedActionRows": 116,
+          "predictedRows": 116,
+          "exactAgreement": 21,
+          "overrideEquivalentAgreement": 43,
+          "mismatches": 52,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5517241379310345,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 140,
+          "mappedActionRows": 116,
+          "predictedRows": 116,
+          "exactAgreement": 21,
+          "overrideEquivalentAgreement": 43,
+          "mismatches": 52,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5517241379310345,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc2",
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260923.raw.json",
+      "traceSha256": "d8d3f763cd1fc70fcdff77fe395c0b0407b270b1389805a2f56aa9496b91e181",
+      "report": "dist/research/havoc-replay/final/rc2-stock-full-1t-120s-seed20260923.raw.json",
+      "reportSha256": "daa0a99ab135639a0aff147bf4989d814953d29ab7e3ba3920a8e0e9e04950c2",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 133,
+          "mappedActionRows": 115,
+          "predictedRows": 115,
+          "exactAgreement": 28,
+          "overrideEquivalentAgreement": 37,
+          "mismatches": 50,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5652173913043478,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 133,
+          "mappedActionRows": 115,
+          "predictedRows": 115,
+          "exactAgreement": 28,
+          "overrideEquivalentAgreement": 37,
+          "mismatches": 50,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5652173913043478,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc3",
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260923.raw.json",
+      "traceSha256": "d8d3f763cd1fc70fcdff77fe395c0b0407b270b1389805a2f56aa9496b91e181",
+      "report": "dist/research/havoc-replay/final/rc3-stock-full-1t-120s-seed20260923.raw.json",
+      "reportSha256": "24b489fcbea65b28f16c4b6870b5d6c28e931e03478abe5f59ca1aa770eb2808",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 133,
+          "mappedActionRows": 115,
+          "predictedRows": 115,
+          "exactAgreement": 28,
+          "overrideEquivalentAgreement": 37,
+          "mismatches": 50,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5652173913043478,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 133,
+          "mappedActionRows": 115,
+          "predictedRows": 115,
+          "exactAgreement": 28,
+          "overrideEquivalentAgreement": 37,
+          "mismatches": 50,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5652173913043478,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc2",
+      "trace": "dist/research/simc/trace/stock-full-1t-300s-seed20260923.raw.json",
+      "traceSha256": "243228aaba363dc7bb8afe62b61b0de9c45e7d5d8140112d32b141ff0006bf25",
+      "report": "dist/research/havoc-replay/final/rc2-stock-full-1t-300s-seed20260923.raw.json",
+      "reportSha256": "a4c7a2d7f6b82e999aa2d1e8ab278101a15a6d59451bd5c79b84786847758736",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 321,
+          "mappedActionRows": 271,
+          "predictedRows": 271,
+          "exactAgreement": 62,
+          "overrideEquivalentAgreement": 88,
+          "mismatches": 121,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5535055350553506,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 321,
+          "mappedActionRows": 271,
+          "predictedRows": 271,
+          "exactAgreement": 62,
+          "overrideEquivalentAgreement": 88,
+          "mismatches": 121,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5535055350553506,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc3",
+      "trace": "dist/research/simc/trace/stock-full-1t-300s-seed20260923.raw.json",
+      "traceSha256": "243228aaba363dc7bb8afe62b61b0de9c45e7d5d8140112d32b141ff0006bf25",
+      "report": "dist/research/havoc-replay/final/rc3-stock-full-1t-300s-seed20260923.raw.json",
+      "reportSha256": "96b6f1f4c446bc0b8952078264496a478b3f5fd65a90e276bb43d36b9cb641c9",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 321,
+          "mappedActionRows": 271,
+          "predictedRows": 271,
+          "exactAgreement": 62,
+          "overrideEquivalentAgreement": 88,
+          "mismatches": 121,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5535055350553506,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 321,
+          "mappedActionRows": 271,
+          "predictedRows": 271,
+          "exactAgreement": 62,
+          "overrideEquivalentAgreement": 88,
+          "mismatches": 121,
+          "noPrediction": 0,
+          "mappedActionAgreementRate": 0.5535055350553506,
+          "predictionCoverage": 1,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc2",
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260922.raw.json",
+      "traceSha256": "8f570cce7d046ec9f8fc5275d8ce827557a5d47f2262fe9d273d5ef46af42214",
+      "report": "dist/research/havoc-replay/final/rc2-stock-full-5t-120s-seed20260922.raw.json",
+      "reportSha256": "d6ce90c0b8c5f2d43c6cfc40aecd01950acab70a9c631f3bc92f67cac8ea4825",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 143,
+          "mappedActionRows": 117,
+          "predictedRows": 63,
+          "exactAgreement": 10,
+          "overrideEquivalentAgreement": 6,
+          "mismatches": 47,
+          "noPrediction": 54,
+          "mappedActionAgreementRate": 0.13675213675213677,
+          "predictionCoverage": 0.5384615384615384,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 143,
+          "mappedActionRows": 117,
+          "predictedRows": 63,
+          "exactAgreement": 10,
+          "overrideEquivalentAgreement": 6,
+          "mismatches": 47,
+          "noPrediction": 54,
+          "mappedActionAgreementRate": 0.13675213675213677,
+          "predictionCoverage": 0.5384615384615384,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc3",
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260922.raw.json",
+      "traceSha256": "8f570cce7d046ec9f8fc5275d8ce827557a5d47f2262fe9d273d5ef46af42214",
+      "report": "dist/research/havoc-replay/final/rc3-stock-full-5t-120s-seed20260922.raw.json",
+      "reportSha256": "4bc4ba2ede0ac5e3c2c7a5d142bd612b4836cc31d929e3443e2aa8780f6afc4c",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 143,
+          "mappedActionRows": 117,
+          "predictedRows": 63,
+          "exactAgreement": 10,
+          "overrideEquivalentAgreement": 6,
+          "mismatches": 47,
+          "noPrediction": 54,
+          "mappedActionAgreementRate": 0.13675213675213677,
+          "predictionCoverage": 0.5384615384615384,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 143,
+          "mappedActionRows": 117,
+          "predictedRows": 63,
+          "exactAgreement": 10,
+          "overrideEquivalentAgreement": 6,
+          "mismatches": 47,
+          "noPrediction": 54,
+          "mappedActionAgreementRate": 0.13675213675213677,
+          "predictionCoverage": 0.5384615384615384,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc2",
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260923.raw.json",
+      "traceSha256": "521b985d5284a4a8cc3a22ee98f1633563c3629b3aabb7d8f1288edd0e951cb8",
+      "report": "dist/research/havoc-replay/final/rc2-stock-full-5t-120s-seed20260923.raw.json",
+      "reportSha256": "a26580bdd3ad3435a75b6cfd09fc6d1da3c68aec9ab5769df7343c796eba0403",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 137,
+          "mappedActionRows": 114,
+          "predictedRows": 40,
+          "exactAgreement": 7,
+          "overrideEquivalentAgreement": 5,
+          "mismatches": 28,
+          "noPrediction": 74,
+          "mappedActionAgreementRate": 0.10526315789473684,
+          "predictionCoverage": 0.3508771929824561,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 137,
+          "mappedActionRows": 114,
+          "predictedRows": 40,
+          "exactAgreement": 7,
+          "overrideEquivalentAgreement": 5,
+          "mismatches": 28,
+          "noPrediction": 74,
+          "mappedActionAgreementRate": 0.10526315789473684,
+          "predictionCoverage": 0.3508771929824561,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    },
+    {
+      "revision": "rc3",
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260923.raw.json",
+      "traceSha256": "521b985d5284a4a8cc3a22ee98f1633563c3629b3aabb7d8f1288edd0e951cb8",
+      "report": "dist/research/havoc-replay/final/rc3-stock-full-5t-120s-seed20260923.raw.json",
+      "reportSha256": "2f99782a3e4d7544742668283ffb1c2425f3b5775c0f8ad01de96d476ccf1c7b",
+      "profiles": [
+        {
+          "profile": "default",
+          "totalTraceRows": 137,
+          "mappedActionRows": 114,
+          "predictedRows": 40,
+          "exactAgreement": 7,
+          "overrideEquivalentAgreement": 5,
+          "mismatches": 28,
+          "noPrediction": 74,
+          "mappedActionAgreementRate": 0.10526315789473684,
+          "predictionCoverage": 0.3508771929824561,
+          "declaredImpossibleActions": 0
+        },
+        {
+          "profile": "fel_scarred",
+          "totalTraceRows": 137,
+          "mappedActionRows": 114,
+          "predictedRows": 40,
+          "exactAgreement": 7,
+          "overrideEquivalentAgreement": 5,
+          "mismatches": 28,
+          "noPrediction": 74,
+          "mappedActionAgreementRate": 0.10526315789473684,
+          "predictionCoverage": 0.3508771929824561,
+          "declaredImpossibleActions": 0
+        }
+      ]
+    }
+  ],
+  "pairedComparisons": [
+    {
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260922.raw.json",
+      "profile": "default",
+      "commonRows": 116,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260922.raw.json",
+      "profile": "fel_scarred",
+      "commonRows": 116,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260923.raw.json",
+      "profile": "default",
+      "commonRows": 115,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-1t-120s-seed20260923.raw.json",
+      "profile": "fel_scarred",
+      "commonRows": 115,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-1t-300s-seed20260923.raw.json",
+      "profile": "default",
+      "commonRows": 271,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-1t-300s-seed20260923.raw.json",
+      "profile": "fel_scarred",
+      "commonRows": 271,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260922.raw.json",
+      "profile": "default",
+      "commonRows": 117,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260922.raw.json",
+      "profile": "fel_scarred",
+      "commonRows": 117,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260923.raw.json",
+      "profile": "default",
+      "commonRows": 114,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    },
+    {
+      "trace": "dist/research/simc/trace/stock-full-5t-120s-seed20260923.raw.json",
+      "profile": "fel_scarred",
+      "commonRows": 114,
+      "baselineOnlyRows": [],
+      "currentOnlyRows": [],
+      "changedPredictionRows": 0
+    }
+  ],
+  "totals": {
+    "rc2/default": {
+      "mappedActionRows": 733,
+      "predictedRows": 605,
+      "exactAgreement": 128,
+      "overrideEquivalentAgreement": 179,
+      "noPrediction": 128,
+      "declaredImpossibleActions": 0
+    },
+    "rc2/fel_scarred": {
+      "mappedActionRows": 733,
+      "predictedRows": 605,
+      "exactAgreement": 128,
+      "overrideEquivalentAgreement": 179,
+      "noPrediction": 128,
+      "declaredImpossibleActions": 0
+    },
+    "rc3/default": {
+      "mappedActionRows": 733,
+      "predictedRows": 605,
+      "exactAgreement": 128,
+      "overrideEquivalentAgreement": 179,
+      "noPrediction": 128,
+      "declaredImpossibleActions": 0
+    },
+    "rc3/fel_scarred": {
+      "mappedActionRows": 733,
+      "predictedRows": 605,
+      "exactAgreement": 128,
+      "overrideEquivalentAgreement": 179,
+      "noPrediction": 128,
+      "declaredImpossibleActions": 0
+    }
+  },
+  "limitations": {
+    "charges": "SimC cooldown.stacks is configured charges, not current available charges",
+    "clientHead": "No C_AssistedCombat recommendation in SimC trace; nil head tests the APL decision path only",
+    "cooldownOmission": "Only active cooldowns are listed; omitted unobserved action IDs remain unknown",
+    "demonicWindow": "Four simulated post-trigger steps are not equivalent to the full Metamorphosis aura duration",
+    "essenceBreakWindow": "Active debuff 320338 on the action target proves true; absence may reflect snapshot filtering",
+    "gcdDuration": "Not needed for nil-head depth-1 same-row choice; missing for forward lookahead",
+    "learnedSpells": "Offline IsPlayerSpell mock returns true for all IDs; trace action coverage is not a full talent or learned-spell catalog",
+    "metaState": "Active aura 162264 proves true; absence is not used as a live-client false assertion",
+    "profileSelection": "Both addon profiles are replayed independently; SimC talent equivalence is not assumed",
+    "resourceMaxMismatch": "Trace Fury maximum differs from static maxBase; same-row replay passes resourceMax, but does not exercise future generation or establish live API readability",
+    "timing": "Ordinary selected actions are before execute, but SimC may start a line cooldown before snapshot; special actions differ"
+  }
+}

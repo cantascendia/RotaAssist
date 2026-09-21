@@ -77,8 +77,10 @@ try {
         @((Join-Path $RepoRoot 'docs\QUALITY_BASELINE.md'), 'docs\QUALITY_BASELINE.md'),
         @((Join-Path $RepoRoot 'docs\DEPENDENCIES.md'), 'docs\DEPENDENCIES.md'),
         @((Join-Path $RepoRoot 'docs\ADAPTIVE_RESEARCH_2026-09-22.md'), 'docs\ADAPTIVE_RESEARCH_2026-09-22.md'),
+        @((Join-Path $RepoRoot 'docs\HAVOC_MODEL_VALIDATION_2026-09-22.md'), 'docs\HAVOC_MODEL_VALIDATION_2026-09-22.md'),
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.1.md'), 'docs\RELEASE_1.1.1-rc.1.md'),
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.2.md'), 'docs\RELEASE_1.1.1-rc.2.md'),
+        @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.3.md'), 'docs\RELEASE_1.1.1-rc.3.md'),
         @((Join-Path $RepoRoot 'docs\SMOKE_TEST_12.1.md'), 'docs\SMOKE_TEST_12.1.md')
     )
     foreach ($doc in $docs) {

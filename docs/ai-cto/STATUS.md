@@ -1,5 +1,13 @@
 # RotaAssist — CTO 项目状态
 
+## 2026-09-22：1.1.1-rc.3 技能模型修正与回放
+
+用户已改为 Astra 亲自编码并负责整个项目，Sol 后续工作已停止。
+分支 `codex/havoc-model-validation` 修正有版本证据的技能数据、被动技能推荐和
+公开资源上限；五组真实 SimC 轨迹提供 874 行独立回放。回放不是插件 DPS，
+正式服客户端仍缺失，理论最优和超越 Hekili 尚未证明。
+见 [交付说明](../RELEASE_1.1.1-rc.3.md) 和 [验证记录](../HAVOC_MODEL_VALIDATION_2026-09-22.md)。
+
 ## 2026-09-22：1.1.1-rc.2 自适应模拟与独立研究
 
 分支 `codex/simc-adaptive-quality`，继续由 Astra 统筹、Sol 编码。新增逐步时间推进、

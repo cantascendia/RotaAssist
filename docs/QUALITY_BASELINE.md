@@ -58,6 +58,12 @@ are an external reference, not measurements of the in-game RotaAssist policy.
 
 ## Evidence still required for a performance claim
 
+Rc.3 corrects selected Havoc base spell facts and uses a public resource maximum.
+Five independent full-state SimC traces provide 874 sequence rows for same-row
+baseline/current APL comparison. This diagnostic does not measure addon DPS or
+the production Blizzard-head queue. See
+[model validation](HAVOC_MODEL_VALIDATION_2026-09-22.md).
+
 For each supported specialization and talent build, record the client build,
 gear, talents, encounter model, APL revision and SimulationCraft revision. Compare
 against an independently sourced reference using the same assumptions and seeds.

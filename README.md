@@ -2,13 +2,13 @@
 
 [![WoW Version](https://img.shields.io/badge/WoW-12.1_Midnight-blueviolet)](https://worldofwarcraft.blizzard.com)
 [![Interface](https://img.shields.io/badge/Interface-120100-informational)](https://warcraft.wiki.gg/wiki/Interface_number)
-[![Version](https://img.shields.io/badge/version-1.1.1--rc.2-orange)](docs/QUALITY_BASELINE.md)
+[![Version](https://img.shields.io/badge/version-1.1.1--rc.3-orange)](docs/QUALITY_BASELINE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **RotaAssist** — WoW Midnight 12.1 的循环**教练**插件。
 *A rotation **coach** for WoW Midnight 12.1 — not another "next spell" icon.*
 
-> **当前交付：1.1.1-rc.2 本地安装候选包。** 已建立独立 SimulationCraft 参考实验，
+> **当前交付：1.1.1-rc.3 本地安装候选包。** 已建立独立 SimulationCraft 参考实验，
 > 尚无插件真机战斗或 DPS 验收，不宣称理论最优或超越 Hekili。目标为 Interface `120100`；
 > 客户端兼容性需要实测。推荐评分和“准确率”不是 DPS 百分比。
 > 详见 [推荐质量与验收标准](docs/QUALITY_BASELINE.md)。
@@ -80,7 +80,7 @@ TOC load order. Loaded data still requires per-specialization validation.*
 也不承诺自动更新。
 
 ### Manual / 手动安装
-1. 获取本次交付的 `RotaAssist-1.1.1-rc.2.zip`；源码 ZIP 不能替代带依赖的安装包
+1. 获取本次交付的 `RotaAssist-1.1.1-rc.3.zip`；源码 ZIP 不能替代带依赖的安装包
 2. 解压到
    `World of Warcraft/_retail_/Interface/AddOns/`
    解压后应存在 `Interface/AddOns/RotaAssist/RotaAssist.toc`
