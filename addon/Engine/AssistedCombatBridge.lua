@@ -218,6 +218,11 @@ function Bridge:OnEnable()
 
     local eh = RA:GetModule("EventHandler")
     if eh then
+        eh:Subscribe("ROTAASSIST_TARGET_CONTEXT_CHANGED", "AssistedCombatBridge", function()
+            cachedRec = nil
+            previousRec = nil
+            lastRefresh = -math.huge
+        end)
         eh:Subscribe("ASSISTED_COMBAT_ACTION_SPELL_CAST", "AssistedCombatBridge", function(_, spellID)
             previousRec = cachedRec
             cachedRec = nil
@@ -236,4 +241,12 @@ function Bridge:OnEnable()
             end
         end)
     end
+end
+
+function Bridge:OnDisable()
+    local eh = RA:GetModule("EventHandler")
+    if eh then eh:UnsubscribeAll("AssistedCombatBridge") end
+    cachedRec = nil
+    previousRec = nil
+    lastRefresh = -math.huge
 end

@@ -23,5 +23,11 @@ RA.Registry.OVERRIDE_PAIRS = {
 -- Fallback texture ID (question mark icon)
 RA.Registry.FALLBACK_TEXTURE = 134400
 
+-- Observable Havoc context IDs, pinned to the source audit.
+-- 浩劫可观测战况：近战探针不等于所有范围技能的命中半径。
+RA.Registry.HAVOC_CONTEXT = {
+    specID = 577, meleeProbe = 162794, metaAura = 162264, essenceBreakAura = 320338,
+}
+
 -- Backward compatibility for legacy callers.
 RA.KNOWN_OVERRIDE_PAIRS = RA.Registry.OVERRIDE_PAIRS

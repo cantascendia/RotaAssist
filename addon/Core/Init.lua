@@ -40,6 +40,7 @@ local MODULE_ORDER = {
     -- Engine (depends on Data + Core modules)
     "SpecDetector",
     "AssistedCombatBridge",
+    "TargetContext",
     "AccuracyTracker",
     "AIInference",
     "CastHistoryRecorder",

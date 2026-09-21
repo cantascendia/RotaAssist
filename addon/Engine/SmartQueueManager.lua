@@ -230,6 +230,7 @@ local context_reuse = {
     defSpell=nil, defUrgency=0,
     aiPhase="NORMAL", aiTip=nil,
 }
+local observedWindows_reuse = {}
 local candidates_reuse = {}
 local scored_reuse = {}
 local toRemove_reuse = {}
@@ -453,6 +454,18 @@ end
 ------------------------------------------------------------------------
 
 local function AssembleQueue()
+    local targetModule = RA:GetModule("TargetContext")
+    local battlefield = targetModule and targetModule:IsActive() and targetModule:GetSnapshot()
+    if battlefield and battlefield.targetValid == false then
+        lastKnownBlizzSpell = nil
+        channelNextSpell = nil
+        finalQueue.main = nil
+        wipe(finalQueue.next)
+        wipe(aplPredictions)
+        local events = RA:GetModule("EventHandler")
+        if events then events:Fire("ROTAASSIST_QUEUE_UPDATED", nil) end
+        return
+    end
     if not InCombatLockdown() and not (RA.db and RA.db.profile.display.showOutOfCombat) then
         finalQueue.main      = nil
         finalQueue.next      = {}
@@ -502,6 +515,11 @@ local function AssembleQueue()
     end
 
     -- Build Blizzard rotation spell set for blind-spot detection
+    if battlefield and battlefield.spellRange[context.blizzSpell] == false then
+        context.blizzSpell = nil
+        lastKnownBlizzSpell = nil
+        channelNextSpell = nil
+    end
     -- Blizzard 蠕ｪ邇ｯ謚閭ｽ髮・粋・檎畑莠取｣豬狗峇蛹ｺ謚閭ｽ
     local rotationSpells = {}
     if mBridge then
@@ -524,7 +542,8 @@ local function AssembleQueue()
         end
     end
     wipe(aplPredictions)  -- reset module-level table each frame
-    if mAPLEngine and mAPLEngine.HasAPL and mAPLEngine:HasAPL() then
+    if mAPLEngine and mAPLEngine.HasAPL and mAPLEngine:HasAPL()
+       and (not battlefield or battlefield.targetValid == true) then
         context.predictiveEnabled = true
         -- FIX (P0-Bug2): Build a valid limitedState table from context
         local limitedState = {
@@ -640,6 +659,26 @@ local function AssembleQueue()
             end
         end
         limitedState.targetCount = currentTargetCount
+        if battlefield and battlefield.supported then
+            limitedState.targetCount = battlefield.nearbyEnemies
+            limitedState.targetCountKnown = battlefield.countComplete
+            limitedState.targetValid = battlefield.targetValid
+            limitedState.spellRange = battlefield.spellRange
+            limitedState.windowUnknown = battlefield.windowUnknown
+            limitedState.windowRemains = battlefield.windowRemains
+            limitedState.inMetaKnown = battlefield.inMeta ~= nil
+            -- Copy observed target windows, never reuse target-agnostic cast timers.
+            -- 当前目标的观测替代与目标无关的施法计时猜测。
+            wipe(observedWindows_reuse)
+            observedWindows_reuse.demonic = limitedState.windows.demonic
+            observedWindows_reuse.essence_break = battlefield.windows.essence_break
+            limitedState.windows = observedWindows_reuse
+            if battlefield.inMeta ~= nil then
+                limitedState.inMeta = battlefield.inMeta
+                limitedState.metaRemains = battlefield.metaRemains
+            end
+            currentTargetCount = battlefield.nearbyEnemies
+        end
         context.aplState = limitedState
 
         -- Increase depth to 3 to get better lookahead for the prediction bar
@@ -761,11 +800,14 @@ local function AssembleQueue()
                                 resource = context.aplState.resource,
                                 resourceKnown = context.aplState.resourceKnown,
                                 inMeta = context.aplState.inMeta or false,
+                                inMetaKnown = context.aplState.inMetaKnown,
                                 lastCast = nil,
                                 targetCount = context.aplState.targetCount or 1,
+                                targetCountKnown = context.aplState.targetCountKnown,
                                 combatDuration = context.aplState.combatDuration or 0,
                                 charges = context.aplState.charges or {},
                                 windows = context.aplState.windows or {},
+                                windowUnknown = context.aplState.windowUnknown,
                             }
                             stateOk = mAPLEngine:EvaluateCondition(rule.condition, sid, blindSpotState)
                         end
@@ -932,7 +974,8 @@ local function AssembleQueue()
     -- Final safety net: validate scored entries with RA:IsSpellRecommendable
     -- 蛟貞ｺ城″蜴・ｻ･螳牙・遘ｻ髯､荳埼夊ｿ・噪譚｡逶ｮ
     for i = #scored, 1, -1 do
-        if not RA:IsSpellRecommendable(scored[i].spellID) then
+        if not RA:IsSpellRecommendable(scored[i].spellID)
+           or (battlefield and battlefield.spellRange[scored[i].spellID] == false) then
             table.remove(scored, i)
         end
     end
@@ -1118,6 +1161,16 @@ function SmartQueueManager:OnEnable()
     -- 譁ｽ豕墓・蜉溷錘・壽峩譁ｰ蜿倩ｺｫ迥ｶ諤√∬ｽｯ螻剰反縲∝､ｱ謨・Bridge 郛灘ｭ倥・㍾蟒ｺ髦溷・
     local eh = RA:GetModule("EventHandler")
     if eh then
+        eh:Subscribe("ROTAASSIST_TARGET_CONTEXT_CHANGED", "SmartQueueManager", function()
+            lastKnownBlizzSpell = nil
+            channelNextSpell = nil
+            lastRecommendedSpellID = nil
+            wipe(aplPredictions)
+            wipe(finalQueue.next)
+            finalQueue.main = nil
+            lastUpdate = throttleInterval
+            eh:Fire("ROTAASSIST_QUEUE_UPDATED", nil)
+        end)
         -- Combat cadence: full rate in combat, widened out of combat. The queue keeps
         -- being rebuilt either way so MainDisplay never goes stale.
         -- 战斗节奏：战斗内全速，脱战放宽。两种状态下队列都持续重建，MainDisplay 不会失效。

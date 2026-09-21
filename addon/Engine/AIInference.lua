@@ -116,6 +116,11 @@ end
 ---Gets the count of hostile units with visible nameplates
 ---@return number count
 local function CountNameplates()
+    local targetContext = RA:GetModule("TargetContext")
+    if targetContext and targetContext:IsActive() then
+        local snapshot = targetContext:GetSnapshot()
+        if snapshot.supported then return snapshot.nearbyEnemies end
+    end
     local count = 0
     -- Quick visible approximation. C_NamePlate.GetNamePlates() is more reliable,
     -- but this is combat-safe as a rough estimate.
@@ -167,7 +172,12 @@ local function CollectSignals(now)
     -- Sync nameplates with light hysteresis so targetCount does not flap
     local rawTargetCount = CountNameplates()
     state.rawTargetCount = rawTargetCount
-    if rawTargetCount >= 3 then
+    local targetContext = RA:GetModule("TargetContext")
+    if targetContext and targetContext:IsActive() and targetContext:GetSnapshot().supported then
+        -- Do not retain departed enemies through the legacy nameplate hysteresis.
+        -- 已离开范围的敌人不再被旧姓名板迟滞逻辑保留。
+        state.targetCount = rawTargetCount
+    elseif rawTargetCount >= 3 then
         lastMultiTargetTime = now
         state.targetCount = rawTargetCount
     elseif rawTargetCount == 2 then
@@ -602,6 +612,13 @@ function AIInference:OnEnable()
     
     if eh then
         eh:Subscribe("ROTAASSIST_SPELLCAST_SUCCEEDED", "AIInference", OnSpellCastSucceeded)
+        eh:Subscribe("ROTAASSIST_TARGET_CONTEXT_CHANGED", "AIInference", function()
+            windowExpiries.essence_break = 0
+            AIInference.InferredState.windows.essence_break = false
+            AIInference.InferredState.targetCount = 0
+            lastMultiTargetTime = 0
+            lastSignalTime = -math.huge
+        end)
     end
     
     if InCombatLockdown() then

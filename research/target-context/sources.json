@@ -1,0 +1,18 @@
+{
+  "UnitAuraDocumentation.lua": {
+    "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/UnitAuraDocumentation.lua",
+    "sha256": "39405809f92e74a945034529d2a2962ebebe9a70fe581b2f411586fc2b72d5d5"
+  },
+  "NamePlateDocumentation.lua": {
+    "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/NamePlateDocumentation.lua",
+    "sha256": "84b02d01e1edfa7447d9645c6e102ea86d211de3b7a3582b201475b63ac10158"
+  },
+  "SpellDocumentation.lua": {
+    "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SpellDocumentation.lua",
+    "sha256": "fbedb3cf4b82d623b49a7fa170c982de2e4b005d2bcd5db3068bfb6211e51007"
+  },
+  "UnitDocumentation.lua": {
+    "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/UnitDocumentation.lua",
+    "sha256": "bc7fd554d45760061d699ff18ec9d9fec45b3b3796a9323d661e003dee5fdbe7"
+  }
+}

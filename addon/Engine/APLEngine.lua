@@ -133,6 +133,8 @@ local function setWindowState(simState, windowKey, active)
     simState.windows = simState.windows or {}
     simState.windowSteps = simState.windowSteps or {}
     simState.windows[windowKey] = active == true
+    if simState.windowUnknown then simState.windowUnknown[windowKey] = nil end
+    if simState.windowRemains then simState.windowRemains[windowKey] = nil end
     if active then
         simState.windowSteps[windowKey] = WINDOW_STEP_DURATIONS[windowKey] or 1
     else
@@ -147,7 +149,10 @@ local function tickWindowState(simState)
 
     simState.windows = simState.windows or {}
     for windowKey, remainingSteps in pairs(simState.windowSteps) do
-        if remainingSteps and remainingSteps > 0 then
+        if simState.windowRemains and simState.windowRemains[windowKey] ~= nil then
+            -- Public remaining seconds use elapsed time, not a fixed step count.
+            -- 公开剩余秒数按经过时间衰减，不按固定步数提前结束。
+        elseif remainingSteps and remainingSteps > 0 then
             remainingSteps = remainingSteps - 1
             simState.windowSteps[windowKey] = remainingSteps
             if remainingSteps <= 0 then
@@ -688,7 +693,9 @@ function APLEngine:EvaluateCondition(condition, spellID, simState)
         elseif cond:match("^target_count") then
             local op, value = parseNumericCondition(cond, "target_count")
             if op and value then
-                pass = compareNumber(simState.targetCount or 1, op, value)
+                if simState.targetCountKnown ~= false or op == ">=" or op == ">" then
+                    pass = compareNumber(simState.targetCount or 1, op, value)
+                end
             else
                 pass = true
             end
@@ -712,17 +719,19 @@ function APLEngine:EvaluateCondition(condition, spellID, simState)
 
         elseif cond:match("^window:") then
             local windowKey = cond:match("^window:(.+)$")
-            pass = simState.windows and simState.windows[windowKey] == true
+            pass = not (simState.windowUnknown and simState.windowUnknown[windowKey])
+                and simState.windows and simState.windows[windowKey] == true
 
         elseif cond:match("^not_window:") then
             local windowKey = cond:match("^not_window:(.+)$")
-            pass = not (simState.windows and simState.windows[windowKey] == true)
+            pass = not (simState.windowUnknown and simState.windowUnknown[windowKey])
+                and not (simState.windows and simState.windows[windowKey] == true)
 
         elseif cond == "not_in_meta" then
-            pass = not simState.inMeta
+            pass = simState.inMetaKnown ~= false and not simState.inMeta
 
         elseif cond == "in_meta" then
-            pass = simState.inMeta == true
+            pass = simState.inMetaKnown ~= false and simState.inMeta == true
 
         else
             pass = false
@@ -803,6 +812,8 @@ function APLEngine:SimulateSpellCast(simState, spellID)
 
     if META_SPELL_IDS[spellID] then
         simState.inMeta = true
+        simState.inMetaKnown = true
+        simState.metaRemains = META_SPELL_IDS[spellID]
     end
 
     local triggeredWindow = WINDOW_TRIGGER_SPELLS[spellID]
@@ -848,6 +859,14 @@ local function advancePredictionTime(simState, spellID)
             if count >= recharge.max then recharge.remaining = 0 end
         end
     end
+    for key, remaining in pairs(simState.windowRemains or {}) do
+        simState.windowRemains[key] = math.max(0, remaining - elapsed)
+        if simState.windowRemains[key] <= 0 then simState.windows[key] = false end
+    end
+    if simState.metaRemains then
+        simState.metaRemains = math.max(0, simState.metaRemains - elapsed)
+        if simState.metaRemains <= 0 then simState.inMeta = false end
+    end
     simState.combatDuration = (simState.combatDuration or 0) + elapsed
 end
 
@@ -855,6 +874,7 @@ end
 ---unavailable. Unknown resource/CD facts are not invented.
 ---仅在可观测或已模拟的状态证明技能不可用时拒绝；不编造未知资源与冷却事实。
 local function canCastAtHorizon(simState, spellID)
+    if simState.spellRange and simState.spellRange[spellID] == false then return false end
     local charges = simState.charges[spellID]
     if charges ~= nil then
         if charges <= 0 then return false end
@@ -924,6 +944,7 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
     -- currentSpellID may be nil (no Blizzard recommendation) — prediction continues from APL top.
     -- limitedState は必須。currentSpellID が nil の場合は APL 先頭から予測する。
     if not limitedState then return {} end
+    if limitedState.targetValid == false then return {} end
 
     if not currentAPL then return {} end
 
@@ -964,14 +985,49 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
         resourceMax = resourceMax,
         gcdDuration = gcdDuration,
         inMeta      = inMeta,
+        inMetaKnown = limitedState.inMetaKnown ~= false,
         lastCast    = nil,
         targetCount = targetCount,
+        targetCountKnown = limitedState.targetCountKnown ~= false,
         combatDuration = combatDuration,
         charges = {},
         chargeRecharges = {},
         windows = {},
         windowSteps = {},
+        windowUnknown = {},
+        windowRemains = {},
+        spellRange = {},
     }
+    for id, value in pairs(limitedState.spellRange or {}) do
+        if not issecretvalue(value) and type(value) == "boolean" then
+            simState.spellRange[id] = value
+            local pair = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[id]
+            if pair and value == false then simState.spellRange[pair] = false end
+        end
+    end
+    -- A form pair's explicit out-of-range value must win independent of key order.
+    -- 变身技能的明确超距结果不受遍历顺序影响。
+    for id, value in pairs(limitedState.spellRange or {}) do
+        if not issecretvalue(value) and value == false then
+            simState.spellRange[id] = false
+            local pair = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[id]
+            if pair then simState.spellRange[pair] = false end
+        end
+    end
+    for key, unknown in pairs(limitedState.windowUnknown or {}) do
+        if not issecretvalue(unknown) and unknown == true then simState.windowUnknown[key] = true end
+    end
+    for key, remaining in pairs(limitedState.windowRemains or {}) do
+        if not issecretvalue(remaining) and type(remaining) == "number"
+           and remaining >= 0 and remaining < math.huge then
+            simState.windowRemains[key] = remaining
+        end
+    end
+    local metaRemains = limitedState.metaRemains
+    if not issecretvalue(metaRemains) and type(metaRemains) == "number"
+       and metaRemains >= 0 and metaRemains < math.huge then
+        simState.metaRemains = metaRemains
+    end
     -- Copy cooldown data into simState
     if limitedState.cooldowns then
         for spellID, val in pairs(limitedState.cooldowns) do
