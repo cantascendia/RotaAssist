@@ -482,6 +482,7 @@ local function AssembleQueue()
     -- 1. Gather Context
     local context = context_reuse
     context.blizzSpell = nil
+    context.independentHead = nil
     context.aplPred = nil
     context.aplState = nil
     context.predictiveEnabled = false
@@ -683,9 +684,18 @@ local function AssembleQueue()
         end
         context.aplState = limitedState
 
-        -- Independent observation does not promote an unqualified policy.
-        -- 独立观测不把尚未验证性能的策略提升为主推荐。
-        if independent then independent:Observe(limitedState) end
+        -- Default to observation; explicit experimental opt-in can select a head.
+        -- 默认只观测；显式实验选项可采用独立首位，并从实际首位预测后续。
+        if independent then
+            independent:Observe(limitedState)
+            local selected = independent.GetExperimentalHead and independent:GetExperimentalHead(context.blizzSpell)
+            if selected and IsSpellCastable(selected) then
+                context.independentHead = selected
+                -- blizzSpell is the legacy scoring/seed slot; diagnostics retain the reference.
+                -- 保留原参考用于诊断；旧评分/预测首位字段改为实际选择的动作。
+                context.blizzSpell = selected
+            end
+        end
 
         -- Increase depth to 3 to get better lookahead for the prediction bar
         local ok, result = pcall(mAPLEngine.PredictNext, mAPLEngine, context.blizzSpell, limitedState, 3)
@@ -1003,7 +1013,7 @@ local function AssembleQueue()
 
         finalQueue.main = {
             spellID    = scored[1].spellID,
-            source     = scored[1].source,
+            source     = (context.independentHead == scored[1].spellID) and "INDEPENDENT" or scored[1].source,
             confidence = topConf
         }
 
@@ -1180,6 +1190,15 @@ function SmartQueueManager:OnEnable()
             lastKnownBlizzSpell = nil
             channelNextSpell = nil
             lastRecommendedSpellID = nil
+            wipe(aplPredictions)
+            wipe(finalQueue.next)
+            finalQueue.main = nil
+            lastUpdate = throttleInterval
+            eh:Fire("ROTAASSIST_QUEUE_UPDATED", nil)
+        end)
+        eh:Subscribe("ROTAASSIST_INDEPENDENT_MODE_CHANGED", "SmartQueueManager", function()
+            if RA:GetModule("IndependentObserver") then RA:GetModule("IndependentObserver"):Reset() end
+            lastKnownBlizzSpell, channelNextSpell, lastRecommendedSpellID = nil, nil, nil
             wipe(aplPredictions)
             wipe(finalQueue.next)
             finalQueue.main = nil

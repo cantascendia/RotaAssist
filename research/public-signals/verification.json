@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-22",
+  "luaTestsPassed": 646,
+  "pythonTestsPassed": 39,
+  "addonLuaSyntaxFiles": 163,
+  "publicSignalMutationChecks": [
+    {
+      "mutation": "optional_cost_as_minimum",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "accept_contradictory_bounds",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "infer_nil_aura_absence",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_experimental_opt_in",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "seed_with_discarded_reference",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "skip_resource_evidence",
+      "killedByBehaviorTest": true
+    }
+  ],
+  "independentMutationChecks": [
+    {
+      "name": "unknown_as_false",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore_earlier_candidate",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "population_lower_bound_as_exact",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "inferred_resource_as_observed",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "disconnect_queue_observer",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    }
+  ],
+  "retailRuntimeValidated": false,
+  "maximumDpsEstablished": false,
+  "independentDefault": "observation_only",
+  "independentOptIn": "experimental",
+  "frozenPolicyChanged": false
+}

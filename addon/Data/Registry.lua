@@ -27,6 +27,14 @@ RA.Registry.FALLBACK_TEXTURE = 134400
 -- 浩劫可观测战况：近战探针不等于所有范围技能的命中半径。
 RA.Registry.HAVOC_CONTEXT = {
     specID = 577, meleeProbe = 162794, metaAura = 162264, essenceBreakAura = 320338,
+    powerType = 17,
+    -- Pinned SimC class source, 774babd: real buff IDs, not virtual flags.
+    -- 固定版本职业源码中的真实光环 ID，不包含模拟器内部强化标志。
+    playerAuraFacts = {
+        ["buff.initiative"] = 391215,
+        ["buff.inertia_trigger"] = 1215159,
+        ["buff.metamorphosis"] = 162264,
+    },
 }
 
 -- Backward compatibility for legacy callers.

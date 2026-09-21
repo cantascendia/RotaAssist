@@ -36,6 +36,16 @@ still lose 1.42%–2.68% to stock SimC under the fixed Fel-Scarred profile. Ther
 the candidate is not promoted to the main display. The ordinary head retains
 the existing behavior. See [release notes](RELEASE_1.1.1-rc.5.md).
 
+## Experimental public-signal mode (1.1.1-rc.6)
+
+The default behavior remains unchanged. Explicit `/ra independent on` opts into
+an experimental independent immediate head, labeled EXP, when public evidence
+determines an eligible action. Subsequent estimates start from that head.
+This is not promotion through the performance gate: the same frozen policy
+remains below the prior benchmark. Unknown evidence falls back; public resource
+bounds are never represented as exact observations. See
+[rc.6 notes](RELEASE_1.1.1-rc.6.md) and [design](PUBLIC_SIGNAL_DECISION_SPEC.md).
+
 ## Release requirements
 
 1. A standalone ZIP must include its dependencies, resolve every active TOC/XML

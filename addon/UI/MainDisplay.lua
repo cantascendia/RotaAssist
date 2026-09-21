@@ -459,7 +459,7 @@ local function UpdateDisplay()
             local outOfRange = false
             if showRange and C_Spell and C_Spell.IsSpellInRange then
                 local rOk, rRes = pcall(C_Spell.IsSpellInRange, mainDisplaySpellID, "target")
-                if rOk and rRes == false then outOfRange = true end
+                if rOk and not issecretvalue(rRes) and rRes == false then outOfRange = true end
             end
             elements.mainIcon:SetOutOfRange(outOfRange)
         end
@@ -471,7 +471,9 @@ local function UpdateDisplay()
         -- 盲区技能标识：显示来源标签
         -- SetConfidence 接受 0–1 浮点（>=0.8 → ★★★，>=0.5 → ★★☆，>0 → ★☆☆，<=0 → 清空）
         -- SetConfidence takes a 0–1 float (>=0.8 → ★★★, >=0.5 → ★★☆, >0 → ★☆☆, <=0 → cleared)
-        if mainData.source == "APL_BLINDSPOT" then
+        if mainData.source == "INDEPENDENT" and elements.mainIcon.SetSourceLabel then
+            elements.mainIcon:SetSourceLabel(RA.L["INDEPENDENT_BADGE"])
+        elseif mainData.source == "APL_BLINDSPOT" then
             elements.mainIcon:SetConfidence(0.9)  -- 高置信星标：这是我们的补充推荐 / high-confidence badge
         else
             elements.mainIcon:SetConfidence(0)    -- 清除星标 / clear the stars

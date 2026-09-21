@@ -1,0 +1,23 @@
+{
+  "commit": "78282522143e25c3540583734fd192c3d69be910",
+  "commitDate": "2026-09-18T20:01:27Z",
+  "checked": "2026-09-22",
+  "files": {
+    "SpellDocumentation.lua": {
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SpellDocumentation.lua",
+      "sha256": "fbedb3cf4b82d623b49a7fa170c982de2e4b005d2bcd5db3068bfb6211e51007"
+    },
+    "SpellSharedDocumentation.lua": {
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SpellSharedDocumentation.lua",
+      "sha256": "4ebe8d82b50faa906300f646d9bba4e85ea820b7614947624c8816f19e0d6b68"
+    },
+    "SecretPredicateAPIDocumentation.lua": {
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SecretPredicateAPIDocumentation.lua",
+      "sha256": "01ec6fdea1aef17cc5603edae6f61f8922d5b2546fb9f3d551cf4d3e7c6a2bc8"
+    },
+    "UnitAuraDocumentation.lua": {
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/UnitAuraDocumentation.lua",
+      "sha256": "39405809f92e74a945034529d2a2962ebebe9a70fe581b2f411586fc2b72d5d5"
+    }
+  }
+}

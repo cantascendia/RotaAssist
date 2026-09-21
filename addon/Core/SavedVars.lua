@@ -75,6 +75,7 @@ local defaults = {
             history = {},            -- recent combat accuracy ratings
         },
         smartQueue = {
+            independentExperimental = false, -- Explicit research opt-in / 显式启用实验模式。
             blizzardWeight = 1.0,
             aplWeight      = 0.6,
             aiWeight       = 0.4,

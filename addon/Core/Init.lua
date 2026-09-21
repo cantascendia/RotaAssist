@@ -48,6 +48,8 @@ local MODULE_ORDER = {
     "NeuralPredictor",
     "APLEngine",
     "IndependentDecision",
+    "ResourceEvidence",
+    "PublicAuraFacts",
     "IndependentObserver",
     "SmartQueueManager",
     "CooldownOverlay",
@@ -529,6 +531,7 @@ function RA:SlashCommand(input)
         self:Print("  /ra accuracy — Show combat accuracy history")
         self:Print("  /ra aplcheck — Report APL rules with unsupported conditions or unknown spellIDs")
         self:Print("  /ra version  — " .. L["SLASH_HELP_VERSION"])
+        self:Print(L["INDEPENDENT_USAGE"])
     elseif cmd == "config" or cmd == "options" or cmd == "settings" then
         LibStub("AceConfigDialog-3.0"):Open("RotaAssist")
     elseif cmd == "toggle" then
@@ -569,6 +572,16 @@ function RA:SlashCommand(input)
         else
             self:PrintWarning("APLEngine is not available. / APLEngine 不可用。")
         end
+    elseif cmd == "independent" then
+        if rest ~= "on" and rest ~= "off" then
+            self:Print(L["INDEPENDENT_USAGE"])
+            return
+        end
+        self.db.profile.smartQueue = self.db.profile.smartQueue or {}
+        self.db.profile.smartQueue.independentExperimental = rest == "on"
+        local events = self:GetModule("EventHandler")
+        if events then events:Fire("ROTAASSIST_INDEPENDENT_MODE_CHANGED") end
+        self:Print(L[rest == "on" and "INDEPENDENT_ENABLED" or "INDEPENDENT_DISABLED"])
     elseif cmd == "version" or cmd == "ver" then
         self:Print(string.format("%s v%s", self.name, self.version))
     else

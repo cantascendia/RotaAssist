@@ -188,6 +188,12 @@ function IconWidget:SetKeybind(text)
     end
 end
 
+---Reuse the existing badge area without implying confidence stars.
+---复用现有标记位置，不把实验来源显示成高置信星级。
+function IconWidget:SetSourceLabel(text)
+    self.confidence:SetText(text or "")
+end
+
 ---Set the cooldown timer text (bottom centre).
 ---设置冷却计时文本（底部居中）。与 SetKeybind 相互独立，两者可同时显示。
 ---Independent from SetKeybind so keybind and remaining cooldown can coexist.

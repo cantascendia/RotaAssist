@@ -1,5 +1,5 @@
 -- Measure which independent policy facts are publicly observable this frame.
--- 检验当前帧独立决策所需的公开事实；未验证策略只输出诊断，不替换主推荐。
+-- 检验当前帧公开事实；默认只诊断，显式实验模式可采用确定的独立决策。
 local _, NS = ...
 local RA = NS.RA
 local Observer = {}
@@ -39,7 +39,24 @@ function Observer:Observe(state)
     for _,values in pairs(sample) do wipe(values) end
     wipe(seen)
     if state.resourceKnown==true then sample.facts.fury=finite(state.resource) end
-    if state.inMetaKnown==true and public(state.inMeta) and type(state.inMeta)=="boolean" then
+    local config=RA.Registry and RA.Registry.HAVOC_CONTEXT
+    local resource=RA:GetModule("ResourceEvidence")
+    if sample.facts.fury==nil and resource and config then
+        local bounds=resource:Observe(policy.rules,config.powerType)
+        status.resourceEvidence=bounds
+        if bounds.observations>0 and not bounds.inconsistent then sample.bounds.fury=bounds end
+    end
+    local auras=RA:GetModule("PublicAuraFacts")
+    if auras and config and config.playerAuraFacts then
+        local now=GetTime()
+        for name,id in pairs(config.playerAuraFacts) do
+            local up,remains=auras:ReadPlayer(id,now)
+            sample.facts[name..".up"]=up
+            sample.facts[name..".remains"]=remains
+        end
+    end
+    if sample.facts["buff.metamorphosis.up"]==nil and state.inMetaKnown==true
+       and public(state.inMeta) and type(state.inMeta)=="boolean" then
         sample.facts["buff.metamorphosis.up"]=state.inMeta
     end
     if state.windowUnknown and state.windowUnknown.essence_break~=true then
@@ -79,6 +96,21 @@ function Observer:Observe(state)
     status.policySha256=policy.policySha256
     status.performanceQualified=false
     return status
+end
+-- Explicit experimental opt-in; this is not a performance qualification gate.
+-- 显式实验选项；启用不表示策略已通过性能认证。
+function Observer:GetExperimentalHead(referenceSpellID)
+    status.referenceSpellID=referenceSpellID
+    local settings=RA.db and RA.db.profile and RA.db.profile.smartQueue
+    if not settings or settings.independentExperimental~=true then return nil end
+    status.mode="experimental"
+    if status.status~="decided" or type(status.spellID)~="number" then return nil end
+    -- Avoid changing the planned action while channeling or when that is unknown.
+    -- 引导中或引导状态不可读时，保留原有处理。
+    if type(UnitChannelInfo)~="function" then return nil end
+    local ok,name=pcall(UnitChannelInfo,"player")
+    if not ok or not public(name) or name~=nil then return nil end
+    return status.spellID
 end
 function Observer:OnInitialize() self:Reset() end
 function Observer:OnEnable() self:Reset() end

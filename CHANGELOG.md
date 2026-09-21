@@ -5,6 +5,18 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.6] - 2026-09-22
+
+[Public-signal decisions](docs/RELEASE_1.1.1-rc.6.md), implemented by Astra.
+
+### Added
+- Infer fresh resource bounds from public native usability and minimum costs.
+- Read selected public player auras with explicit absence/unknown handling.
+- Default-off experimental independent head with localized source badge,
+  channel/unknown fallback and lookahead seeded from the actual selected action.
+- Generated resource evidence checks and end-to-end independent queue coverage.
+  The frozen policy remains below the prior SimC benchmark; no new DPS claim.
+
 ## [1.1.1-rc.5] - 2026-09-22
 
 [Independent policy observation](docs/RELEASE_1.1.1-rc.5.md), implemented by Astra.

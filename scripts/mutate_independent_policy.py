@@ -18,8 +18,8 @@ MUTATIONS=[
     ("inferred_resource_as_observed","addon/Engine/IndependentObserver.lua",
      "if state.resourceKnown==true then","if true then"),
     ("disconnect_queue_observer","addon/Engine/SmartQueueManager.lua",
-     "if independent then independent:Observe(limitedState) end",
-     "if false and independent then independent:Observe(limitedState) end"),
+     "if independent then\n            independent:Observe(limitedState)",
+     "if false and independent then\n            independent:Observe(limitedState)"),
 ]
 
 

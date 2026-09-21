@@ -2,13 +2,13 @@
 
 [![WoW Version](https://img.shields.io/badge/WoW-12.1_Midnight-blueviolet)](https://worldofwarcraft.blizzard.com)
 [![Interface](https://img.shields.io/badge/Interface-120100-informational)](https://warcraft.wiki.gg/wiki/Interface_number)
-[![Version](https://img.shields.io/badge/version-1.1.1--rc.5-orange)](docs/QUALITY_BASELINE.md)
+[![Version](https://img.shields.io/badge/version-1.1.1--rc.6-orange)](docs/QUALITY_BASELINE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **RotaAssist** — WoW Midnight 12.1 的循环**教练**插件。
 *A rotation **coach** for WoW Midnight 12.1 — not another "next spell" icon.*
 
-> **当前交付：1.1.1-rc.5 本地安装候选包。** 已接入独立策略观测和同源规则模拟验证，
+> **当前交付：1.1.1-rc.6 本地安装候选包。** 已接入公开资源边界、光环事实和可选独立首位，
 > 尚无插件真机战斗或 DPS 验收，不宣称理论最优或超越 Hekili。目标为 Interface `120100`；
 > 客户端兼容性需要实测。推荐评分和“准确率”不是 DPS 百分比。
 > 详见 [推荐质量与验收标准](docs/QUALITY_BASELINE.md)。
@@ -40,7 +40,7 @@
 RotaAssist 的设计约束是只使用官方 API，不使用 secret value 做条件判断。
 离线回归覆盖已知边界；完整客户端行为仍待实测。
 
-- 建议链路建立在官方 `C_AssistedCombat` 之上
+- 默认建议链路使用 `C_AssistedCombat`；显式实验模式可采用独立首位
 - 可能返回 secret 的读取（`UnitPower` / `GetSpellCooldown` / `UnitHealth` …）
   应遵循 `pcall → issecretvalue → 类型检查 → 兜底` 模板
 - APL 是**前向模拟器**，读的是模拟状态而非实时受限 API
@@ -58,7 +58,10 @@ RotaAssist 的设计约束是只使用官方 API，不使用 secret value 做条
 | Demon Hunter | Devourer | 1480 | Blizzard-only；未核实的 APL 预测停用 |
 
 Havoc 英雄天赋配置改用数字天赋技能 ID 识别，避免依赖英文名称；离线语言测试
-不能替代实际客户端验收。当前主动作仍以有效的 Blizzard 建议为准。
+不能替代实际客户端验收。默认主动作仍以有效的 Blizzard 建议为准。
+`/ra independent on` 可开启 Havoc Fel-Scarred 实验独立首位；`/ra independent off`
+关闭。实验首位显示“实验”标记，未知状态回退。该策略尚未通过 DPS 性能验收，
+详见 [rc.6 说明](docs/RELEASE_1.1.1-rc.6.md)。
 
 > ⚠️ **Devourer 说明**：该专精的部分 spellID 基于早期资料整理，尚未在 12.1 真机逐个核验。
 > spellID 存在性检查无法证明技能身份正确，也不能替代真实客户端验证。
@@ -80,7 +83,7 @@ TOC load order. Loaded data still requires per-specialization validation.*
 也不承诺自动更新。
 
 ### Manual / 手动安装
-1. 获取本次交付的 `RotaAssist-1.1.1-rc.5.zip`；源码 ZIP 不能替代带依赖的安装包
+1. 获取本次交付的 `RotaAssist-1.1.1-rc.6.zip`；源码 ZIP 不能替代带依赖的安装包
 2. 解压到
    `World of Warcraft/_retail_/Interface/AddOns/`
    解压后应存在 `Interface/AddOns/RotaAssist/RotaAssist.toc`
@@ -106,6 +109,7 @@ TOC load order. Loaded data still requires per-specialization validation.*
 | `/ra` / `/ra help` | 打印命令列表 / Print the command list |
 | `/ra toggle` | 显示 / 隐藏主界面 |
 | `/ra config` | 打开设置面板 |
+| `/ra independent on\|off` | 开关实验独立首位；默认关闭，尚未通过 DPS 验收 |
 | `/ra lock` | 锁定 / 解锁显示位置 |
 | `/ra accuracy` | 打印准确率历史 |
 | `/ra aplcheck` | **APL 条件校验诊断** — 列出使用了不受支持 token、永远不会触发的规则 |
