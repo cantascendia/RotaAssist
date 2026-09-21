@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-22",
+  "luaCases": 628,
+  "pythonTests": 38,
+  "addonLuaSyntaxFiles": 115,
+  "mutations": [
+    {
+      "name": "unknown_as_false",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore_earlier_candidate",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "population_lower_bound_as_exact",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "inferred_resource_as_observed",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "disconnect_queue_observer",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    }
+  ],
+  "retailValidated": false
+}

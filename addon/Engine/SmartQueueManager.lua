@@ -454,6 +454,8 @@ end
 ------------------------------------------------------------------------
 
 local function AssembleQueue()
+    local independent = RA:GetModule("IndependentObserver")
+    if independent then independent:Reset() end
     local targetModule = RA:GetModule("TargetContext")
     local battlefield = targetModule and targetModule:IsActive() and targetModule:GetSnapshot()
     if battlefield and battlefield.targetValid == false then
@@ -680,6 +682,10 @@ local function AssembleQueue()
             currentTargetCount = battlefield.nearbyEnemies
         end
         context.aplState = limitedState
+
+        -- Independent observation does not promote an unqualified policy.
+        -- 独立观测不把尚未验证性能的策略提升为主推荐。
+        if independent then independent:Observe(limitedState) end
 
         -- Increase depth to 3 to get better lookahead for the prediction bar
         local ok, result = pcall(mAPLEngine.PredictNext, mAPLEngine, context.blizzSpell, limitedState, 3)
@@ -1100,6 +1106,13 @@ function SmartQueueManager:GetLastRecommendedSpellID()
     return lastRecommendedSpellID
 end
 
+---Borrowed independent policy diagnostics; not a DPS guarantee.
+---独立策略诊断快照；不代表伤害最优保证。
+function SmartQueueManager:GetIndependentStatus()
+    local independent = RA:GetModule("IndependentObserver")
+    return independent and independent:GetStatus() or nil
+end
+
 ---Flatten finalQueue into a plain display-oriented snapshot.
 ---Legacy shape kept for the integration tests; no addon module reads it today
 ---(UI consumes ROTAASSIST_QUEUE_UPDATED / GetFinalQueue instead).
@@ -1162,6 +1175,8 @@ function SmartQueueManager:OnEnable()
     local eh = RA:GetModule("EventHandler")
     if eh then
         eh:Subscribe("ROTAASSIST_TARGET_CONTEXT_CHANGED", "SmartQueueManager", function()
+            local independent = RA:GetModule("IndependentObserver")
+            if independent then independent:Reset() end
             lastKnownBlizzSpell = nil
             channelNextSpell = nil
             lastRecommendedSpellID = nil

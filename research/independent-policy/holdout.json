@@ -1,0 +1,107 @@
+{
+  "schema": "rotaassist.independent-holdout.v1",
+  "engineSha256": "8c6df94966798cabf6864664c2648de9252e396a5ea90188c115c17c8b5339de",
+  "sourceCommit": "774babde5ddc7c5fc9f1abb129b473f8a076df70",
+  "stockProfileSha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+  "policySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+  "discoveryCandidateCount": 124,
+  "discoveryMinimumRatio": 0.9868596929377313,
+  "scenarios": [
+    {
+      "targets": 1,
+      "duration": 120,
+      "seed": 20260925,
+      "stockDps": 276184.28324515466,
+      "candidateDps": 272251.8668641698,
+      "ratio": 0.9857616214261755,
+      "delta": -3932.4163809848833,
+      "independentDifferenceSE": 186.21163194521316,
+      "deltaMinusThreeSE": -4491.051276820523,
+      "stockSamples": 4999,
+      "candidateSamples": 4999,
+      "stockRawSha256": "d1a3eea03ad64c375ad13b0f8784fe8046d772f91fbd5a70ba7f79b9d97875db",
+      "candidateRawSha256": "6f81af8c7ad2d000630c98bd49345bfc9345bbfc7030d2584920e4f3b7106022",
+      "stockProfileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+      "candidateProfileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "targets": 1,
+      "duration": 300,
+      "seed": 20260925,
+      "stockDps": 252941.25247434631,
+      "candidateDps": 247722.03368102547,
+      "ratio": 0.9793658853893349,
+      "delta": -5219.218793320848,
+      "independentDifferenceSE": 113.5185004850955,
+      "deltaMinusThreeSE": -5559.774294776134,
+      "stockSamples": 4999,
+      "candidateSamples": 4999,
+      "stockRawSha256": "598ae188233415b88384d8792d391ea0d8bcfcfa5115765873e8780ebdb4a392",
+      "candidateRawSha256": "a8e58295eea302b3a66df61444d45ad0413e81747971c085fbbf7c3fa005eb84",
+      "stockProfileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+      "candidateProfileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "targets": 5,
+      "duration": 120,
+      "seed": 20260925,
+      "stockDps": 539831.976586209,
+      "candidateDps": 531872.1081464122,
+      "ratio": 0.9852549148901228,
+      "delta": -7959.868439796846,
+      "independentDifferenceSE": 296.89563484161897,
+      "deltaMinusThreeSE": -8850.555344321703,
+      "stockSamples": 4999,
+      "candidateSamples": 4999,
+      "stockRawSha256": "619126e4c296c76cc001d5845fce7ad3c1806a2c9bf7a0e741e95511dec84842",
+      "candidateRawSha256": "94dc026d9f35452a172725dc295e276ad374413dcf3d0599a35ed5116c883241",
+      "stockProfileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+      "candidateProfileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "targets": 5,
+      "duration": 300,
+      "seed": 20260925,
+      "stockDps": 497276.82689500845,
+      "candidateDps": 483960.79479598405,
+      "ratio": 0.9732220940553985,
+      "delta": -13316.032099024393,
+      "independentDifferenceSE": 187.1059092747904,
+      "deltaMinusThreeSE": -13877.349826848764,
+      "stockSamples": 4999,
+      "candidateSamples": 4999,
+      "stockRawSha256": "13475f03775371e5e3e7545410e873b026b667840cd1d4755ca317d554a60104",
+      "candidateRawSha256": "c6cf1789bd4cb9e7d471c1c0bde77f401fc4e5a7a551b3ded9d571421a3ddd45",
+      "stockProfileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+      "candidateProfileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    }
+  ],
+  "clearsAllBenchmarkGates": false,
+  "automaticReplacementQualified": false,
+  "liveValidated": false,
+  "reason": "Full-information fixed-profile benchmark does not establish live observation or personal build coverage."
+}

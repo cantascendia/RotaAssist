@@ -1,0 +1,22 @@
+{
+  "search-results.json": {
+    "candidateEntries": 32,
+    "bestMinimumStockRatio": 0.8753716473837002,
+    "fileSha256": "490e0c88228bc31c083e278d6370bc0bf4a258706bf644ce3b5ca1d58f0e7766"
+  },
+  "search-results-burst.json": {
+    "candidateEntries": 32,
+    "bestMinimumStockRatio": 0.9753633336417858,
+    "fileSha256": "f8ced80077aa0a122d01f493b494758457fb91ce1185671841b9120299ef3943"
+  },
+  "search-results-refined.json": {
+    "candidateEntries": 24,
+    "bestMinimumStockRatio": 0.9753633336417858,
+    "fileSha256": "51c0706f1c787758dd4802002aa3b000d15e49d58f98c74bc755dd64757d234a"
+  },
+  "order-search.json": {
+    "candidateEntries": 124,
+    "bestMinimumStockRatio": 0.9868596929377313,
+    "fileSha256": "14d01175222184d78555efb0c7a1506bd765ebf95842c7de05da792277d71c51"
+  }
+}
