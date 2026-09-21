@@ -123,6 +123,7 @@ Engine\NeuralPredictor.lua
 Engine\APLEngine.lua
 Data\IndependentPolicy.lua
 Engine\IndependentDecision.lua
+Engine\IndependentConsensus.lua
 Engine\ResourceEvidence.lua
 Engine\PublicAuraFacts.lua
 Engine\IndependentObserver.lua

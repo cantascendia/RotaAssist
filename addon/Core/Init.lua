@@ -48,6 +48,7 @@ local MODULE_ORDER = {
     "NeuralPredictor",
     "APLEngine",
     "IndependentDecision",
+    "IndependentConsensus",
     "ResourceEvidence",
     "PublicAuraFacts",
     "IndependentObserver",

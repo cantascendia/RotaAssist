@@ -88,11 +88,14 @@ function Observer:Observe(state)
     end
     -- SimC virtual Demonsurge flags are deliberately absent. Missing is unknown.
     -- SimC 内部强化消耗标志没有伪造对应光环；缺失仍然保持未知。
-    local evaluated=evaluator:Evaluate(policy,sample)
+    local consensus=RA:GetModule("IndependentConsensus")
+    local evaluated=(consensus or evaluator):Evaluate(policy,sample)
     status.status=evaluated.status
     status.spellID=evaluated.spellID
     status.candidates=evaluated.candidates
     status.missing=evaluated.missing
+    status.consensusNodes=evaluated.nodes
+    status.consensusExhaustive=evaluated.exhaustive
     status.policySha256=policy.policySha256
     status.performanceQualified=false
     return status
