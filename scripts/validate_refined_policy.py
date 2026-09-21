@@ -9,7 +9,6 @@ from search_independent_policy import run
 from simc_bench import ENGINE_SHA256, SOURCE_COMMIT, validated_profile
 
 SCENARIOS=((1,120),(1,300),(3,180),(5,120),(5,300),(8,180))
-SEED=20260928
 
 
 def difference(own, reference):
@@ -25,6 +24,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ("simc","profile","selection","previous","output","evidence"):
         parser.add_argument("--"+name,type=Path,required=True)
+    parser.add_argument("--seed",type=int,default=20260928)
     args=parser.parse_args()
     simc=args.simc.resolve(); output=args.output.resolve()
     output.mkdir(parents=True,exist_ok=True); args.evidence.mkdir(parents=True,exist_ok=True)
@@ -40,9 +40,9 @@ def main():
     frozen.write_text(json.dumps(policy,indent=2)+"\n")
     scenarios=[]
     for targets,duration in SCENARIOS:
-        measurements={name:run(simc,base,candidate,output,targets,duration,5000,SEED)
+        measurements={name:run(simc,base,candidate,output,targets,duration,5000,args.seed)
                       for name,candidate in (("stock",None),("previous",previous),("candidate",policy))}
-        scenarios.append({"targets":targets,"duration":duration,"seed":SEED,
+        scenarios.append({"targets":targets,"duration":duration,"seed":args.seed,
                           "vsPrevious":difference(measurements["candidate"],measurements["previous"]),
                           "vsStock":difference(measurements["candidate"],measurements["stock"]),
                           "measurements":measurements})

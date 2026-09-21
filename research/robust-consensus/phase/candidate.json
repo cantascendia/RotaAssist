@@ -1,0 +1,721 @@
+{
+  "schema": "rotaassist.independent-policy.v1",
+  "specID": 577,
+  "heroProfile": "fel_scarred",
+  "parameters": {
+    "composition": "elapsed_time_phases_v1",
+    "switchSeconds": 120,
+    "earlySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+    "lateSha256": "22e99edfd116c1c9abbe2c5e83fb8ed9ed92efbb45e6d7a32cf254d0caa6f6d5"
+  },
+  "rules": [
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "fury",
+          "<=",
+          40
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "vengeful_retreat",
+      "spellID": 198793,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "buff.initiative.up",
+          "==",
+          0
+        ],
+        [
+          "cooldown.eye_beam.remains",
+          "<",
+          2
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "essence_break",
+      "spellID": 258860,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "action.annihilation.demonsurge_available",
+          ">",
+          0
+        ],
+        [
+          "fury",
+          ">=",
+          35
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "essence_break",
+      "spellID": 258860,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "action.death_sweep.demonsurge_available",
+          ">",
+          0
+        ],
+        [
+          "fury",
+          ">=",
+          35
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "debuff.essence_break.up",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "debuff.essence_break.up",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "action.death_sweep.demonsurge_available",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "action.annihilation.demonsurge_available",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "action.immolation_aura.demonsurge_available",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "buff.inertia_trigger.up",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "charges",
+          ">=",
+          2
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "metamorphosis",
+      "spellID": 191427,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "cooldown.eye_beam.remains",
+          ">",
+          0
+        ],
+        [
+          "cooldown.blade_dance.remains",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "the_hunt",
+      "spellID": 370965,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "eye_beam",
+      "spellID": 198013,
+      "cost": 30,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "essence_break",
+      "spellID": 258860,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ],
+        [
+          "cooldown.eye_beam.remains",
+          ">",
+          4
+        ],
+        [
+          "fury",
+          ">=",
+          35
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "blade_dance",
+      "spellID": 188499,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": "normal"
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "chaos_strike",
+      "spellID": 162794,
+      "cost": 40,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": "normal"
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          "<",
+          120
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "fury",
+          "<=",
+          40
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "vengeful_retreat",
+      "spellID": 198793,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "buff.initiative.up",
+          "==",
+          0
+        ],
+        [
+          "cooldown.eye_beam.remains",
+          "<",
+          2
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "essence_break",
+      "spellID": 258860,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "action.annihilation.demonsurge_available",
+          ">",
+          0
+        ],
+        [
+          "fury",
+          ">=",
+          35
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "essence_break",
+      "spellID": 258860,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "action.death_sweep.demonsurge_available",
+          ">",
+          0
+        ],
+        [
+          "fury",
+          ">=",
+          35
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "debuff.essence_break.up",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "action.death_sweep.demonsurge_available",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "action.annihilation.demonsurge_available",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "action.immolation_aura.demonsurge_available",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "buff.inertia_trigger.up",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "charges",
+          ">=",
+          2
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "metamorphosis",
+      "spellID": 191427,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "cooldown.eye_beam.remains",
+          ">",
+          8
+        ],
+        [
+          "cooldown.blade_dance.remains",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "the_hunt",
+      "spellID": 370965,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "eye_beam",
+      "spellID": 198013,
+      "cost": 30,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "essence_break",
+      "spellID": 258860,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ],
+        [
+          "cooldown.eye_beam.remains",
+          ">",
+          4
+        ],
+        [
+          "fury",
+          ">=",
+          35
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "blade_dance",
+      "spellID": 188499,
+      "cost": 35,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": "normal"
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "chaos_strike",
+      "spellID": 162794,
+      "cost": 40,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": "normal"
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "time",
+          ">=",
+          120
+        ]
+      ],
+      "form": null
+    }
+  ]
+}

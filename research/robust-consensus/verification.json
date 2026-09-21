@@ -1,0 +1,121 @@
+{
+  "date": "2026-09-22",
+  "luaTestsPassed": 655,
+  "pythonTestsPassedIncludingTraining": 78,
+  "addonLuaSyntaxFiles": 164,
+  "mutations": {
+    "consensus": [
+      {
+        "mutation": "drop_false_branches",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "merge_equality_with_upper_side",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "ignore_possible_wait",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "ignore_budget_exhaustion",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "merge_different_charge_domains",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "disconnect_observer_consensus",
+        "killedByBehaviorTest": true
+      }
+    ],
+    "phase": [
+      {
+        "mutation": "reverse_phase_guards",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "shift_boundary",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "reuse_early_in_late_phase",
+        "killedByBehaviorTest": true
+      }
+    ],
+    "publicSignals": [
+      {
+        "mutation": "optional_cost_as_minimum",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "accept_contradictory_bounds",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "infer_nil_aura_absence",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "ignore_experimental_opt_in",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "seed_with_discarded_reference",
+        "killedByBehaviorTest": true
+      },
+      {
+        "mutation": "skip_resource_evidence",
+        "killedByBehaviorTest": true
+      }
+    ],
+    "independent": [
+      {
+        "name": "unknown_as_false",
+        "killedByBehaviorTest": true,
+        "exitCode": 1
+      },
+      {
+        "name": "ignore_earlier_candidate",
+        "killedByBehaviorTest": true,
+        "exitCode": 1
+      },
+      {
+        "name": "population_lower_bound_as_exact",
+        "killedByBehaviorTest": true,
+        "exitCode": 1
+      },
+      {
+        "name": "inferred_resource_as_observed",
+        "killedByBehaviorTest": true,
+        "exitCode": 1
+      },
+      {
+        "name": "disconnect_queue_observer",
+        "killedByBehaviorTest": true,
+        "exitCode": 1
+      }
+    ]
+  },
+  "solverSyntheticDiagnostic": {
+    "synthetic": true,
+    "seed": 2709,
+    "samples": 2000,
+    "beforeDecided": 782,
+    "afterDecided": 792,
+    "additionalDecisions": 10,
+    "budgetExhaustions": 0,
+    "maxNodes": 57,
+    "meanMilliseconds": 0.1019,
+    "stressStatus": "budget_exceeded",
+    "stressNodes": 2049,
+    "stressMeanMilliseconds": 0.89,
+    "liveCoverageMeasured": false
+  },
+  "simcRunCount": 338,
+  "actualSimcSamples": 330662,
+  "productionPolicyChanged": false,
+  "maximumDpsEstablished": false,
+  "retailRuntimeValidated": false
+}

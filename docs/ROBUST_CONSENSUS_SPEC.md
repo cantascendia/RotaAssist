@@ -32,6 +32,16 @@ results. Report uncertainty and full-state versus live-observable boundaries.
 Do not promote the new policy merely because discovery improves. No policy search
 result establishes that live unknown information has become observable.
 
+## Predeclared phase alternative
+
+The first frozen refinement regresses the 120-second single-target holdout.
+Do not promote it wholesale. A separate candidate retains the old policy for
+time < 120 seconds and switches to the long-fight candidate at time >= 120.
+Compile the switch into mutually exclusive guards in the shared policy, prove
+prefix equivalence in generated tests, and freeze before a different holdout seed
+(20260929). The switch uses public elapsed combat time, not a known fight duration.
+This candidate is a new experiment; do not reuse the first holdout as its validation.
+
 ## Validation (Test-Lock scenario 3: additive)
 
 Complementary/equality predicates, contradictory conjunctions, repeated fact

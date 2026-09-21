@@ -5,6 +5,19 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.7] - 2026-09-22
+
+[Symbolic state consensus](docs/RELEASE_1.1.1-rc.7.md), implemented by Astra.
+
+### Added
+- Bounded all-feasible-state checks preserve correlations between unknown facts,
+  distinguish open/equal endpoints and retain possible waiting outcomes.
+- Integrate consensus into the existing experimental observer, keeping its
+  opt-in, channel guard and fallback behavior.
+- Exhaustive generated oracle, mutation checks and synthetic proof-cost evidence.
+- Real SimC threshold/structure search and separately frozen elapsed-time phase
+  experiments. Retain regressions; neither research candidate replaces the shipped policy.
+
 ## [1.1.1-rc.6] - 2026-09-22
 
 [Public-signal decisions](docs/RELEASE_1.1.1-rc.6.md), implemented by Astra.

@@ -48,6 +48,13 @@ bounds are never represented as exact observations. See
 
 ## Release requirements
 
+Rc.7 adds symbolic consensus over feasible hidden completions. This can establish
+that missing facts are irrelevant to a particular policy decision; it does not
+establish that this policy maximizes damage. Its synthetic 782-to-792 decided
+snapshot result is not measured live coverage. Threshold and phase-policy
+experiments are retained as research because gains vary by encounter duration.
+The shipped policy remains unchanged. See [rc.7 notes](RELEASE_1.1.1-rc.7.md).
+
 1. A standalone ZIP must include its dependencies, resolve every active TOC/XML
    reference, and install into exactly `Interface/AddOns/RotaAssist/`.
 2. Unknown, unavailable or protected API values must not become fabricated facts.

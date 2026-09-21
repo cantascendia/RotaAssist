@@ -1,0 +1,6597 @@
+{
+  "schema": "rotaassist.refinement-holdout.v1",
+  "engineSha256": "8c6df94966798cabf6864664c2648de9252e396a5ea90188c115c17c8b5339de",
+  "sourceCommit": "774babde5ddc7c5fc9f1abb129b473f8a076df70",
+  "stockProfileSha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+  "policySha256": "de1d0d2f5170a087d5d57656caddfb578c837e5b9f18c59d6280ea9e0b0264a2",
+  "previousPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+  "discoveryCandidates": 1,
+  "scenarios": [
+    {
+      "targets": 1,
+      "duration": 120,
+      "seed": 20260929,
+      "vsPrevious": {
+        "ratio": 1.0000307752666977,
+        "delta": 8.385828956845216,
+        "deltaMinusThreeSESum": -783.1034383651172,
+        "deltaPlusThreeSESum": 799.8750962788076
+      },
+      "vsStock": {
+        "ratio": 0.9874347086675388,
+        "delta": -3467.541869351291,
+        "deltaMinusThreeSESum": -4249.847073174878,
+        "deltaPlusThreeSESum": -2685.2366655277046
+      },
+      "measurements": {
+        "stock": {
+          "policyKey": "stock",
+          "policy": null,
+          "targets": 1,
+          "duration": 120,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 275961.9158525376,
+          "standardError": 128.8959874203614,
+          "samples": 4999,
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "rawSha256": "1e05ae279c36977c83d9b0febf56228035071dfc521ec5577aa34ca78b518984",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-1t-120s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-1t-120s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=1",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=120",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-1t-120s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "previous": {
+          "policyKey": "5ce0425925b2",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "search": "rule_relocation"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              }
+            ]
+          },
+          "targets": 1,
+          "duration": 120,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 272485.9881542295,
+          "standardError": 131.95734191982015,
+          "samples": 4999,
+          "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+          "rawSha256": "4cea28210ca52e1db09d5a51c014a3f194b669242769c2ef59f00f2aa7ef35b8",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-1t-120s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-1t-120s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=1",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=120",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-1t-120s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "candidate": {
+          "policyKey": "de1d0d2f5170",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "composition": "elapsed_time_phases_v1",
+              "switchSeconds": 120,
+              "earlySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+              "lateSha256": "22e99edfd116c1c9abbe2c5e83fb8ed9ed92efbb45e6d7a32cf254d0caa6f6d5"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    8
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              }
+            ]
+          },
+          "targets": 1,
+          "duration": 120,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 272494.3739831863,
+          "standardError": 131.87241385416735,
+          "samples": 4999,
+          "profileSha256": "e768388d29a70ac05b45811c66a673470768eaa7ca85d70b1b4f86df7e24873c",
+          "rawSha256": "800a33795cea32363b9aa0acadfb67127155a3711c69c52bd0926d252d2f57b8",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-1t-120s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-1t-120s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=1",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=120",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-1t-120s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        }
+      }
+    },
+    {
+      "targets": 1,
+      "duration": 300,
+      "seed": 20260929,
+      "vsPrevious": {
+        "ratio": 1.004881233522313,
+        "delta": 1208.5716229205136,
+        "deltaMinusThreeSESum": 720.5383212302021,
+        "deltaPlusThreeSESum": 1696.604924610825
+      },
+      "vsStock": {
+        "ratio": 0.9839326595179516,
+        "delta": -4062.900288504694,
+        "deltaMinusThreeSESum": -4550.792351053939,
+        "deltaPlusThreeSESum": -3575.0082259554492
+      },
+      "measurements": {
+        "stock": {
+          "policyKey": "stock",
+          "policy": null,
+          "targets": 1,
+          "duration": 300,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 252867.0063999748,
+          "standardError": 81.12765932741362,
+          "samples": 4999,
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "rawSha256": "2be1a9e4ac246197c387655dda437194e7f280536ca260ef2ba86519e1de5e2f",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-1t-300s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-1t-300s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=1",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=300",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-1t-300s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "previous": {
+          "policyKey": "5ce0425925b2",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "search": "rule_relocation"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              }
+            ]
+          },
+          "targets": 1,
+          "duration": 300,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 247595.5344885496,
+          "standardError": 81.17473904110268,
+          "samples": 4999,
+          "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+          "rawSha256": "cfd5a359e2b1929ebdbb74061aea3cb8b771646b3eada5870a1cc1d85371e6cb",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-1t-300s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-1t-300s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=1",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=300",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-1t-300s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "candidate": {
+          "policyKey": "de1d0d2f5170",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "composition": "elapsed_time_phases_v1",
+              "switchSeconds": 120,
+              "earlySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+              "lateSha256": "22e99edfd116c1c9abbe2c5e83fb8ed9ed92efbb45e6d7a32cf254d0caa6f6d5"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    8
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              }
+            ]
+          },
+          "targets": 1,
+          "duration": 300,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 248804.10611147012,
+          "standardError": 81.50302818900117,
+          "samples": 4999,
+          "profileSha256": "e768388d29a70ac05b45811c66a673470768eaa7ca85d70b1b4f86df7e24873c",
+          "rawSha256": "4f91118e48b4e9697e6d712278bcdb2f5d6e0291e38fd32d92141449a0038295",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-1t-300s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-1t-300s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=1",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=300",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-1t-300s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        }
+      }
+    },
+    {
+      "targets": 3,
+      "duration": 180,
+      "seed": 20260929,
+      "vsPrevious": {
+        "ratio": 0.9995447158838304,
+        "delta": -179.3059127886081,
+        "deltaMinusThreeSESum": -1062.850717881423,
+        "deltaPlusThreeSESum": 704.2388923042067
+      },
+      "vsStock": {
+        "ratio": 0.9797638201508394,
+        "delta": -8130.578964048356,
+        "deltaMinusThreeSESum": -9038.728630367956,
+        "deltaPlusThreeSESum": -7222.429297728757
+      },
+      "measurements": {
+        "stock": {
+          "policyKey": "stock",
+          "policy": null,
+          "targets": 3,
+          "duration": 180,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 401784.2806623219,
+          "standardError": 156.5519621913969,
+          "samples": 4999,
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "rawSha256": "dc4cd9c7452a70a50e9c6bbb57ea1b8a59d55e960cc4e2eb7378711b271557a6",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-3t-180s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-3t-180s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=3",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=180",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-3t-180s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "previous": {
+          "policyKey": "5ce0425925b2",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "search": "rule_relocation"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              }
+            ]
+          },
+          "targets": 3,
+          "duration": 180,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 393833.00761106214,
+          "standardError": 148.35034178246858,
+          "samples": 4999,
+          "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+          "rawSha256": "6dd09e4c5ae24c6697ae0d73d19c3f7f253eec2e1ce439a168c57750c356a451",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-3t-180s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-3t-180s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=3",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=180",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-3t-180s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "candidate": {
+          "policyKey": "de1d0d2f5170",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "composition": "elapsed_time_phases_v1",
+              "switchSeconds": 120,
+              "earlySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+              "lateSha256": "22e99edfd116c1c9abbe2c5e83fb8ed9ed92efbb45e6d7a32cf254d0caa6f6d5"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    8
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              }
+            ]
+          },
+          "targets": 3,
+          "duration": 180,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 393653.70169827354,
+          "standardError": 146.16459324846969,
+          "samples": 4999,
+          "profileSha256": "e768388d29a70ac05b45811c66a673470768eaa7ca85d70b1b4f86df7e24873c",
+          "rawSha256": "1cf0d6fd00ac37bd8fb16ff3bb84ff1c69ceea9d9c052a229aac327151ba5ad5",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-3t-180s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-3t-180s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=3",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=180",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-3t-180s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        }
+      }
+    },
+    {
+      "targets": 5,
+      "duration": 120,
+      "seed": 20260929,
+      "vsPrevious": {
+        "ratio": 1.0001205400256605,
+        "delta": 64.09533508459572,
+        "deltaMinusThreeSESum": -1205.9842937962258,
+        "deltaPlusThreeSESum": 1334.1749639654172
+      },
+      "vsStock": {
+        "ratio": 0.9856765987172778,
+        "delta": -7727.859236100572,
+        "deltaMinusThreeSESum": -8983.095339898151,
+        "deltaPlusThreeSESum": -6472.623132302992
+      },
+      "measurements": {
+        "stock": {
+          "policyKey": "stock",
+          "policy": null,
+          "targets": 5,
+          "duration": 120,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 539526.8263148087,
+          "standardError": 206.58523918652784,
+          "samples": 4999,
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "rawSha256": "9d5b961ef4b7c6eb773c29676c0ead01f1add2b0ab63df720d9c759c29544a49",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-5t-120s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-5t-120s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=5",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=120",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-5t-120s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "previous": {
+          "policyKey": "5ce0425925b2",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "search": "rule_relocation"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              }
+            ]
+          },
+          "targets": 5,
+          "duration": 120,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 531734.8717436235,
+          "standardError": 211.53308088094178,
+          "samples": 4999,
+          "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+          "rawSha256": "1f42cc72d27360baa05a719ce19c2ebdb640e519855a113bb5a2e115578fd338",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-5t-120s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-5t-120s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=5",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=120",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-5t-120s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "candidate": {
+          "policyKey": "de1d0d2f5170",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "composition": "elapsed_time_phases_v1",
+              "switchSeconds": 120,
+              "earlySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+              "lateSha256": "22e99edfd116c1c9abbe2c5e83fb8ed9ed92efbb45e6d7a32cf254d0caa6f6d5"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    8
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              }
+            ]
+          },
+          "targets": 5,
+          "duration": 120,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 531798.9670787081,
+          "standardError": 211.8267954126654,
+          "samples": 4999,
+          "profileSha256": "e768388d29a70ac05b45811c66a673470768eaa7ca85d70b1b4f86df7e24873c",
+          "rawSha256": "ec0cad532ce3e8bc056af430ab4215ed36b4d8e48f9ca1c9d5cdb6940de39caf",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-5t-120s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-5t-120s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=5",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=120",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-5t-120s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        }
+      }
+    },
+    {
+      "targets": 5,
+      "duration": 300,
+      "seed": 20260929,
+      "vsPrevious": {
+        "ratio": 1.0104240141571186,
+        "delta": 5044.138130552659,
+        "deltaMinusThreeSESum": 4230.917034618997,
+        "deltaPlusThreeSESum": 5857.359226486322
+      },
+      "vsStock": {
+        "ratio": 0.9830254679443257,
+        "delta": -8442.842329609033,
+        "deltaMinusThreeSESum": -9246.98617535138,
+        "deltaPlusThreeSESum": -7638.698483866687
+      },
+      "measurements": {
+        "stock": {
+          "policyKey": "stock",
+          "policy": null,
+          "targets": 5,
+          "duration": 300,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 497382.9205964298,
+          "standardError": 132.31824981817516,
+          "samples": 4999,
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "rawSha256": "7f37a43c890d54369b9c7d0dd6b6a50791203529d511f5c70b4f277bb7c3e0ab",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-5t-300s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-5t-300s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=5",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=300",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-5t-300s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "previous": {
+          "policyKey": "5ce0425925b2",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "search": "rule_relocation"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              }
+            ]
+          },
+          "targets": 5,
+          "duration": 300,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 483895.9401362681,
+          "standardError": 135.34399988194704,
+          "samples": 4999,
+          "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+          "rawSha256": "6898c62d8110807cc2a528e8cc4dee719c7fcc9a516d00ae902e4597a6a24881",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-5t-300s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-5t-300s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=5",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=300",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-5t-300s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "candidate": {
+          "policyKey": "de1d0d2f5170",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "composition": "elapsed_time_phases_v1",
+              "switchSeconds": 120,
+              "earlySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+              "lateSha256": "22e99edfd116c1c9abbe2c5e83fb8ed9ed92efbb45e6d7a32cf254d0caa6f6d5"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    8
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              }
+            ]
+          },
+          "targets": 5,
+          "duration": 300,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 488940.07826682075,
+          "standardError": 135.72969876260714,
+          "samples": 4999,
+          "profileSha256": "e768388d29a70ac05b45811c66a673470768eaa7ca85d70b1b4f86df7e24873c",
+          "rawSha256": "367e77f5ab4dd76be66af7cac432c6e0d3a6fa8884adfadd0cc4fb08ce26fe0c",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-5t-300s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-5t-300s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=5",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=300",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-5t-300s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        }
+      }
+    },
+    {
+      "targets": 8,
+      "duration": 180,
+      "seed": 20260929,
+      "vsPrevious": {
+        "ratio": 1.0001629732477761,
+        "delta": 103.23612829984631,
+        "deltaMinusThreeSESum": -1074.5404127387224,
+        "deltaPlusThreeSESum": 1281.012669338415
+      },
+      "vsStock": {
+        "ratio": 0.9785308008899908,
+        "delta": -13900.406611613114,
+        "deltaMinusThreeSESum": -15138.246034364953,
+        "deltaPlusThreeSESum": -12662.567188861276
+      },
+      "measurements": {
+        "stock": {
+          "policyKey": "stock",
+          "policy": null,
+          "targets": 8,
+          "duration": 180,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 647458.088230808,
+          "standardError": 216.0210537083027,
+          "samples": 4999,
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "rawSha256": "278209359a28a1829a593196c26a73cc8e0a81b2c2da5e2399efecbb4a8d87ea",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-8t-180s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-8t-180s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=8",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=180",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\stock-8t-180s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "previous": {
+          "policyKey": "5ce0425925b2",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "search": "rule_relocation"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [],
+                "form": null
+              }
+            ]
+          },
+          "targets": 8,
+          "duration": 180,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 633454.4454908951,
+          "standardError": 196.00009313721299,
+          "samples": 4999,
+          "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d",
+          "rawSha256": "a0731f1d0a81dd73ac55a407588a832b2868c2bb6a929a74f7f5ab31fee3b31d",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-8t-180s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-8t-180s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=8",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=180",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\5ce0425925b2-8t-180s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        },
+        "candidate": {
+          "policyKey": "de1d0d2f5170",
+          "policy": {
+            "schema": "rotaassist.independent-policy.v1",
+            "specID": 577,
+            "heroProfile": "fel_scarred",
+            "parameters": {
+              "composition": "elapsed_time_phases_v1",
+              "switchSeconds": 120,
+              "earlySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+              "lateSha256": "22e99edfd116c1c9abbe2c5e83fb8ed9ed92efbb45e6d7a32cf254d0caa6f6d5"
+            },
+            "rules": [
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    0
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    "<",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "fury",
+                    "<=",
+                    40
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "vengeful_retreat",
+                "spellID": 198793,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.initiative.up",
+                    "==",
+                    0
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    "<",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "debuff.essence_break.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.death_sweep.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.annihilation.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "action.immolation_aura.demonsurge_available",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "buff.inertia_trigger.up",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "charges",
+                    ">=",
+                    2
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "metamorphosis",
+                "spellID": 191427,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    8
+                  ],
+                  [
+                    "cooldown.blade_dance.remains",
+                    ">",
+                    0
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "the_hunt",
+                "spellID": 370965,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "eye_beam",
+                "spellID": 198013,
+                "cost": 30,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "essence_break",
+                "spellID": 258860,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ],
+                  [
+                    "cooldown.eye_beam.remains",
+                    ">",
+                    4
+                  ],
+                  [
+                    "fury",
+                    ">=",
+                    35
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "death_sweep",
+                "spellID": 210152,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "blade_dance",
+                "spellID": 188499,
+                "cost": 35,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "annihilation",
+                "spellID": 201427,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "meta"
+              },
+              {
+                "action": "chaos_strike",
+                "spellID": 162794,
+                "cost": 40,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": "normal"
+              },
+              {
+                "action": "immolation_aura",
+                "spellID": 258920,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              },
+              {
+                "action": "felblade",
+                "spellID": 232893,
+                "cost": 0,
+                "conditions": [
+                  [
+                    "time",
+                    ">=",
+                    120
+                  ]
+                ],
+                "form": null
+              }
+            ]
+          },
+          "targets": 8,
+          "duration": 180,
+          "seed": 20260929,
+          "iterations": 5000,
+          "dps": 633557.6816191949,
+          "standardError": 196.5920872089766,
+          "samples": 4999,
+          "profileSha256": "e768388d29a70ac05b45811c66a673470768eaa7ca85d70b1b4f86df7e24873c",
+          "rawSha256": "cfbd58c3fd0ce4bfd626519ecbfad11798f40a8795193bc38be9de80d25b8b0c",
+          "raw": "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-8t-180s-5000i-20260929.raw.json",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ],
+          "command": [
+            "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+            "C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-8t-180s-5000i-20260929.simc",
+            "iterations=5000",
+            "desired_targets=8",
+            "threads=2",
+            "fixed_time=1",
+            "max_time=180",
+            "vary_combat_length=0",
+            "seed=20260929",
+            "json2=C:\\projects\\RotaAssist\\dist\\research\\robust-consensus\\phase-holdout\\de1d0d2f5170-8t-180s-5000i-20260929.raw.json",
+            "report_details=0"
+          ]
+        }
+      }
+    }
+  ],
+  "clearsEveryPreviousPolicyGate": false,
+  "clearsEveryStockGate": false,
+  "liveValidated": false,
+  "maximumDpsEstablished": false
+}
