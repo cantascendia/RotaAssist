@@ -1,0 +1,25 @@
+{
+  "policySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+  "conditionFields": [
+    "action.annihilation.demonsurge_available",
+    "action.death_sweep.demonsurge_available",
+    "action.immolation_aura.demonsurge_available",
+    "buff.inertia_trigger.up",
+    "buff.initiative.up",
+    "buff.metamorphosis.up",
+    "charges",
+    "cooldown.blade_dance.remains",
+    "cooldown.eye_beam.remains",
+    "debuff.essence_break.up",
+    "fury"
+  ],
+  "unmappedByCurrentObserver": [
+    "action.annihilation.demonsurge_available",
+    "action.death_sweep.demonsurge_available",
+    "action.immolation_aura.demonsurge_available",
+    "buff.inertia_trigger.up",
+    "buff.initiative.up"
+  ],
+  "usesActiveEnemyCount": false,
+  "runtimeObservationCoverageMeasured": false
+}

@@ -1,0 +1,280 @@
+{
+  "engineSha256": "8c6df94966798cabf6864664c2648de9252e396a5ea90188c115c17c8b5339de",
+  "stockProfileSha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+  "policySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+  "purpose": "diagnostic ablation; no policy selection or performance qualification",
+  "scenarios": [
+    {
+      "targets": 1,
+      "duration": 120,
+      "seed": 20260925,
+      "references": {
+        "full": {
+          "dps": 276184.89513196476,
+          "standardError": 129.23280884620291,
+          "samples": 4999,
+          "rawSha256": "8d34acf2c3514f33034fec5026deda965ef593be6b1a42d25e0a55b678a56114",
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_retarget": {
+          "dps": 276202.3067430015,
+          "standardError": 128.97152989339244,
+          "samples": 4999,
+          "rawSha256": "a1cc74eeddf4befdb9b88520ea4af4e56c8e3ded2c8dc9cd2e9de805b11981f5",
+          "profileSha256": "e34b6b14a1294f493e884449b75519dc70c92f5665cfadb8ed77413724c8d62a",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_fragment_pickup": {
+          "dps": 274872.6134295051,
+          "standardError": 132.48984491165132,
+          "samples": 4999,
+          "rawSha256": "059e1451173a1f2a73aad2559276b31fb8c79f4e8c7258f7c4bfcebbc387db33",
+          "profileSha256": "1fc09d30df30b3c7c996f32dfe000c63333ab19e2af3b85a956963fcbb1ea8ab",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "neither": {
+          "dps": 274660.0538306635,
+          "standardError": 132.64928985828195,
+          "samples": 4999,
+          "rawSha256": "d1fee88bb7202f29847af3c58c0aaae812ec6453b1ef918b2f4551b9cba104f1",
+          "profileSha256": "c1ca1e886d8cf1d763bdd8012319233c2a4b43f292ec3d2f8c1c83ba18fdc680",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        }
+      },
+      "own": {
+        "dps": 272273.1301637679,
+        "standardError": 134.14654536946924,
+        "samples": 4999,
+        "rawSha256": "897e46b1ca84422c4d6f59a04c2175a5862d20951af33d819ce47d248971422f",
+        "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d"
+      },
+      "ownVsFullPercent": -1.4163573161116494,
+      "ownVsNeitherPercent": -0.8690465299213912
+    },
+    {
+      "targets": 1,
+      "duration": 300,
+      "seed": 20260925,
+      "references": {
+        "full": {
+          "dps": 252940.81661605235,
+          "standardError": 79.80595880613551,
+          "samples": 4999,
+          "rawSha256": "1a935dc627dad632b740286244ade4fddc1a2560092ae33dc0c49a4500f4e0da",
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_retarget": {
+          "dps": 252936.5037149969,
+          "standardError": 79.67733365306078,
+          "samples": 4999,
+          "rawSha256": "d3206afd03d8f13943e2b91fbb0b6aa27c11192b5769f0113bc6d8b9fac036a2",
+          "profileSha256": "e34b6b14a1294f493e884449b75519dc70c92f5665cfadb8ed77413724c8d62a",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_fragment_pickup": {
+          "dps": 251721.1254138886,
+          "standardError": 82.18510419299525,
+          "samples": 4999,
+          "rawSha256": "a47f4cd777696b4594ab6860db1bdbaea933ac5663a2f8f64f1c440f8220ac25",
+          "profileSha256": "1fc09d30df30b3c7c996f32dfe000c63333ab19e2af3b85a956963fcbb1ea8ab",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "neither": {
+          "dps": 251723.51069090352,
+          "standardError": 83.07754390039956,
+          "samples": 4999,
+          "rawSha256": "733e37ca9d11a54299ec40f6b28d6315d05dbe88435e4cb08470a8fd88fa7613",
+          "profileSha256": "c1ca1e886d8cf1d763bdd8012319233c2a4b43f292ec3d2f8c1c83ba18fdc680",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        }
+      },
+      "own": {
+        "dps": 247717.82779301718,
+        "standardError": 81.01929114624376,
+        "samples": 4999,
+        "rawSha256": "577383efe63d11f72b468daade1de34ddc90aeba37a1f70580216334946d8a9a",
+        "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d"
+      },
+      "ownVsFullPercent": -2.064905495645386,
+      "ownVsNeitherPercent": -1.5913026506312322
+    },
+    {
+      "targets": 5,
+      "duration": 120,
+      "seed": 20260925,
+      "references": {
+        "full": {
+          "dps": 539827.9725719229,
+          "standardError": 205.51507637241718,
+          "samples": 4999,
+          "rawSha256": "b296c951c3a57a3a074257b1e594f9a1a6955bb79bed058c9127ed20839c0fbf",
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_retarget": {
+          "dps": 539836.0743171646,
+          "standardError": 205.49145557634714,
+          "samples": 4999,
+          "rawSha256": "1691ad2c02e3a28119036220b45680c6d27691ffbd7b8dc0ef28d9b518aebe27",
+          "profileSha256": "e34b6b14a1294f493e884449b75519dc70c92f5665cfadb8ed77413724c8d62a",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_fragment_pickup": {
+          "dps": 538905.0923251372,
+          "standardError": 206.55109239470664,
+          "samples": 4999,
+          "rawSha256": "5f5114905953a6b0ca5cbb8ca051bf87e892fa99144d150290c573a97789d6bd",
+          "profileSha256": "1fc09d30df30b3c7c996f32dfe000c63333ab19e2af3b85a956963fcbb1ea8ab",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "neither": {
+          "dps": 538749.8684247186,
+          "standardError": 207.6416752728352,
+          "samples": 4999,
+          "rawSha256": "c10292a7f477750a667eeca96a5535d59739bcedaf2455aa5d3e4ec112f4ca50",
+          "profileSha256": "c1ca1e886d8cf1d763bdd8012319233c2a4b43f292ec3d2f8c1c83ba18fdc680",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        }
+      },
+      "own": {
+        "dps": 531873.2953104117,
+        "standardError": 214.2822536242152,
+        "samples": 4999,
+        "rawSha256": "a5f255b7a71f410e67e3a1c0bbc69fa1e0976453c2b2676c4ef487d372e6dd44",
+        "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d"
+      },
+      "ownVsFullPercent": -1.4735578120586124,
+      "ownVsNeitherPercent": -1.2763943932670885
+    },
+    {
+      "targets": 5,
+      "duration": 300,
+      "seed": 20260925,
+      "references": {
+        "full": {
+          "dps": 497269.48827996064,
+          "standardError": 130.98267874113097,
+          "samples": 4999,
+          "rawSha256": "51efbf5abaef764c264357668c8c048bd45e0d01e9c857e4167edcc26e3913a9",
+          "profileSha256": "0e86f609e3c0cc6014fd294f362d54da29b74009fb24f83bb4155ab4d2a1960e",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_retarget": {
+          "dps": 497286.63677679305,
+          "standardError": 130.5775692027671,
+          "samples": 4999,
+          "rawSha256": "b638f00904a4436ddbad734a85006cb2656a6ea0a8b07f8b2365a540c08f9aa4",
+          "profileSha256": "e34b6b14a1294f493e884449b75519dc70c92f5665cfadb8ed77413724c8d62a",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "no_fragment_pickup": {
+          "dps": 496764.3071874615,
+          "standardError": 131.20106659193914,
+          "samples": 4999,
+          "rawSha256": "a984955aae1bf005a3a87bc677b393e88bd73042a10f324be3e8df2a99d1cf61",
+          "profileSha256": "1fc09d30df30b3c7c996f32dfe000c63333ab19e2af3b85a956963fcbb1ea8ab",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        },
+        "neither": {
+          "dps": 496840.9013806333,
+          "standardError": 134.48536599324345,
+          "samples": 4999,
+          "rawSha256": "fab0d0134bf8e0f440302c5db864da1e44a0583ec728d869f23a17aa9dca179c",
+          "profileSha256": "c1ca1e886d8cf1d763bdd8012319233c2a4b43f292ec3d2f8c1c83ba18fdc680",
+          "warnings": [
+            {
+              "level": "implementation_not_yet_verified",
+              "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+            }
+          ]
+        }
+      },
+      "own": {
+        "dps": 483968.5784058986,
+        "standardError": 134.1748954688633,
+        "samples": 4999,
+        "rawSha256": "c395bed524bf75fdfe8833deb01f3ce8ab477a913bd68a0f3908f07f178a23d3",
+        "profileSha256": "6cd682506cba9cdd63495eb984bdf4664f1eb04024ea6b0387bbaf405468ea6d"
+      },
+      "ownVsFullPercent": -2.674789060569449,
+      "ownVsNeitherPercent": -2.590833995141062
+    }
+  ]
+}
