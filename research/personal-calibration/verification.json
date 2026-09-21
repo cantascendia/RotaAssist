@@ -1,0 +1,107 @@
+{
+  "publicTestConfigurationsOnly": true,
+  "actualUserCharacterCaptured": false,
+  "luaTestsPassed": 677,
+  "pythonTestsIncludingTraining": 99,
+  "newCalibrationCases": 19,
+  "behavioralMutations": [
+    {
+      "mutation": "accept_profile_directives",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "discard_enchants",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_gear_mismatch",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "prefer_best_single_scenario",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "erase_measurement_uncertainty",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "reuse_discovery_seed",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_character_talents",
+      "killedByBehaviorTest": true
+    }
+  ],
+  "simcRuns": 32,
+  "actualSimcSamples": 21968,
+  "experiments": [
+    {
+      "characterSha256": "bbb8632615483380b90bec83068adc68f9666352ab409aa8a79749ea789f69fc",
+      "scenarios": [
+        [
+          1,
+          120
+        ],
+        [
+          5,
+          120
+        ],
+        [
+          5,
+          300
+        ]
+      ],
+      "comparisons": [
+        {
+          "ratio": 0.9852882739565494,
+          "delta": -4062.035404341412,
+          "lowerDelta": -5323.380575105251,
+          "upperDelta": -2800.690233577572
+        },
+        {
+          "ratio": 0.983821976415041,
+          "delta": -8736.198618383147,
+          "lowerDelta": -10696.9375846824,
+          "upperDelta": -6775.459652083892
+        },
+        {
+          "ratio": 0.9782898100248617,
+          "delta": -10800.055818391207,
+          "lowerDelta": -12087.700120642183,
+          "upperDelta": -9512.411516140231
+        }
+      ],
+      "conclusion": "reference_not_reliably_beaten",
+      "runs": 24,
+      "samples": 20976,
+      "reportPath": "dist\\research\\personal-calibration\\runs\\5d5228a26c3919ecc5527371\\report.json"
+    },
+    {
+      "characterSha256": "1e11eb5511295cc00b888eeaa322d13b3ea3bd162b221419df56a398be7f4e6e",
+      "scenarios": [
+        [
+          1,
+          120
+        ]
+      ],
+      "comparisons": [
+        {
+          "ratio": 0.6146957632711735,
+          "delta": -99908.08242248476,
+          "lowerDelta": -104615.46767312892,
+          "upperDelta": -95200.6971718406
+        }
+      ],
+      "conclusion": "reference_not_reliably_beaten",
+      "runs": 8,
+      "samples": 992,
+      "reportPath": "dist\\research\\personal-calibration\\aldrachi-runs\\3270f9849fd32ba0b24534be\\report.json"
+    }
+  ],
+  "extractedLauncherValidated": true,
+  "runtimePolicyInstalled": false,
+  "liveValidated": false,
+  "maximumDpsEstablished": false
+}
