@@ -27,6 +27,15 @@ standards: [upstream announcement](https://github.com/Hekili/hekili).
 RotaAssist must be evaluated under the same client constraints; historical Hekili
 behavior is a product reference, not a verified current-client baseline.
 
+## Independent-policy result (1.1.1-rc.5)
+
+The independently authored Havoc candidate is evaluated alongside the live queue
+in observation-only mode. Its shared Lua/SimC policy source removes dependence
+on Blizzard's choice inside the independent evaluator, but held-out simulations
+still lose 1.42%–2.68% to stock SimC under the fixed Fel-Scarred profile. Therefore
+the candidate is not promoted to the main display. The ordinary head retains
+the existing behavior. See [release notes](RELEASE_1.1.1-rc.5.md).
+
 ## Release requirements
 
 1. A standalone ZIP must include its dependencies, resolve every active TOC/XML

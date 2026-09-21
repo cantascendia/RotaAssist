@@ -5,6 +5,19 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.5] - 2026-09-22
+
+[Independent policy observation](docs/RELEASE_1.1.1-rc.5.md), implemented by Astra.
+
+### Added
+- Shared own-policy export for real SimC searches and a Lua decision evaluator.
+- Tri-valued conditions and range-count bounds; unresolved earlier actions block
+  a different later action instead of treating missing facts as false.
+- Live independent diagnostics alongside the queue, cleared on context changes.
+- Frozen held-out benchmark evidence: the candidate loses 1.42%–2.68% to the
+  stock simulator policy, so it is not promoted to the displayed main action.
+- Additive tests, generated policy comparisons and targeted mutation checks.
+
 ## [1.1.1-rc.4] - 2026-09-22
 
 [Target-aware local candidate](docs/RELEASE_1.1.1-rc.4.md), implemented by Astra.

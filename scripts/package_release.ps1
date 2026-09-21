@@ -82,6 +82,11 @@ try {
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.2.md'), 'docs\RELEASE_1.1.1-rc.2.md'),
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.3.md'), 'docs\RELEASE_1.1.1-rc.3.md'),
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.4.md'), 'docs\RELEASE_1.1.1-rc.4.md'),
+        @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.5.md'), 'docs\RELEASE_1.1.1-rc.5.md'),
+        @((Join-Path $RepoRoot 'docs\INDEPENDENT_POLICY_SPEC.md'), 'docs\INDEPENDENT_POLICY_SPEC.md'),
+        @((Join-Path $RepoRoot 'research\independent-policy\README.md'), 'docs\research\independent-policy\README.md'),
+        @((Join-Path $RepoRoot 'research\independent-policy\candidate.json'), 'docs\research\independent-policy\candidate.json'),
+        @((Join-Path $RepoRoot 'research\independent-policy\holdout.json'), 'docs\research\independent-policy\holdout.json'),
         @((Join-Path $RepoRoot 'docs\TARGET_CONTEXT_SPEC.md'), 'docs\TARGET_CONTEXT_SPEC.md'),
         @((Join-Path $RepoRoot 'docs\SMOKE_TEST_12.1.md'), 'docs\SMOKE_TEST_12.1.md')
     )
