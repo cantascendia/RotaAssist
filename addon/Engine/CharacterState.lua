@@ -36,6 +36,7 @@ function Character:Invalidate(reason)
     snapshot.specID,snapshot.heroID,snapshot.configID=nil,nil,nil
     snapshot.nodeCount,snapshot.selectedCount=0,0
     snapshot.statsComplete,snapshot.statsObservedAt=false,nil
+    snapshot.spellbookComplete=false
     for _,key in ipairs({"spellIDs","definitionIDs","names","ranks","rankAmbiguous","equipment","stats","spells"}) do wipe(snapshot[key]) end
     publish()
 end
@@ -149,6 +150,10 @@ local function collectStats()
 end
 local function collectSpells()
     wipe(spellSet)
+    local catalog=RA:GetModule("SpellCatalog")
+    local book=catalog and catalog:GetSnapshot()
+    snapshot.spellbookComplete=book and book.complete or false
+    if book then for id in pairs(book.spells) do spellSet[id]=true end end
     for id in pairs(snapshot.spellIDs) do spellSet[id]=true end
     local policy=RA.IndependentPolicy
     if policy and policy.specID==snapshot.specID then for _,rule in ipairs(policy.rules) do spellSet[rule.spellID]=true end end

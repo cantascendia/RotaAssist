@@ -37,6 +37,7 @@ local MODULE_ORDER = {
     -- Core (data layer first, then event infrastructure)
     "SavedVars",
     "EventHandler",
+    "SpellCatalog",
     "CharacterState",
     "TalentTransitions",
     -- Engine (depends on Data + Core modules)

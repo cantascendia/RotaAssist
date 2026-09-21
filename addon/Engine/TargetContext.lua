@@ -6,6 +6,8 @@ local Context = {}
 RA:RegisterModule("TargetContext", Context)
 
 local tokens, seen, spells = {}, {}, {}
+local rangeCounts, rangeSampled = {}, {}
+local trackedSpells, sampleSerial = 0, 0
 for i = 1, 40 do tokens[i] = "nameplate" .. i end
 local state = { generation = 0, spellRange = {}, windows = {}, windowUnknown = {}, windowRemains = {} }
 local refreshedAt = -math.huge
@@ -68,17 +70,35 @@ end
 
 local function rebuildSpells()
     wipe(spells)
-    local config = getConfig()
-    if not config then return end
-    local apl = RA.APLData and RA.APLData[config.specID]
-    if not apl or not apl.profiles then return end
-    for _, profile in pairs(apl.profiles) do
+    wipe(rangeCounts)
+    trackedSpells = 0
+    local function add(id)
+        if not public(id) or type(id) ~= "number" or id <= 0 or id >= math.huge
+           or id % 1 ~= 0 or spells[id] or trackedSpells >= 256 then return end
+        spells[id] = true
+        trackedSpells = trackedSpells + 1
+    end
+    local catalog = RA:GetModule("SpellCatalog")
+    if catalog then for id in pairs(catalog:GetSnapshot().spells) do add(id) end end
+    local bridge = RA:GetModule("AssistedCombatBridge")
+    if bridge and bridge.GetRotationSpells then
+        local ok, ids = pcall(bridge.GetRotationSpells, bridge)
+        if ok and public(ids) and type(ids) == "table" then
+            for _, id in ipairs(ids) do add(id) end
+        end
+    end
+    local detector = RA:GetModule("SpecDetector")
+    local spec = detector and detector:GetCurrentSpec()
+    local apl = spec and RA.APLData and RA.APLData[spec.specID]
+    if not apl then return end
+    for _, rule in ipairs(apl.rules or {}) do add(rule.spellID) end
+    for _, profile in pairs(apl.profiles or {}) do
         for _, name in ipairs({ "singleTarget", "aoe", "opener" }) do
             for _, rule in ipairs(profile[name] or {}) do
                 if type(rule.spellID) == "number" then
-                    spells[rule.spellID] = true
+                    add(rule.spellID)
                     local pair = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[rule.spellID]
-                    if pair then spells[pair] = true end
+                    if pair then add(pair) end
                 end
             end
         end
@@ -95,6 +115,7 @@ local function clearSnapshot()
     state.inMeta = nil
     state.metaRemains = nil
     wipe(state.spellRange)
+    wipe(rangeSampled)
     wipe(state.windows)
     wipe(state.windowUnknown)
     wipe(state.windowRemains)
@@ -117,13 +138,16 @@ function Context:GetSnapshot()
     refreshedAt = now
     clearSnapshot()
     state.sampledAt = now
+    sampleSerial = sampleSerial + 1
+    state.sampleSerial = sampleSerial
+    state.trackedSpells = trackedSpells
     state.targetValid = hostile("target")
     local config = getConfig()
     state.supported = config ~= nil
-    if not config then return state end
+    state.genericSupported = trackedSpells > 0
 
-    local probe = config.meleeProbe
-    if RA.ResolveSpellOverride then probe = RA:ResolveSpellOverride(probe) end
+    local probe = config and config.meleeProbe
+    if probe and RA.ResolveSpellOverride then probe = RA:ResolveSpellOverride(probe) end
     if not public(probe) or type(probe) ~= "number"
        or readBool(IsPlayerSpell, probe) ~= true then probe = nil end
     state.probeSpellID = probe
@@ -174,17 +198,82 @@ function Context:GetSnapshot()
     if state.targetValid == true then
         for id in pairs(spells) do
             state.spellRange[id] = range(id, "target")
+            rangeSampled[id] = true
         end
-        local remains = auraRemaining("target", config.essenceBreakAura, now, true)
+        local remains = config and auraRemaining("target", config.essenceBreakAura, now, true)
         if remains then
             state.windows.essence_break = remains > 0
             state.windowRemains.essence_break = remains
             state.windowUnknown.essence_break = nil
         end
     end
-    local meta = auraRemaining("player", config.metaAura, now)
+    local meta = config and auraRemaining("player", config.metaAura, now)
     if meta then state.inMeta = meta > 0; state.metaRemains = meta end
     return state
+end
+
+-- Current recommendations may change before a spellbook event (proc overrides).
+-- 触发型替换可能先于法术书事件；当前候选按需查询，nil 仍保持未知。
+function Context:GetSpellRange(spellID)
+    if not public(spellID) or type(spellID) ~= "number" or spellID <= 0
+       or spellID >= math.huge or spellID % 1 ~= 0 then return nil end
+    self:GetSnapshot()
+    if state.targetValid ~= true then return nil end
+    if not rangeSampled[spellID] then
+        local value = range(spellID, "target")
+        if not spells[spellID] and trackedSpells < 256 then
+            spells[spellID] = true; trackedSpells = trackedSpells + 1
+        end
+        if spells[spellID] then
+            state.spellRange[spellID] = value; rangeSampled[spellID] = true
+        end
+        return value
+    end
+    return state.spellRange[spellID]
+end
+
+-- Targetable units are not AoE hits: no cone, cleave or splash geometry implied.
+-- 可作为该技能目标的单位下界，不代表锥形、顺劈或溅射命中数。
+function Context:GetSpellTargets(spellID)
+    if not public(spellID) or type(spellID) ~= "number" or spellID <= 0
+       or spellID >= math.huge or spellID % 1 ~= 0 then return nil end
+    self:GetSpellRange(spellID)
+    if not spells[spellID] then return nil end
+    local result = rangeCounts[spellID]
+    if not result then result = {}; rangeCounts[spellID] = result end
+    if result.sampleSerial == sampleSerial then return result end
+    result.min, result.unknown, result.complete = 0, 0, false
+    result.sampleSerial, result.generation = sampleSerial, state.generation
+    result.source = "spell_targetable_lower_bound"
+    if readBool(IsPlayerSpell, spellID) ~= true
+       or readBool(C_Spell and C_Spell.IsSpellHarmful, spellID) ~= true then
+        result.unknown = 1; return result
+    end
+    wipe(seen)
+    local targetGUID = readGUID("target")
+    local targetRange = state.spellRange[spellID]
+    if state.targetValid == true and targetRange == true then
+        result.min = 1
+        if targetGUID then seen[targetGUID] = true end
+    elseif state.targetValid == true and targetRange == nil then result.unknown = 1 end
+    for _, unit in ipairs(tokens) do
+        local eligible = hostile(unit)
+        if eligible == true then
+            local guid = readGUID(unit)
+            local same = readBool(UnitIsUnit, unit, "target")
+            if guid and targetGUID then same = guid == targetGUID end
+            if same ~= true and not (guid and seen[guid]) then
+                local engaged = readBool(UnitAffectingCombat, unit)
+                if engaged == true then
+                    local inRange = range(spellID, unit)
+                    if inRange == true and guid and (same == false or state.targetValid == false) then
+                        seen[guid] = true; result.min = result.min + 1
+                    elseif inRange ~= false then result.unknown = result.unknown + 1 end
+                elseif engaged == nil then result.unknown = result.unknown + 1 end
+            end
+        elseif eligible == nil then result.unknown = result.unknown + 1 end
+    end
+    return result
 end
 
 function Context:OnInitialize() clearSnapshot() end
@@ -201,7 +290,8 @@ function Context:OnEnable()
     for _, event in ipairs({ "NAME_PLATE_UNIT_ADDED", "NAME_PLATE_UNIT_REMOVED", "UNIT_AURA" }) do
         eh:Subscribe(event, "TargetContext", function() self:Invalidate(false) end)
     end
-    for _, event in ipairs({ "ROTAASSIST_SPEC_CHANGED", "TRAIT_CONFIG_UPDATED", "PLAYER_ENTERING_WORLD" }) do
+    for _, event in ipairs({ "ROTAASSIST_SPEC_CHANGED", "TRAIT_CONFIG_UPDATED", "PLAYER_ENTERING_WORLD",
+        "ROTAASSIST_SPELL_CATALOG_CHANGED", "ROTAASSIST_CHARACTER_CHANGED", "SPELLS_CHANGED" }) do
         eh:Subscribe(event, "TargetContext", function()
             rebuildSpells()
             self:Invalidate(true)
@@ -214,6 +304,7 @@ function Context:OnDisable()
     local eh = RA:GetModule("EventHandler")
     if eh then eh:UnsubscribeAll("TargetContext") end
     clearSnapshot()
+    wipe(rangeCounts)
     dirty = true
 end
 function Context:IsActive() return enabled end

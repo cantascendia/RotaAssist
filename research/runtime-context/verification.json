@@ -1,0 +1,44 @@
+{
+  "version": "1.1.1-rc.10",
+  "scope": "automatic spell discovery and range eligibility across specs",
+  "luaTests": 692,
+  "pythonTests": 100,
+  "luaSyntaxFiles": 167,
+  "generatedUnitConfigurations": 50,
+  "mutations": [
+    {
+      "mutation": "include_passive_and_offspec",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "retain_old_book",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "lose_base_known_override",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "disable_generic_ranges",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "count_idle_enemies",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "ignore_target_distance",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "duplicate_targetable_guids",
+      "killedByBehaviorTest": true
+    }
+  ],
+  "apiSourceCommit": "78282522143e25c3540583734fd192c3d69be910",
+  "spellBookDocumentationSHA256": "526e806e3602454d3ccdaba874b9294accb7b0ed56db32adab306cc639dd24b9",
+  "liveClientValidated": false,
+  "universalDamageModelsComplete": false,
+  "maximumDPSValidated": false,
+  "independentPolicyChanged": false
+}

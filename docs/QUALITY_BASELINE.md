@@ -5,6 +5,12 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.10 automatically discovers learned active spells and applies current-target
+  range filtering without personal exports across specs. Per-spell enemy counts
+  are visible, engaged, targetable lower bounds, not cleave/cone/splash hit counts.
+  This extends observation and eligibility filtering, not universal damage
+  modeling; the independent policy remains Havoc-only and default-off.
+
 - rc.9 uses selected Demonic and Chaotic Transformation ranks for Havoc forward
   transitions. This changes prediction behavior in tested configurations, but
   neither calibrates damage coefficients nor establishes a measured DPS gain.

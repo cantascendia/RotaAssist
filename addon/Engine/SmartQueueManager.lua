@@ -518,7 +518,11 @@ local function AssembleQueue()
     end
 
     -- Build Blizzard rotation spell set for blind-spot detection
-    if battlefield and battlefield.spellRange[context.blizzSpell] == false then
+    local referenceRange = battlefield and battlefield.spellRange[context.blizzSpell]
+    if battlefield and context.blizzSpell and targetModule.GetSpellRange then
+        referenceRange = targetModule:GetSpellRange(context.blizzSpell)
+    end
+    if referenceRange == false then
         context.blizzSpell = nil
         lastKnownBlizzSpell = nil
         channelNextSpell = nil
@@ -990,8 +994,12 @@ local function AssembleQueue()
     -- Final safety net: validate scored entries with RA:IsSpellRecommendable
     -- 蛟貞ｺ城″蜴・ｻ･螳牙・遘ｻ髯､荳埼夊ｿ・噪譚｡逶ｮ
     for i = #scored, 1, -1 do
+        local candidateRange = battlefield and battlefield.spellRange[scored[i].spellID]
+        if battlefield and targetModule.GetSpellRange then
+            candidateRange = targetModule:GetSpellRange(scored[i].spellID)
+        end
         if not RA:IsSpellRecommendable(scored[i].spellID)
-           or (battlefield and battlefield.spellRange[scored[i].spellID] == false) then
+           or candidateRange == false then
             table.remove(scored, i)
         end
     end
@@ -1016,6 +1024,14 @@ local function AssembleQueue()
             source     = (context.independentHead == scored[1].spellID) and "INDEPENDENT" or scored[1].source,
             confidence = topConf
         }
+        if battlefield and targetModule.GetSpellTargets then
+            local targets = targetModule:GetSpellTargets(scored[1].spellID)
+            if targets then
+                finalQueue.main.targetableEnemiesMin = targets.min
+                finalQueue.main.targetableEnemiesUnknown = targets.unknown
+                finalQueue.main.targetableEnemiesComplete = false
+            end
+        end
 
         -- 霑ｽ雕ｪ荳ｻ謗ｨ闕先弍蜷ｦ蜿伜喧・井ｾ帛・莉也ｳｻ扈滉ｽｿ逕ｨ・・
         -- Track main spell change for other systems.
