@@ -5,6 +5,16 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.9] - 2026-09-22
+
+[Talent-aware transitions](docs/RELEASE_1.1.1-rc.9.md), implemented by Astra.
+
+### Fixed
+- Havoc Eye Beam respects selected Demonic; unknown selection remains unknown.
+- Chaotic Transformation resets simulated Eye Beam and both Blade Dance forms.
+- Extend existing form windows and preserve uncertainty at lower-bound expiry.
+- Clear cast-based form estimates on build changes. No new DPS qualification.
+
 ## [1.1.1-rc.8] - 2026-09-22
 
 [Character-specific context](docs/RELEASE_1.1.1-rc.8.md), implemented by Astra.

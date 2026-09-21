@@ -37,5 +37,14 @@ RA.Registry.HAVOC_CONTEXT = {
     },
 }
 
+-- SimC 774babd, 12.1.0.69875: selected-talent transitions, not damage weights.
+-- 固定版本天赋状态转移；持续时间下界不当作精确光环时长。
+RA.Registry.HAVOC_TRANSITIONS = {
+    specID = 577, eyeBeam = 198013, metamorphosis = 191427,
+    demonicTalent = 213410, chaoticTalent = 388112,
+    demonicMinimum = 5, metamorphosisDuration = 20,
+    resetCooldowns = {198013, 188499, 210152},
+}
+
 -- Backward compatibility for legacy callers.
 RA.KNOWN_OVERRIDE_PAIRS = RA.Registry.OVERRIDE_PAIRS

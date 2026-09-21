@@ -816,14 +816,16 @@ function APLEngine:SimulateSpellCast(simState, spellID)
         end
     end
 
-    if META_SPELL_IDS[spellID] then
+    local transitions = RA:GetModule("TalentTransitions")
+    local handled = transitions and transitions:Apply(simState, currentSpecID, spellID)
+    if not handled and META_SPELL_IDS[spellID] then
         simState.inMeta = true
         simState.inMetaKnown = true
         simState.metaRemains = META_SPELL_IDS[spellID]
     end
 
     local triggeredWindow = WINDOW_TRIGGER_SPELLS[spellID]
-    if triggeredWindow then
+    if triggeredWindow and not handled then
         setWindowState(simState, triggeredWindow, true)
     end
 
@@ -867,11 +869,19 @@ local function advancePredictionTime(simState, spellID)
     end
     for key, remaining in pairs(simState.windowRemains or {}) do
         simState.windowRemains[key] = math.max(0, remaining - elapsed)
-        if simState.windowRemains[key] <= 0 then simState.windows[key] = false end
+        if simState.windowRemains[key] <= 0 then
+            if key == "demonic" and simState.metaExpiryUncertain then
+                simState.windows[key] = nil
+                simState.windowUnknown[key] = true
+            else simState.windows[key] = false end
+        end
     end
     if simState.metaRemains then
         simState.metaRemains = math.max(0, simState.metaRemains - elapsed)
-        if simState.metaRemains <= 0 then simState.inMeta = false end
+        if simState.metaRemains <= 0 then
+            if simState.metaExpiryUncertain then simState.inMetaKnown = false
+            else simState.inMeta = false end
+        end
     end
     simState.combatDuration = (simState.combatDuration or 0) + elapsed
 end
@@ -1248,6 +1258,7 @@ function APLEngine:OnInitialize() end
 function APLEngine:OnEnable()
     local events = RA:GetModule("EventHandler")
     if events then events:Subscribe("ROTAASSIST_CHARACTER_CHANGED", "APLEngine", function()
+        metaActive, metaExpireTime = false, 0
         self:RefreshProfileFromTalents()
     end) end
 end
@@ -1433,6 +1444,12 @@ WINDOW_STEP_DURATIONS = {
 ---@param spellID number
 function APLEngine:SetMetaStateFromCast(spellID)
     local duration = META_SPELL_IDS[spellID]
+    local transitions = RA:GetModule("TalentTransitions")
+    if transitions then
+        local handled, observedDuration = transitions:GetDuration(currentSpecID, spellID)
+        if handled then duration = observedDuration end
+    end
+    if duration == 0 then return end
     if not duration then return end
     metaActive = true
     local newExpiry = GetTime() + duration

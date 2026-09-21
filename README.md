@@ -2,13 +2,13 @@
 
 [![WoW Version](https://img.shields.io/badge/WoW-12.1_Midnight-blueviolet)](https://worldofwarcraft.blizzard.com)
 [![Interface](https://img.shields.io/badge/Interface-120100-informational)](https://warcraft.wiki.gg/wiki/Interface_number)
-[![Version](https://img.shields.io/badge/version-1.1.1--rc.8-orange)](docs/QUALITY_BASELINE.md)
+[![Version](https://img.shields.io/badge/version-1.1.1--rc.9-orange)](docs/QUALITY_BASELINE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **RotaAssist** — WoW Midnight 12.1 的循环**教练**插件。
 *A rotation **coach** for WoW Midnight 12.1 — not another "next spell" icon.*
 
-> **当前交付：1.1.1-rc.8 本地安装候选包。** 已接入角色 build 快照、公开事实与可选独立决策，
+> **当前交付：1.1.1-rc.9 本地安装候选包。** 已接入角色 build 快照、公开事实与可选独立决策，
 > 尚无插件真机战斗或 DPS 验收，不宣称理论最优或超越 Hekili。目标为 Interface `120100`；
 > 客户端兼容性需要实测。推荐评分和“准确率”不是 DPS 百分比。
 > 详见 [推荐质量与验收标准](docs/QUALITY_BASELINE.md)。
@@ -61,7 +61,7 @@ Havoc 英雄天赋配置改用数字天赋技能 ID 识别，避免依赖英文�
 不能替代实际客户端验收。默认主动作仍以有效的 Blizzard 建议为准。
 `/ra independent on` 可开启 Havoc Fel-Scarred 实验独立首位；`/ra independent off`
 关闭。实验首位显示“实验”标记，未知状态回退。该策略尚未通过 DPS 性能验收，
-`/ra build` 查看天赋、装备与属性读取情况。详见 [rc.8 说明](docs/RELEASE_1.1.1-rc.8.md)。
+`/ra build` 查看天赋、装备与属性读取情况。详见 [rc.8 说明](docs/RELEASE_1.1.1-rc.9.md)。
 
 > ⚠️ **Devourer 说明**：该专精的部分 spellID 基于早期资料整理，尚未在 12.1 真机逐个核验。
 > spellID 存在性检查无法证明技能身份正确，也不能替代真实客户端验证。
@@ -83,7 +83,7 @@ TOC load order. Loaded data still requires per-specialization validation.*
 也不承诺自动更新。
 
 ### Manual / 手动安装
-1. 获取本次交付的 `RotaAssist-1.1.1-rc.8.zip`；源码 ZIP 不能替代带依赖的安装包
+1. 获取本次交付的 `RotaAssist-1.1.1-rc.9.zip`；源码 ZIP 不能替代带依赖的安装包
 2. 解压到
    `World of Warcraft/_retail_/Interface/AddOns/`
    解压后应存在 `Interface/AddOns/RotaAssist/RotaAssist.toc`

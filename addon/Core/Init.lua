@@ -38,6 +38,7 @@ local MODULE_ORDER = {
     "SavedVars",
     "EventHandler",
     "CharacterState",
+    "TalentTransitions",
     -- Engine (depends on Data + Core modules)
     "SpecDetector",
     "AssistedCombatBridge",

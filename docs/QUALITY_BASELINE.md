@@ -5,6 +5,11 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.9 uses selected Demonic and Chaotic Transformation ranks for Havoc forward
+  transitions. This changes prediction behavior in tested configurations, but
+  neither calibrates damage coefficients nor establishes a measured DPS gain.
+  Demonic duration is a lower bound until the hasted channel is modeled.
+
 - Havoc APL metadata identifies version `12.0.2`, updated `2026-04-09`.
 - The bundled Havoc decision tree identifies generation date `2026-02-28` and
   training accuracy `0.7292`. This is agreement with its training labels, not a

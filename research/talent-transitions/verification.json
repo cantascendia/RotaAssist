@@ -1,0 +1,41 @@
+{
+  "luaTestsPassed": 677,
+  "pythonTestsIncludingTraining": 80,
+  "addonLuaSyntaxFiles": 166,
+  "generatedConfigurations": 50,
+  "mutationChecks": [
+    {
+      "mutation": "assume_demonic_selected",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "reset_without_talent",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "shorten_existing_meta",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "retain_unknown_reset",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "unknown_talent_is_absent",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "disconnect_apl",
+      "killedByBehaviorTest": true
+    },
+    {
+      "mutation": "expire_lower_bound_as_false",
+      "killedByBehaviorTest": true
+    }
+  ],
+  "sourceCommit": "774babde5ddc7c5fc9f1abb129b473f8a076df70",
+  "newDpsBenchmark": false,
+  "actualPlayerCharacterCaptured": false,
+  "retailRuntimeValidated": false,
+  "maximumDpsEstablished": false
+}
