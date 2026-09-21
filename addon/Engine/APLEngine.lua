@@ -110,13 +110,20 @@ local function getDefinitionSpellName(definitionInfo)
     if not definitionInfo then
         return nil
     end
-    if definitionInfo.overrideName and definitionInfo.overrideName ~= "" then
-        return definitionInfo.overrideName
+    local overrideName = definitionInfo.overrideName
+    if not issecretvalue(overrideName) and type(overrideName) == "string"
+       and overrideName ~= "" then
+        return overrideName
     end
-    if definitionInfo.spellID and C_Spell and C_Spell.GetSpellInfo then
-        local ok, info = pcall(C_Spell.GetSpellInfo, definitionInfo.spellID)
-        if ok and info and info.name then
-            return info.name
+    local spellID = definitionInfo.spellID
+    if not issecretvalue(spellID) and type(spellID) == "number"
+       and C_Spell and C_Spell.GetSpellInfo then
+        local ok, info = pcall(C_Spell.GetSpellInfo, spellID)
+        if ok and type(info) == "table" then
+            local name = info.name
+            if not issecretvalue(name) and type(name) == "string" then
+                return name
+            end
         end
     end
     return nil
@@ -152,54 +159,69 @@ local function tickWindowState(simState)
     end
 end
 
+-- Collect selected trait IDs before resolving any localized display name.
+-- 先收集已选天赋的稳定 ID；名字仅为旧配置的兼容路径。
 local function getActiveTalentSpellNames()
     if not C_ClassTalents or not C_ClassTalents.GetActiveConfigID then
-        return {}
+        return nil
     end
     if not C_Traits or not C_Traits.GetConfigInfo or not C_Traits.GetTreeNodes
        or not C_Traits.GetNodeInfo or not C_Traits.GetEntryInfo or not C_Traits.GetDefinitionInfo then
-        return {}
+        return nil
     end
 
-    local configID = C_ClassTalents.GetActiveConfigID()
-    if not configID then
-        return {}
+    local okActive, configID = pcall(C_ClassTalents.GetActiveConfigID)
+    if not okActive or issecretvalue(configID) or type(configID) ~= "number" then
+        return nil
     end
 
     local okConfig, configInfo = pcall(C_Traits.GetConfigInfo, configID)
     if not okConfig or not configInfo or type(configInfo.treeIDs) ~= "table" then
-        return {}
+        return nil
     end
 
-    local names = {}
+    local talents = { names = {}, definitionIDs = {}, spellIDs = {} }
     for _, treeID in ipairs(configInfo.treeIDs) do
         local okNodes, nodeIDs = pcall(C_Traits.GetTreeNodes, treeID)
-        if okNodes and type(nodeIDs) == "table" then
-            for _, nodeID in ipairs(nodeIDs) do
+        if not okNodes or type(nodeIDs) ~= "table" then return nil end
+        for _, nodeID in ipairs(nodeIDs) do
                 local okNode, nodeInfo = pcall(C_Traits.GetNodeInfo, configID, nodeID)
-                if okNode and nodeInfo and (nodeInfo.activeRank or 0) > 0 then
+                if not okNode or type(nodeInfo) ~= "table" then return nil end
+                local rank = nodeInfo.activeRank
+                if issecretvalue(rank) then return nil end
+                if type(rank) == "number" and rank > 0 then
                     local activeEntryID = nodeInfo.activeEntry and nodeInfo.activeEntry.entryID
-                    local entryIDs = activeEntryID and { activeEntryID } or nodeInfo.entryIDsWithCommittedRanks or nodeInfo.entryIDs
+                    -- entryIDs includes unselected choices; only committed ranks count.
+                    -- entryIDs 含未选分支，只读取已激活/已提交的条目。
+                    local entryIDs = activeEntryID and { activeEntryID } or nodeInfo.entryIDsWithCommittedRanks
                     if type(entryIDs) == "table" then
                         for _, entryID in ipairs(entryIDs) do
                             local okEntry, entryInfo = pcall(C_Traits.GetEntryInfo, configID, entryID)
-                            if okEntry and entryInfo and entryInfo.definitionID then
-                                local okDef, definitionInfo = pcall(C_Traits.GetDefinitionInfo, entryInfo.definitionID)
-                                if okDef then
+                            if not okEntry or type(entryInfo) ~= "table" then return nil end
+                            local definitionID = entryInfo.definitionID
+                            if issecretvalue(definitionID) then return nil end
+                            if type(definitionID) == "number" then
+                                talents.definitionIDs[definitionID] = true
+                                local okDef, definitionInfo = pcall(C_Traits.GetDefinitionInfo, definitionID)
+                                if okDef and type(definitionInfo) == "table" then
+                                    local spellID = definitionInfo.spellID
+                                    if issecretvalue(spellID) then return nil end
+                                    if type(spellID) == "number" then
+                                        talents.spellIDs[spellID] = true
+                                    end
                                     local spellName = getDefinitionSpellName(definitionInfo)
                                     if spellName then
-                                        names[spellName] = true
+                                        talents.names[spellName] = true
                                     end
                                 end
                             end
                         end
                     end
                 end
-            end
         end
     end
 
-    return names
+    return talents
 end
 
 local function resolveProfileFromTalents(aplData)
@@ -207,23 +229,40 @@ local function resolveProfileFromTalents(aplData)
         return "default"
     end
 
-    local activeTalentNames = getActiveTalentSpellNames()
-    local hasAnyTalents = next(activeTalentNames) ~= nil
-    if not hasAnyTalents then
-        return currentProfileName or "default"
-    end
-
+    local activeTalents = getActiveTalentSpellNames()
+    if not activeTalents then return "default" end
+    local matchName
+    local matchedProfile
     for profileName, profile in pairs(aplData.profiles) do
-        if type(profile) == "table" and type(profile.signatureTalentNames) == "table" then
-            for _, talentName in ipairs(profile.signatureTalentNames) do
-                if activeTalentNames[talentName] then
-                    return profileName
+        if type(profile) == "table" then
+            local signatures = profile.signatureTalentDefinitionIDs
+            local selected = activeTalents.definitionIDs
+            if type(signatures) ~= "table" then
+                signatures = profile.signatureTalentSpellIDs
+                selected = activeTalents.spellIDs
+            end
+            if type(signatures) ~= "table" then
+                signatures = profile.signatureTalentNames
+                selected = activeTalents.names
+            end
+            if type(signatures) == "table" then
+                for _, signature in ipairs(signatures) do
+                    if selected[signature] then
+                        -- Aliases of the default table are one profile, not a tie.
+                        -- 默认配置的别名不计为冲突。
+                        matchName = profile == aplData.profiles.default and "default" or profileName
+                        if matchedProfile and matchedProfile ~= matchName then
+                            return "default"
+                        end
+                        matchedProfile = matchName
+                        break
+                    end
                 end
             end
         end
     end
 
-    return "default"
+    return matchedProfile or "default"
 end
 
 ------------------------------------------------------------------------
@@ -613,7 +652,16 @@ function APLEngine:EvaluateCondition(condition, spellID, simState)
 
         if cond == "cd_ready" or cond == "ready" then
             local cd = simState.cooldowns[spellID]
-            pass = not cd or cd <= 0
+            local charges = simState.charges and simState.charges[spellID]
+            -- A remaining charge is castable while another charge recharges.
+            -- 有剩余充能时，即使另一层正在恢复，也仍可施放。
+            if charges ~= nil then
+                pass = charges > 0
+            elseif simState.cooldownUnknown and simState.cooldownUnknown[spellID] then
+                pass = false
+            else
+                pass = not cd or cd <= 0
+            end
 
         elseif cond == "always" then
             pass = true
@@ -633,10 +681,8 @@ function APLEngine:EvaluateCondition(condition, spellID, simState)
 
         elseif cond:match("^estimated_resource") then
             local op, value = parseNumericCondition(cond, "estimated_resource")
-            if op and value then
-                pass = compareNumber(simState.resource or 0, op, value)
-            else
-                pass = true
+            if op and value and type(simState.resource) == "number" then
+                pass = compareNumber(simState.resource, op, value)
             end
 
         elseif cond:match("^target_count") then
@@ -659,20 +705,9 @@ function APLEngine:EvaluateCondition(condition, spellID, simState)
             local op, value = parseNumericCondition(cond, "charges")
             local charges = simState.charges and simState.charges[spellID]
             if op and value and charges ~= nil then
-                -- simState.charges only ever holds values already cleared by
-                -- issecretvalue() in SmartQueueManager:BuildLimitedState(), so the
-                -- comparison below is safe. A secret/unreadable charge count is left
-                -- nil there and lands in the `pass = true` branch instead.
-                -- simState.charges 中只会存放 SmartQueueManager:BuildLimitedState()
-                -- 里已通过 issecretvalue() 校验的值，故此处比较安全。读不到（secret）
-                -- 的充能数在那边保持为 nil，会走下面的 pass = true 分支。
+                -- The predictor copies only public numeric counts before evaluation.
+                -- 预测器在评估前只复制可读取的数值充能。
                 pass = compareNumber(charges, op, value)
-            else
-                -- Unparsable condition, or charges unreadable: never block a rule on
-                -- data we cannot trust — degrade open rather than silently false.
-                -- 条件无法解析，或充能读不到：不因不可信数据阻塞规则，
-                -- 采取"放行"降级而不是静默 false。
-                pass = true
             end
 
         elseif cond:match("^window:") then
@@ -712,17 +747,29 @@ end
 function APLEngine:SimulateSpellCast(simState, spellID)
     tickWindowState(simState)
 
+    if simState.charges and simState.charges[spellID] ~= nil then
+        simState.charges[spellID] = math.max(0, simState.charges[spellID] - 1)
+        local recharge = simState.chargeRecharges and simState.chargeRecharges[spellID]
+        if recharge and recharge.remaining <= 0 and recharge.duration > 0
+           and simState.charges[spellID] < recharge.max then
+            recharge.remaining = recharge.duration
+        end
+    end
+
     -- FIX (OverridePair): 降低 CD 阈值从 ≥8s 到 ≥3s，以正确模拟 Blade Dance/Death Sweep 等短 CD
     -- FIX (OverridePair): Lower threshold from ≥8s to ≥3s for proper short-CD simulation.
     -- Also set simulated CD on the paired override ID.
     -- 同时对覆盖对技能设置模拟 CD。
-    local wsData = RA.WhitelistSpells and RA.WhitelistSpells[spellID]
+    local pairedID = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[spellID]
+    local wsData = RA.WhitelistSpells and (RA.WhitelistSpells[spellID]
+        or (pairedID and RA.WhitelistSpells[pairedID]))
     if wsData and wsData.cdSeconds and wsData.cdSeconds >= 3 then
         simState.cooldowns[spellID] = wsData.cdSeconds
+        if simState.cooldownUnknown then simState.cooldownUnknown[spellID] = nil end
         -- FIX (OverridePair): mirror sim CD to paired spell
-        local pairedID = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[spellID]
         if pairedID then
             simState.cooldowns[pairedID] = wsData.cdSeconds
+            if simState.cooldownUnknown then simState.cooldownUnknown[pairedID] = nil end
         end
     end
 
@@ -730,7 +777,8 @@ function APLEngine:SimulateSpellCast(simState, spellID)
     local enhData = currentSpecID and RA.SpecEnhancements and RA.SpecEnhancements[currentSpecID]
     if enhData and enhData.resource and enhData.resource.spellCosts then
         local costData = enhData.resource.spellCosts[spellID]
-        if costData then
+            or (pairedID and enhData.resource.spellCosts[pairedID])
+        if costData and type(simState.resource) == "number" then
             if costData.cost then
                 simState.resource = (simState.resource or 0) - costData.cost
                 if simState.resource < 0 then simState.resource = 0 end
@@ -754,6 +802,72 @@ function APLEngine:SimulateSpellCast(simState, spellID)
 
     simState.lastCast = spellID
     return simState
+end
+
+---Advance the simulated horizon after a cast. A public GCD duration is used
+---when supplied; 1.5 s is an approximation otherwise. Known base cast time
+---may lengthen the horizon, but does not establish haste-adjusted cast time.
+---施法后推进模拟时间。优先使用可读取的 GCD；否则以 1.5 秒近似。
+local function advancePredictionTime(simState, spellID)
+    local elapsed = simState.gcdDuration
+    if C_Spell and C_Spell.GetSpellInfo then
+        local ok, info = pcall(C_Spell.GetSpellInfo, spellID)
+        if ok and type(info) == "table" then
+            local castTime = info.castTime
+            if not issecretvalue(castTime) and type(castTime) == "number"
+               and castTime > elapsed * 1000 then
+                elapsed = castTime / 1000
+            end
+        end
+    end
+
+    for id, remaining in pairs(simState.cooldowns) do
+        if type(remaining) == "number" then
+            simState.cooldowns[id] = math.max(0, remaining - elapsed)
+        end
+    end
+    for id, recharge in pairs(simState.chargeRecharges) do
+        local count = simState.charges[id]
+        if count and count < recharge.max and recharge.duration > 0 and recharge.remaining > 0 then
+            recharge.remaining = recharge.remaining - elapsed
+            while recharge.remaining <= 0 and count < recharge.max do
+                count = count + 1
+                recharge.remaining = recharge.remaining + recharge.duration
+            end
+            simState.charges[id] = count
+            if count >= recharge.max then recharge.remaining = 0 end
+        end
+    end
+    simState.combatDuration = (simState.combatDuration or 0) + elapsed
+end
+
+---Reject a future action only when observable or simulated state proves it
+---unavailable. Unknown resource/CD facts are not invented.
+---仅在可观测或已模拟的状态证明技能不可用时拒绝；不编造未知资源与冷却事实。
+local function canCastAtHorizon(simState, spellID)
+    local charges = simState.charges[spellID]
+    if charges ~= nil then
+        if charges <= 0 then return false end
+    elseif simState.cooldownUnknown[spellID] then
+        return false
+    else
+        local cooldown = simState.cooldowns[spellID]
+        if cooldown and cooldown > 0 then return false end
+    end
+
+    local enhancement = currentSpecID and RA.SpecEnhancements and RA.SpecEnhancements[currentSpecID]
+    local costs = enhancement and enhancement.resource and enhancement.resource.spellCosts
+    local pairedID = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[spellID]
+    local costData = costs and (costs[spellID] or (pairedID and costs[pairedID]))
+    local cost = costData and costData.cost
+    if type(cost) == "number" and cost > 0 then
+        -- A declared spender cannot be validated from a secret/unknown resource.
+        -- 已声明的消耗技能在资源 secret/未知时不能通过预测验证。
+        if type(simState.resource) ~= "number" or simState.resource < cost then
+            return false
+        end
+    end
+    return true
 end
 
 ------------------------------------------------------------------------
@@ -803,48 +917,101 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
 
     if not currentAPL then return {} end
 
-    -- FIX (P0-Bug2): Default-value protection for limitedState fields.
-    -- Even when limitedState is provided, individual fields may be nil.
-    limitedState.resource    = limitedState.resource or 0
-    limitedState.cooldowns   = limitedState.cooldowns or {}
-    limitedState.inMeta      = limitedState.inMeta or false
-    limitedState.targetCount = limitedState.targetCount or 1
-    limitedState.combatDuration = limitedState.combatDuration or 0
-    limitedState.charges = limitedState.charges or {}
-    limitedState.windows = limitedState.windows or {}
-
-    -- Build simulation state from the limited observable state
+    -- Build an isolated simulation state. PredictNext is read-only with respect to
+    -- its caller, including nested cooldown, charge and window tables.
+    -- 构造独立模拟状态；PredictNext 不修改调用方及其嵌套冷却/充能/窗口表。
+    local resource = limitedState.resource
+    if limitedState.resourceKnown == false or issecretvalue(resource)
+       or type(resource) ~= "number" then
+        resource = nil
+    end
+    local gcdDuration = limitedState.gcdDuration
+    if issecretvalue(gcdDuration) or type(gcdDuration) ~= "number"
+       or gcdDuration < 0.75 or gcdDuration > 1.5 then
+        gcdDuration = 1.5
+    end
+    local inMeta = metaActive
+    if not issecretvalue(limitedState.inMeta)
+       and type(limitedState.inMeta) == "boolean" then
+        inMeta = limitedState.inMeta
+    end
+    local targetCount = limitedState.targetCount
+    if issecretvalue(targetCount) or type(targetCount) ~= "number" then targetCount = 1 end
+    local combatDuration = limitedState.combatDuration
+    if issecretvalue(combatDuration) or type(combatDuration) ~= "number" then
+        combatDuration = 0
+    end
     local simState = {
         cooldowns   = {},
-        resource    = limitedState.resource,
-        inMeta      = limitedState.inMeta or metaActive,
+        cooldownUnknown = {},
+        resource    = resource,
+        gcdDuration = gcdDuration,
+        inMeta      = inMeta,
         lastCast    = nil,
-        targetCount = limitedState.targetCount,
-        combatDuration = limitedState.combatDuration,
-        charges = limitedState.charges,
-        windows = limitedState.windows,
+        targetCount = targetCount,
+        combatDuration = combatDuration,
+        charges = {},
+        chargeRecharges = {},
+        windows = {},
         windowSteps = {},
     }
     -- Copy cooldown data into simState
     if limitedState.cooldowns then
         for spellID, val in pairs(limitedState.cooldowns) do
-            if type(val) == "table" then
-                simState.cooldowns[spellID] = val.remaining or 0
-            else
+            if not issecretvalue(val) and type(val) == "table" then
+                val = val.remaining
+            end
+            if not issecretvalue(val) and type(val) == "number" then
                 simState.cooldowns[spellID] = val
             end
         end
     end
 
-    for windowKey, active in pairs(limitedState.windows) do
-        if active then
-            simState.windowSteps[windowKey] = WINDOW_STEP_DURATIONS[windowKey] or 1
+    if limitedState.charges then
+        for spellID, count in pairs(limitedState.charges) do
+            if not issecretvalue(count) and type(count) == "number" then
+                simState.charges[spellID] = count
+            end
+        end
+    end
+
+    if limitedState.cooldownUnknown then
+        for spellID, unknown in pairs(limitedState.cooldownUnknown) do
+            if not issecretvalue(unknown) and unknown == true then
+                simState.cooldownUnknown[spellID] = true
+            end
+        end
+    end
+    if limitedState.chargeRecharges then
+        for spellID, recharge in pairs(limitedState.chargeRecharges) do
+            if type(recharge) == "table" and simState.charges[spellID] ~= nil then
+                local maximum, remaining, duration = recharge.max, recharge.remaining, recharge.duration
+                if not issecretvalue(maximum) and not issecretvalue(remaining)
+                   and not issecretvalue(duration) and type(maximum) == "number"
+                   and type(remaining) == "number" and type(duration) == "number"
+                   and maximum >= simState.charges[spellID] and maximum > 0
+                   and remaining >= 0 and duration > 0 then
+                    simState.chargeRecharges[spellID] = {
+                        max = maximum, remaining = remaining, duration = duration,
+                    }
+                end
+            end
+        end
+    end
+
+    if limitedState.windows then
+        for windowKey, active in pairs(limitedState.windows) do
+            if active == true then
+                simState.windows[windowKey] = true
+                simState.windowSteps[windowKey] = WINDOW_STEP_DURATIONS[windowKey] or 1
+            end
         end
     end
 
     -- Simulate casting the current Blizzard recommendation first
     if currentSpellID then
         self:SimulateSpellCast(simState, currentSpellID)
+        advancePredictionTime(simState, currentSpellID)
     end
 
     -- Now walk the APL to find the next `depth` spells
@@ -854,8 +1021,9 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
     -- opener 序列优先级高于常规 APL 规则
     -- Opener mode: use the predefined pull sequence within the first 6 s of combat.
     -- This takes priority over the regular APL rule walk.
-    local openerUsed = false
-    if limitedState.combatDuration and limitedState.combatDuration < 6 then
+    if not issecretvalue(limitedState.combatDuration)
+       and type(limitedState.combatDuration) == "number"
+       and limitedState.combatDuration < 6 then
         local openerSeq = nil
         if currentAPL and currentAPL.profiles then
             local profile = currentAPL.profiles[currentProfileName]
@@ -880,7 +1048,8 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
 
             -- 从 startStep 开始填充预测（最多 depth 步）
             -- Fill predictions starting from startStep, up to depth entries.
-            for i = startStep, math.min(startStep + depth - 1, #openerSeq) do
+            for i = startStep, #openerSeq do
+                if #predictions >= depth then break end
                 local entry = openerSeq[i]
                 -- Skip spells the player hasn't learned (e.g. untalented Essence Break),
                 -- and spellIDs this client could not resolve at all. Opener entries are
@@ -888,28 +1057,45 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
                 -- this is where they are actually skipped.
                 -- 跳过未学习的技能（如未天赋的精华爆裂），以及本客户端根本解析不出来的 spellID。
                 -- opener 按 step 索引，pruneUnknownSpells() 只做标记（见 D-015），实际跳过在这里。
-                local known = ((not IsPlayerSpell) or IsPlayerSpell(entry.spellID))
-                              and not unknownSpellIDs[entry.spellID]
-                if entry and known then
+                local known = false
+                if entry and type(entry.spellID) == "number" and not unknownSpellIDs[entry.spellID] then
+                    if not IsPlayerSpell then
+                        known = true
+                    else
+                        local okKnown, isKnown = pcall(IsPlayerSpell, entry.spellID)
+                        known = okKnown and isKnown == true
+                    end
+                end
+                -- An unknown/unlearned opener entry can be skipped, preserving the
+                -- existing load-time pruning behaviour. A known action that is on CD
+                -- or unaffordable breaks the scripted chain; the normal APL then
+                -- chooses from the current simulated state.
+                -- 未知/未学习的起手项可跳过；已知项若冷却或资源不足则中断预设链，
+                -- 由常规 APL 基于当前模拟状态重新选择。
+                if known and not canCastAtHorizon(simState, entry.spellID) then
+                    break
+                end
+                local passive = known and (PASSIVE_BLACKLIST[entry.spellID]
+                    or (RA.IsSpellPassive and RA:IsSpellPassive(entry.spellID)))
+                if known and not passive then
                     predictions[#predictions + 1] = {
                         spellID    = entry.spellID,
                         confidence = math.max(0.7, 0.95 - (i - startStep) * 0.1),
                         source     = "apl_opener",
                         note       = entry.note or ("Opener step " .. i),
                     }
+                    self:SimulateSpellCast(simState, entry.spellID)
+                    advancePredictionTime(simState, entry.spellID)
                 end
             end
 
-            if #predictions > 0 then
-                openerUsed = true
-            end
         end
     end
 
-    -- 如果 opener 已经填充了预测，跳过常规 APL 循环
-    -- Skip the regular APL walk when the opener sequence has provided predictions.
-    if not openerUsed then
-        for step = 1, depth do
+    -- If the scripted opener ends early, continue from its simulated result.
+    -- 起手序列提前结束时，从已模拟的状态继续常规 APL。
+    if #predictions < depth then
+        for step = #predictions + 1, depth do
             local actionList = getActionList(simState)
             if not actionList then break end
             -- FIX (Perf): build the step-note string ONCE per outer loop iteration,
@@ -918,56 +1104,11 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
 
             local found = false
             for _, rule in ipairs(actionList) do
-                -- Step 1: skip the spell Blizzard is already showing in slot 1 (only when a recommendation exists).
-                -- Step 2+: allow repeated spells so builder-spam is predicted correctly.
-                -- currentSpellID が nil の場合はスキップしない
-                -- FIX: 始终允许预测重复技能，确保 Builder (如 喷发) 预测连续性
-                local skipCurrent = false
                 -- 跳过未学习的天赋技能 / Skip unlearned talent spells
-                local notKnown = IsPlayerSpell and not IsPlayerSpell(rule.spellID)
-                -- Step 1 only: real-time CD guard — if CooldownOverlay says this spell has
-                -- > 1.0s remaining, skip it even if simState thinks it's ready.
-                -- 仅第一步：实时 CD 检查，对 simState 的 CD 估算做最终安全网
-                -- FIX (OverridePair): Also check paired override ID in real CD guard.
-                -- 覆盖对实时 CD 检查：同时检查配对 ID 的 CD 状态。
-                local realCD = false
-                if not skipCurrent and not notKnown then
-                    local cdOverlay = RA:GetModule("CooldownOverlay")
-                    if cdOverlay then
-                        local cds = cdOverlay:GetCooldownStates()
-                        local cdState = cds[rule.spellID]
-                        if cdState and not cdState.ready
-                           and cdState.remaining and cdState.remaining > 1.0 then
-                            if step == 1 then
-                                realCD = true
-                            else
-                                -- Step 2+: 仅当 simState 也认为该技能在 CD 时才拒绝（避免过度过滤）
-                                -- Trust simulation for future steps, but cross-check with reality
-                                local simCD = simState.cooldowns[rule.spellID]
-                                if simCD and simCD > 0 then
-                                    realCD = true
-                                end
-                            end
-                        end
-                        -- Check paired override ID
-                        if not realCD then
-                            local pairedID = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[rule.spellID]
-                            if pairedID then
-                                local pairedState = cds[pairedID]
-                                if pairedState and not pairedState.ready
-                                   and pairedState.remaining and pairedState.remaining > 1.0 then
-                                    if step == 1 then
-                                        realCD = true
-                                    else
-                                        local simCD = simState.cooldowns[pairedID]
-                                        if simCD and simCD > 0 then
-                                            realCD = true
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
+                local notKnown = false
+                if IsPlayerSpell then
+                    local okKnown, known = pcall(IsPlayerSpell, rule.spellID)
+                    notKnown = not okKnown or known ~= true
                 end
                 -- Step 1 only: soft-block guard — suppress recently-cast spells until
                 -- SPELL_UPDATE_COOLDOWN confirms the real CD has started.
@@ -993,7 +1134,8 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
                     end
                 end
 
-                if not skipCurrent and not notKnown and not isPassive and not isOverriddenPassive and not realCD and not isSoftBlocked
+                if not notKnown and not isPassive and not isOverriddenPassive and not isSoftBlocked
+                   and canCastAtHorizon(simState, rule.spellID)
                    and self:EvaluateCondition(rule.condition, rule.spellID, simState) then
                     -- Confidence degrades with depth
                     local conf = math.max(0.5, 0.9 - (step - 1) * 0.2)
@@ -1007,6 +1149,7 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
 
                     -- Advance the simulation state
                     self:SimulateSpellCast(simState, rule.spellID)
+                    advancePredictionTime(simState, rule.spellID)
                     found = true
                     break
                 end

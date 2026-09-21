@@ -27,6 +27,9 @@ local APL = {
 }
 
 APL.profiles["default"] = {
+    -- SimC Midnight trait spell: Art of the Glaive (442290).
+    -- 使用技能 ID 选择英雄配置，避免依赖本地化名称或可变的定义 ID。
+    signatureTalentSpellIDs = { 442290 },
     signatureTalentNames = {
         "Art of the Glaive",
         "Aldrachi Reaver",
@@ -237,6 +240,9 @@ APL.profiles["default"] = {
 APL.profiles["aldrachi_reaver"] = APL.profiles["default"]
 
 APL.profiles["fel_scarred"] = {
+    -- SimC Midnight trait spells: Demonsurge (452402), Student of Suffering (452412).
+    -- 英雄标志天赋使用稳定技能 ID；显示名称仍可本地化。
+    signatureTalentSpellIDs = { 452402, 452412 },
     signatureTalentNames = {
         "Demonsurge",
         "Student of Suffering",

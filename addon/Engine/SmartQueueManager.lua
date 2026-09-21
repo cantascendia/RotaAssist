@@ -401,6 +401,39 @@ local function ScanCharges(limitedState)
             local cc = chargeInfo.currentCharges
             if not issecretvalue(cc) and type(cc) == "number" then
                 limitedState.charges[sid] = cc
+                -- Recharge timing is useful only when every input is public.
+                -- 回充时间仅在全部输入可公开读取时传给模拟器。
+                local mc = chargeInfo.maxCharges
+                local st = chargeInfo.cooldownStartTime
+                local dur = chargeInfo.cooldownDuration
+                local rate = chargeInfo.chargeModRate
+                local rateKnown = not issecretvalue(rate)
+                if rateKnown and rate == nil then
+                    rate = chargeInfo.modRate
+                    rateKnown = not issecretvalue(rate)
+                end
+                if rateKnown and rate == nil then rate = 1 end
+                if not issecretvalue(mc) and not issecretvalue(st)
+                   and not issecretvalue(dur) and rateKnown
+                   and type(mc) == "number" and type(st) == "number"
+                   and type(dur) == "number" and type(rate) == "number"
+                   and mc > 1 and cc >= 0 and cc <= mc and dur > 0 and rate > 0 then
+                    -- Blizzard's CooldownViewer predicts charge gain at st + dur;
+                    -- chargeModRate affects cooldown UI updates, not this clock.
+                    -- 暴雪按 st + dur 计算回充，rate 只用于冷却 UI 更新。
+                    local effectiveDuration = dur
+                    local remaining = 0
+                    if cc < mc then
+                        if st <= 0 then effectiveDuration = nil
+                        else remaining = math.max(0, st + effectiveDuration - GetTime()) end
+                    end
+                    if effectiveDuration then
+                        limitedState.chargeRecharges[sid] = {
+                            current = cc, max = mc,
+                            remaining = remaining, duration = effectiveDuration,
+                        }
+                    end
+                end
             end
         end
     end
@@ -495,8 +528,11 @@ local function AssembleQueue()
         context.predictiveEnabled = true
         -- FIX (P0-Bug2): Build a valid limitedState table from context
         local limitedState = {
-            resource        = 0,
+            resource        = nil,
+            resourceKnown   = false,
             cooldowns       = {},
+            cooldownUnknown = {},
+            chargeRecharges = {},
             inMeta          = false,
             targetCount     = 1,
             combatDuration  = 0,
@@ -524,19 +560,43 @@ local function AssembleQueue()
         -- WOW 12.0 SECRET VALUE 安全：先用 pcall 包住 API 调用（受限环境下会报错），
         -- 再在任何真值判断/比较之前过 issecretvalue()。原写法 `if rawPower and ...`
         -- 先对值做了真值判断，正是问题所在。
-        local okPower, rawPower = pcall(UnitPower, "player", powerType)
-        if okPower and not issecretvalue(rawPower) and type(rawPower) == "number" then
-            limitedState.resource = rawPower
-        else
-            limitedState.resource = 0
+        local secretByPolicy = false
+        if C_Secrets and C_Secrets.ShouldUnitPowerBeSecret then
+            local okPolicy, policy = pcall(C_Secrets.ShouldUnitPowerBeSecret, "player", powerType)
+            if okPolicy and not issecretvalue(policy) and policy == true then
+                secretByPolicy = true
+            end
+        end
+        if not secretByPolicy and UnitPower then
+            local okPower, rawPower = pcall(UnitPower, "player", powerType)
+            if okPower and not issecretvalue(rawPower) and type(rawPower) == "number" then
+                limitedState.resource = rawPower
+                limitedState.resourceKnown = true
+            end
         end
 
-        -- Populate cooldowns from CooldownOverlay states
+        -- Overlay may infer ready for an unseen spell. Query the guarded API
+        -- for simulator provenance instead of copying that inference as fact.
+        -- 覆盖层可能推测未见技能已就绪；模拟器只接受安全 API 的实测状态。
         if mCooldownOverlay then
             local cds = mCooldownOverlay:GetCooldownStates()
-            for sid, cd in pairs(cds) do
-                limitedState.cooldowns[sid] = cd.remaining or 0
+            for sid in pairs(cds) do
+                local remaining = RA:GetSpellCooldownSafe(sid)
+                if not issecretvalue(remaining) and type(remaining) == "number"
+                   and remaining >= 0 then
+                    limitedState.cooldowns[sid] = remaining
+                else
+                    limitedState.cooldownUnknown[sid] = true
+                end
             end
+        end
+
+        -- GCD spell 61304 is an observable clock only when the safe API
+        -- provides a public, plausible duration.
+        local _, _, _, gcdDuration = RA:GetSpellCooldownSafe(61304)
+        if not issecretvalue(gcdDuration) and type(gcdDuration) == "number"
+           and gcdDuration >= 0.75 and gcdDuration <= 1.5 then
+            limitedState.gcdDuration = gcdDuration
         end
 
         ScanCharges(limitedState)
@@ -598,7 +658,14 @@ local function AssembleQueue()
         for spellID, cd in pairs(cds) do
             local isWhitelisted = RA.WhitelistSpells and RA.WhitelistSpells[spellID]
             if isWhitelisted then
-                if cd.ready then
+                local snapshot = context.aplState
+                local observed = snapshot and snapshot.cooldowns[spellID]
+                local chargeCount = snapshot and snapshot.charges[spellID]
+                if cd.ready and snapshot
+                   and ((not issecretvalue(observed) and type(observed) == "number"
+                         and observed <= 1.0)
+                        or (not issecretvalue(chargeCount) and type(chargeCount) == "number"
+                            and chargeCount > 0)) then
                     context.cdReadyList[spellID] = true
                 end
                 -- 蟆ｱ扈ｪ蜥悟・蜊ｴ荳ｭ逧・､ｧ諡幃・霑帛・ cooldowns 蛻苓｡ｨ萓・CooldownBar 譏ｾ遉ｺ
@@ -658,7 +725,6 @@ local function AssembleQueue()
             end
         end
         if rules then
-            local cdStates = mCooldownOverlay and mCooldownOverlay:GetCooldownStates() or {}
             for _, rule in ipairs(rules) do
                 local sid = rule.spellID
                 if sid and not rotationSpells[sid] then
@@ -670,7 +736,9 @@ local function AssembleQueue()
                         if rule.condition and mAPLEngine.EvaluateCondition and context.aplState then
                             local blindSpotState = {
                                 cooldowns = context.aplState.cooldowns or {},
-                                resource = context.aplState.resource or 0,
+                                cooldownUnknown = context.aplState.cooldownUnknown or {},
+                                resource = context.aplState.resource,
+                                resourceKnown = context.aplState.resourceKnown,
                                 inMeta = context.aplState.inMeta or false,
                                 lastCast = nil,
                                 targetCount = context.aplState.targetCount or 1,
@@ -681,9 +749,26 @@ local function AssembleQueue()
                             stateOk = mAPLEngine:EvaluateCondition(rule.condition, sid, blindSpotState)
                         end
 
-                        -- Check if the CD is actually ready in the overlay
-                        local cdState = cdStates[sid]
-                        if stateOk and cdState and cdState.ready then
+                        -- A visual overlay's ready flag can be inferred from no
+                        -- cast history; only public API data proves readiness.
+                        -- 视觉层的就绪标记可能是推测，候选只采用公开实测数据。
+                        local snapshot = context.aplState
+                        local remaining = snapshot and snapshot.cooldowns[sid]
+                        local knownCharge = snapshot and snapshot.charges[sid]
+                        if remaining == nil and snapshot and not snapshot.cooldownUnknown[sid] then
+                            local observed = RA:GetSpellCooldownSafe(sid)
+                            if not issecretvalue(observed) and type(observed) == "number"
+                               and observed >= 0 then
+                                remaining = observed
+                                snapshot.cooldowns[sid] = observed
+                            else
+                                snapshot.cooldownUnknown[sid] = true
+                            end
+                        end
+                        if stateOk and ((not issecretvalue(knownCharge)
+                           and type(knownCharge) == "number" and knownCharge > 0)
+                           or (not issecretvalue(remaining)
+                           and type(remaining) == "number" and remaining <= 1.0)) then
                             context.blindSpotCandidates[sid] = true
                             candidates[sid] = true
                         end

@@ -150,6 +150,18 @@ function RA:GetSpellCooldownSafe(spellID)
         return nil, nil, nil, nil
     end
 
+    -- Blizzard documents isEnabled=false as a cooldown on hold. In that state
+    -- duration may be zero, but zero does not establish readiness. isActive=false
+    -- also describes an ordinary inactive cooldown, so do not gate on isActive.
+    -- isEnabled=false 表示冷却暂停；此时 duration=0 不等于可施放。
+    local enabled = cdInfo.isEnabled
+    if issecretvalue(enabled) then
+        return nil, nil, nil, nil
+    end
+    if enabled == false then
+        return nil, nil, nil, nil
+    end
+
     local dur = cdInfo.duration
     local st  = cdInfo.startTime
 
