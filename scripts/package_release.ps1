@@ -81,6 +81,8 @@ try {
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.1.md'), 'docs\RELEASE_1.1.1-rc.1.md'),
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.2.md'), 'docs\RELEASE_1.1.1-rc.2.md'),
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.3.md'), 'docs\RELEASE_1.1.1-rc.3.md'),
+        @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.4.md'), 'docs\RELEASE_1.1.1-rc.4.md'),
+        @((Join-Path $RepoRoot 'docs\TARGET_CONTEXT_SPEC.md'), 'docs\TARGET_CONTEXT_SPEC.md'),
         @((Join-Path $RepoRoot 'docs\SMOKE_TEST_12.1.md'), 'docs\SMOKE_TEST_12.1.md')
     )
     foreach ($doc in $docs) {

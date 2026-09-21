@@ -58,6 +58,12 @@ are an external reference, not measurements of the in-game RotaAssist policy.
 
 ## Evidence still required for a performance claim
 
+Rc.4 adds target-generation invalidation, guarded Havoc melee-range counts and
+per-action range, and selected own-target/player aura observations. Incomplete
+counts are lower bounds; unknown aura state does not prove absence. The model
+still lacks exact AoE geometry and a calibrated full damage policy. See
+[target-aware delivery](RELEASE_1.1.1-rc.4.md).
+
 Rc.3 corrects selected Havoc base spell facts and uses a public resource maximum.
 Five independent full-state SimC traces provide 874 sequence rows for same-row
 baseline/current APL comparison. This diagnostic does not measure addon DPS or

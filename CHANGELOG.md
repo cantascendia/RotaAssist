@@ -5,6 +5,18 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.4] - 2026-09-22
+
+[Target-aware local candidate](docs/RELEASE_1.1.1-rc.4.md), implemented by Astra.
+
+### Changed
+- Invalidate target-specific recommendations and caches on target changes.
+- Use guarded Havoc melee-range observations instead of all visible nameplates.
+- Feed per-action range and selected public player/own-target aura expiration
+  into lookahead. Keep incomplete counts and unknown aura states explicit.
+- Verify generated enemy populations, queue transitions and targeted mutations.
+  This is not an exact AoE hit model or a DPS superiority result.
+
 ## [1.1.1-rc.3] - 2026-09-22
 
 Local model-correction candidate; [delivery notes](docs/RELEASE_1.1.1-rc.3.md).
