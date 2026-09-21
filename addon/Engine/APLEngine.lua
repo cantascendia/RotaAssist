@@ -778,14 +778,24 @@ function APLEngine:SimulateSpellCast(simState, spellID)
     if enhData and enhData.resource and enhData.resource.spellCosts then
         local costData = enhData.resource.spellCosts[spellID]
             or (pairedID and enhData.resource.spellCosts[pairedID])
-        if costData and type(simState.resource) == "number" then
+        if costData and not issecretvalue(simState.resource)
+           and type(simState.resource) == "number" then
+            local observedResource = simState.resource
             if costData.cost then
                 simState.resource = (simState.resource or 0) - costData.cost
                 if simState.resource < 0 then simState.resource = 0 end
             end
             if costData.gen then
                 simState.resource = (simState.resource or 0) + costData.gen
-                local maxRes = enhData.resource.maxBase or 100
+                local maxRes = simState.resourceMax
+                if issecretvalue(maxRes) or type(maxRes) ~= "number"
+                   or maxRes ~= maxRes or maxRes <= 0 or maxRes >= math.huge
+                   or maxRes < observedResource then
+                    -- Static base is only an approximation when the public cap
+                    -- is unavailable. Never lower an already observed resource.
+                    -- 无公开上限时静态基础值仅是近似；不降低已观测资源。
+                    maxRes = math.max(enhData.resource.maxBase or 100, observedResource)
+                end
                 if simState.resource > maxRes then simState.resource = maxRes end
             end
         end
@@ -925,6 +935,12 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
        or type(resource) ~= "number" then
         resource = nil
     end
+    local resourceMax = limitedState.resourceMax
+    if issecretvalue(resourceMax) or type(resourceMax) ~= "number"
+       or resourceMax ~= resourceMax or resourceMax <= 0 or resourceMax >= math.huge
+       or (resource and resourceMax < resource) then
+        resourceMax = nil
+    end
     local gcdDuration = limitedState.gcdDuration
     if issecretvalue(gcdDuration) or type(gcdDuration) ~= "number"
        or gcdDuration < 0.75 or gcdDuration > 1.5 then
@@ -945,6 +961,7 @@ function APLEngine:PredictNext(currentSpellID, limitedState, depth)
         cooldowns   = {},
         cooldownUnknown = {},
         resource    = resource,
+        resourceMax = resourceMax,
         gcdDuration = gcdDuration,
         inMeta      = inMeta,
         lastCast    = nil,

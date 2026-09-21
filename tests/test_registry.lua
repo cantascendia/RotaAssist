@@ -15,12 +15,15 @@ describe("Registry data integrity", function()
             assert.is_table(RA.Registry.PASSIVE_BLACKLIST)
         end)
 
-        it("contains exactly 3 known passive spell IDs", function()
-            local count = 0
-            for _ in pairs(RA.Registry.PASSIVE_BLACKLIST) do
-                count = count + 1
+        -- spec-change: source-confirmed Glaive Tempest proc is non-castable.
+        it("contains exactly 4 known passive spell IDs", function()
+            local expected = { [203555] = true, [290271] = true, [412713] = true, [342817] = true }
+            for spellID, value in pairs(RA.Registry.PASSIVE_BLACKLIST) do
+                assert.is_true(expected[spellID], "unexpected passive spell ID " .. tostring(spellID))
+                assert.is_true(value)
+                expected[spellID] = nil
             end
-            assert.equals(3, count)
+            assert.is_nil(next(expected), "missing expected passive spell ID")
         end)
 
         it("includes Demon Blades (203555)", function()

@@ -296,10 +296,15 @@ describe("Edge Cases", function()
 
     -- ── Registry edge cases ──
     describe("Registry edge cases", function()
-        it("PASSIVE_BLACKLIST contains exactly 3 entries", function()
-            local count = 0
-            for _ in pairs(RA.Registry.PASSIVE_BLACKLIST) do count = count + 1 end
-            assert.equals(3, count)
+        -- spec-change: source-confirmed Glaive Tempest proc is non-castable.
+        it("PASSIVE_BLACKLIST contains exactly 4 expected IDs", function()
+            local expected = { [203555] = true, [290271] = true, [412713] = true, [342817] = true }
+            for spellID, value in pairs(RA.Registry.PASSIVE_BLACKLIST) do
+                assert.is_true(expected[spellID], "unexpected passive spell ID " .. tostring(spellID))
+                assert.is_true(value)
+                expected[spellID] = nil
+            end
+            assert.is_nil(next(expected), "missing expected passive spell ID")
         end)
 
         it("OVERRIDE_PAIRS is bidirectional", function()

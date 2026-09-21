@@ -119,18 +119,17 @@ RA.WhitelistSpells = {
 
     ---------- Demon Hunter ----------
     -- HAVOC (specID 577)
-    [198013] = { name = "Eye Beam",           class = "DEMONHUNTER", specID = 577,  cdSeconds = 40  },
+    [198013] = { name = "Eye Beam",           class = "DEMONHUNTER", specID = 577,  cdSeconds = 30  },
     [188499] = { name = "Blade Dance",        class = "DEMONHUNTER", specID = 577,  cdSeconds = 9   },
     [210152] = { name = "Death Sweep",       class = "DEMONHUNTER", specID = 577,  cdSeconds = 9,  note = "Blade Dance during Metamorphosis" },
     [201427] = { name = "Annihilation",      class = "DEMONHUNTER", specID = 577,  cdSeconds = 0,  note = "Chaos Strike during Metamorphosis - no CD, filler" },
-    [191427] = { name = "Metamorphosis",      class = "DEMONHUNTER", specID = 577,  cdSeconds = 240 },
+    [191427] = { name = "Metamorphosis",      class = "DEMONHUNTER", specID = 577,  cdSeconds = 120 },
     [370965] = { name = "The Hunt",           class = "DEMONHUNTER", specID = nil,  cdSeconds = 90  }, -- shared Havoc+Vengeance+Devourer
     [258860] = { name = "Essence Break",      class = "DEMONHUNTER", specID = 577,  cdSeconds = 40  },
     [198793] = { name = "Vengeful Retreat",   class = "DEMONHUNTER", specID = nil,  cdSeconds = 25  }, -- shared Havoc+Devourer
     [258920] = { name = "Immolation Aura",    class = "DEMONHUNTER", specID = nil,  cdSeconds = 30  }, -- shared Havoc+Vengeance
-    [232893] = { name = "Felblade",           class = "DEMONHUNTER", specID = nil,  cdSeconds = 15  }, -- shared Havoc+Vengeance
+    [232893] = { name = "Felblade",           class = "DEMONHUNTER", specID = nil,  cdSeconds = 12  }, -- shared base cooldown; talent/haste changes require live data
     [195072] = { name = "Fel Rush",           class = "DEMONHUNTER", specID = 577,  cdSeconds = 10, charges = 2 },
-    [342817] = { name = "Glaive Tempest",     class = "DEMONHUNTER", specID = 577,  cdSeconds = 25  },
 
     -- VENGEANCE (specID 581)
     [212084] = { name = "Fel Devastation",    class = "DEMONHUNTER", specID = 581,  cdSeconds = 40  },

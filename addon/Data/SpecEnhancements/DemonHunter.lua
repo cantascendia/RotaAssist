@@ -35,15 +35,14 @@ RA.SpecEnhancements[577] = {
         maxBase   = 120,
         spellCosts = {
             [162794] = { cost = 40  },  -- Chaos Strike / Annihilation
-            [162243] = { gen  = 40  },  -- Demon's Bite (Only if NOT using Demon Blades)
+            [162243] = { gen  = 25  },  -- Demon's Bite (Only if NOT using Demon Blades)
             [370965] = { cost = 0   },  -- The Hunt
             [188499] = { cost = 35  },  -- Blade Dance
             [198013] = { cost = 30  },  -- Eye Beam
             [258920] = { gen  = 20  },  -- Immolation Aura
-            [232893] = { gen  = 40  },  -- Felblade
+            [232893] = { gen  = 15  },  -- Felblade
             [195072] = { cost = 0   },  -- Fel Rush
             [198793] = { cost = 0, gen = 0 },  -- Vengeful Retreat
-            [342817] = { cost = 30  },  -- Glaive Tempest
         },
     },
 
@@ -59,7 +58,7 @@ RA.SpecEnhancements[577] = {
     },
 
     inferenceRules = {
-        aoeSpells = { 188499, 210152, 198013, 342817, 258920 },
+        aoeSpells = { 188499, 210152, 198013, 258920 },
         singleTargetSpells = { 162794, 232893, 370965 },
         generatorSpells = { 232893, 258920, 162243 },
         spenderSpells = { 162794, 188499, 258860 },

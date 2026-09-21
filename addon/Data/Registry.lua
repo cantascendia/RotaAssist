@@ -8,6 +8,7 @@ RA.Registry = RA.Registry or {}
 -- Passive/non-castable spell blacklist (shared by SmartQueue, APL, NeuralPredictor)
 RA.Registry.PASSIVE_BLACKLIST = {
     [203555] = true,  -- Demon Blades (Havoc DH passive)
+    [342817] = true,  -- Glaive Tempest (Havoc Blade Dance proc, not a cast action)
     [290271] = true,  -- Demon Blades AI Passive variant
     [412713] = true,  -- Interwoven Threads (Evoker Aug passive)
 }

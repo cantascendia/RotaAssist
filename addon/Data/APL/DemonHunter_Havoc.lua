@@ -47,7 +47,7 @@ APL.profiles["default"] = {
         },
         {
             spellID = 258860,
-            cdSeconds = 10,
+            cdSeconds = 40,
             priority = 2,
             condition = "cd_ready AND after:198013",
             note = "Essence Break immediately after Eye Beam",
@@ -106,7 +106,7 @@ APL.profiles["default"] = {
         },
         {
             spellID = 232893,
-            cdSeconds = 15,
+            cdSeconds = 12,
             priority = 8,
             condition = "cd_ready AND estimated_resource <= 70",
             note = "Low-Fury recovery button",
@@ -122,16 +122,6 @@ APL.profiles["default"] = {
             displayPriority = 9,
             confidence = 0.9,
             tags = { "spender" },
-        },
-        {
-            spellID = 342817,
-            cdSeconds = 20,
-            priority = 10,
-            condition = "cd_ready AND target_count >= 2 AND not_window:essence_break",
-            note = "Cleave burst when extra targets are present",
-            displayPriority = 10,
-            confidence = 0.82,
-            tags = { "aoe", "burst" },
         },
         {
             spellID = 162243,
@@ -175,16 +165,6 @@ APL.profiles["default"] = {
             tags = { "aoe", "spender" },
         },
         {
-            spellID = 342817,
-            cdSeconds = 20,
-            priority = 3,
-            condition = "cd_ready AND not_window:essence_break",
-            displayPriority = 3,
-            confidence = 0.92,
-            note = "Glaive Tempest for sustained cleave",
-            tags = { "aoe" },
-        },
-        {
             spellID = 258920,
             cdSeconds = 30,
             priority = 4,
@@ -196,7 +176,7 @@ APL.profiles["default"] = {
         },
         {
             spellID = 232893,
-            cdSeconds = 15,
+            cdSeconds = 12,
             priority = 5,
             condition = "cd_ready AND estimated_resource <= 65",
             displayPriority = 5,
@@ -228,12 +208,12 @@ APL.profiles["default"] = {
         { spellID = 370965, cdSeconds = 90, step = 1, note = "The Hunt on pull" },
         { spellID = 258920, cdSeconds = 30, step = 2, note = "Immolation Aura for immediate Fury" },
         { spellID = 198013, cdSeconds = 30, step = 3, note = "Eye Beam to trigger Demonic" },
-        { spellID = 258860, cdSeconds = 10, step = 4, note = "Essence Break after Eye Beam" },
+        { spellID = 258860, cdSeconds = 40, step = 4, note = "Essence Break after Eye Beam" },
         { spellID = 188499, cdSeconds = 9, step = 5, note = "Blade Dance / Death Sweep in the burst window" },
     },
 
     majorCooldowns = {
-        { spellID = 191427, cdSeconds = 240, note = "Metamorphosis manual reminder. Align with burst." },
+        { spellID = 191427, cdSeconds = 120, note = "Metamorphosis manual reminder. Align with burst." },
     },
 }
 
@@ -261,7 +241,7 @@ APL.profiles["fel_scarred"] = {
         },
         {
             spellID = 258860,
-            cdSeconds = 10,
+            cdSeconds = 40,
             priority = 2,
             condition = "cd_ready AND after:198013",
             note = "Essence Break after Eye Beam",
@@ -310,7 +290,7 @@ APL.profiles["fel_scarred"] = {
         },
         {
             spellID = 232893,
-            cdSeconds = 15,
+            cdSeconds = 12,
             priority = 7,
             condition = "cd_ready AND estimated_resource <= 70",
             note = "Felblade low-Fury recovery",
@@ -326,16 +306,6 @@ APL.profiles["fel_scarred"] = {
             displayPriority = 8,
             confidence = 0.9,
             tags = { "spender" },
-        },
-        {
-            spellID = 342817,
-            cdSeconds = 20,
-            priority = 9,
-            condition = "cd_ready AND target_count >= 2 AND not_window:essence_break",
-            note = "Cleave burst when extra targets exist",
-            displayPriority = 9,
-            confidence = 0.82,
-            tags = { "aoe", "burst" },
         },
         {
             spellID = 162243,

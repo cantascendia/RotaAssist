@@ -1,0 +1,143 @@
+{
+  "schema": "rotaassist.havoc.source-audit.v1",
+  "date": "2026-09-22",
+  "addonBaselineCommit": "dba4dc328b79468967a158360634ce47b4c4277b",
+  "simulationCraft": {
+    "commit": "774babde5ddc7c5fc9f1abb129b473f8a076df70",
+    "generatedGameBuild": "12.1.0.69875",
+    "files": {
+      "engine/dbc/generated/sc_spell_data.inc": "08E0D4F057FD83C02FA200A851497ED6A529104580082FFD3942A273429E21B7",
+      "engine/class_modules/sc_demon_hunter.cpp": "1A6483F99714E99D6BDE7C073DC62E43FA7CAF4EE82E411F3FE737B77B6979CC",
+      "engine/dbc/generated/trait_data.inc": "2796785843AA83468A85BA2BD8AB2AB4624E56C8255D0C5A02A067EB91B95C62"
+    }
+  },
+  "baselineArtifacts": {
+    "dist/research/havoc-loaded-model.json": "6E88715928FAB1FE9683F465CFB917FF5E8FAE3CF0149BCB94AF2C45F3E01BBE",
+    "dist/research/simc/trace/raw-full-1t-30s.json": "092BE4D730E0A7434CC5AB9BCA822E8F72CF820B8CC569C0601A5BAE38AE6C5A"
+  },
+  "findings": [
+    {
+      "rank": 1,
+      "spellId": 342817,
+      "name": "Glaive Tempest",
+      "baseline": "Recommended as a standalone cast in three Havoc APL rules, whitelisted with a 25-second fallback cooldown, and counted as a 30-Fury spender.",
+      "source": "Passive talent 1244557 triggers background Glaive Tempest from Blade Dance or Death Sweep when conditions hold; 342817 is absent from the class module create_action factory.",
+      "evidence": [
+        "engine/dbc/generated/trait_data.inc:2461",
+        "engine/class_modules/sc_demon_hunter.cpp:7152-7160",
+        "engine/class_modules/sc_demon_hunter.cpp:9794-9825",
+        "engine/class_modules/sc_demon_hunter.cpp:11547-11549"
+      ],
+      "status": "fixed",
+      "certainty": "source fact"
+    },
+    {
+      "rank": 2,
+      "spellId": null,
+      "name": "Talent-dependent maximum Fury",
+      "baseline": "Havoc maximum Fury modeled as fixed 120.",
+      "source": "The pinned trace reports 170 maximum Fury for its selected build; Untethered Fury 452411 has a +50-Fury effect. This does not establish a universal 170 cap.",
+      "evidence": [
+        "engine/dbc/generated/trait_data.inc:3238",
+        "engine/class_modules/sc_demon_hunter.cpp:11445-11453",
+        "dist/research/simc/trace/raw-full-1t-30s.json:sim.players[0].collected_data.action_sequence[0].resources_max.fury"
+      ],
+      "status": "fixed for public UnitPowerMax; conservative fallback remains approximate when unavailable",
+      "certainty": "170 is trace fact; talent explanation is source-backed inference"
+    },
+    {
+      "rank": 3,
+      "spellId": 162243,
+      "name": "Generator Fury",
+      "baseline": "Demon's Bite and Felblade both generated 40 Fury.",
+      "source": "Demon's Bite effect generates 25 Fury; Felblade triggered damage 213243 generates 15 Fury. The trace log separately records 15 Fury from Felblade.",
+      "evidence": [
+        "engine/dbc/generated/sc_spell_data.inc:40666",
+        "engine/dbc/generated/sc_spell_data.inc:44659",
+        "engine/class_modules/sc_demon_hunter.cpp:11193",
+        "dist/research/simc/trace/raw-full-1t-30s.json"
+      ],
+      "status": "fixed",
+      "certainty": "source fact"
+    },
+    {
+      "rank": 4,
+      "spellId": null,
+      "name": "Cooldown fallback and shared variant identity",
+      "baseline": "Eye Beam 40 seconds and Metamorphosis 240 seconds in the whitelist; Blade Dance fixed 9 seconds and Felblade 15 seconds remain approximate.",
+      "source": "Base Eye Beam is 30 seconds, Metamorphosis 120, Blade Dance 15 before haste/form sharing, and Felblade 12. The trace reports cooldown spell 452497 for Eye Beam's Abyssal Gaze variant.",
+      "evidence": [
+        "engine/dbc/generated/sc_spell_data.inc:7253",
+        "engine/dbc/generated/sc_spell_data.inc:6865",
+        "engine/dbc/generated/sc_spell_data.inc:6699",
+        "engine/dbc/generated/sc_spell_data.inc:9273",
+        "engine/class_modules/sc_demon_hunter.cpp:3967-3973",
+        "engine/class_modules/sc_demon_hunter.cpp:4090-4127",
+        "engine/class_modules/sc_demon_hunter.cpp:7174-7183",
+        "engine/class_modules/sc_demon_hunter.cpp:7238-7243"
+      ],
+      "status": "partially fixed: Eye Beam30, Metamorphosis120, shared Felblade12 base fallback; live variant/shared hasted cooldown unresolved",
+      "certainty": "base cooldowns source fact; addon API identity unresolved"
+    },
+    {
+      "rank": 5,
+      "spellId": 258920,
+      "name": "Conditional Fury and burst windows",
+      "baseline": "Immolation Aura modeled as immediate +20 Fury only; APL Essence Break opener metadata says 10 seconds while base cooldown is 40.",
+      "source": "Immediate Havoc Fury effect is +20; Burning Hatred talent can add +3 per tick. Essence Break base cooldown is 40 seconds. Proc uptime and hasted cooldown timing require observable state.",
+      "evidence": [
+        "engine/dbc/generated/sc_spell_data.inc:48004-48005",
+        "engine/dbc/generated/sc_spell_data.inc:48012",
+        "engine/class_modules/sc_demon_hunter.cpp:4682-4697",
+        "engine/dbc/generated/trait_data.inc:2362",
+        "engine/dbc/generated/sc_spell_data.inc:10616"
+      ],
+      "status": "Essence Break metadata corrected40; immediate20 already correct; conditional ticks remain open",
+      "certainty": "source fact; future-state prediction uncertain"
+    }
+  ],
+  "verifiedMatches": [
+    {
+      "spellId": 162794,
+      "name": "Chaos Strike",
+      "addon": "40 Fury",
+      "source": "spellpower row 91921: 40 Fury"
+    },
+    {
+      "spellId": 188499,
+      "name": "Blade Dance",
+      "addon": "35 Fury",
+      "source": "spellpower row 91941: 35 Fury"
+    },
+    {
+      "spellId": 198013,
+      "name": "Eye Beam",
+      "addon": "30 Fury",
+      "source": "spellpower row 91980: 30 Fury"
+    },
+    {
+      "spellId": 258860,
+      "name": "Essence Break",
+      "addon": "40-second whitelist cooldown",
+      "source": "spell row 10616: 40 seconds"
+    },
+    {
+      "spellId": 258920,
+      "name": "Immolation Aura",
+      "addon": "+20 immediate Fury",
+      "source": "effect row 48004: +20 Havoc Fury"
+    },
+    {
+      "spellId": 370965,
+      "name": "The Hunt",
+      "addon": "90-second whitelist cooldown",
+      "source": "spell row 17773: 90 seconds"
+    }
+  ],
+  "unresolved": [
+    "Demon's Bite to passive Demon Blades override pair in Registry may misrepresent a replacement as a cast/active-cooldown override; client API behavior not verified.",
+    "Eye Beam to Abyssal Gaze cooldown identity may need runtime override handling; do not add an override pair based only on a SimC trace.",
+    "Fel Rush generated charges field does not by itself establish the client-visible maximum charge count.",
+    "No damage coefficients, live addon DPS, or client rendering were measured."
+  ]
+}

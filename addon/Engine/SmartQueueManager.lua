@@ -530,6 +530,7 @@ local function AssembleQueue()
         local limitedState = {
             resource        = nil,
             resourceKnown   = false,
+            resourceMax     = nil,
             cooldowns       = {},
             cooldownUnknown = {},
             chargeRecharges = {},
@@ -572,6 +573,26 @@ local function AssembleQueue()
             if okPower and not issecretvalue(rawPower) and type(rawPower) == "number" then
                 limitedState.resource = rawPower
                 limitedState.resourceKnown = true
+            end
+        end
+
+        -- A public maximum can differ from the spec's static base (Fel-Scarred
+        -- Havoc's pinned SimC trace has 170 Fury). Reject secret, invalid, or
+        -- stale maxima before allowing the bounded forecast to use them.
+        -- 公开的资源上限可能不同于专精静态基础值；秘密、无效或过期值均不进入预测。
+        local maxSecretByPolicy = false
+        if C_Secrets and C_Secrets.ShouldUnitPowerMaxBeSecret then
+            local okPolicy, policy = pcall(C_Secrets.ShouldUnitPowerMaxBeSecret, "player", powerType)
+            if not okPolicy or issecretvalue(policy) or policy == true then
+                maxSecretByPolicy = true
+            end
+        end
+        if not maxSecretByPolicy and UnitPowerMax then
+            local okMax, rawMax = pcall(UnitPowerMax, "player", powerType)
+            if okMax and not issecretvalue(rawMax) and type(rawMax) == "number"
+               and rawMax > 0 and rawMax < math.huge
+               and (not limitedState.resourceKnown or rawMax >= limitedState.resource) then
+                limitedState.resourceMax = rawMax
             end
         end
 
