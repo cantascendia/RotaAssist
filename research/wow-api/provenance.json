@@ -1,0 +1,48 @@
+{
+  "retrieved": "2026-09-22",
+  "repository": "https://github.com/Gethe/wow-ui-source",
+  "commit": "78282522143e25c3540583734fd192c3d69be910",
+  "kind": "Blizzard generated API documentation source mirror; not live-client execution",
+  "files": [
+    {
+      "name": "AssistedCombatDocumentation.lua",
+      "sha256": "5e7ff2e8070d23c986ef9dcb5afa7e4ab3f6aa1dde006ff994816341e1f67164",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/AssistedCombatDocumentation.lua"
+    },
+    {
+      "name": "SecretPredicateAPIDocumentation.lua",
+      "sha256": "01ec6fdea1aef17cc5603edae6f61f8922d5b2546fb9f3d551cf4d3e7c6a2bc8",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SecretPredicateAPIDocumentation.lua"
+    },
+    {
+      "name": "SecretPredicatesDocumentation.lua",
+      "sha256": "71793d2623f392033b832c9b9ce499168adf8a9002eddceef0d95078bcb79952",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SecretPredicatesDocumentation.lua"
+    },
+    {
+      "name": "SharedTraitsDocumentation.lua",
+      "sha256": "ea60282e77ec208b96218dfaae6e076826510714204b36a7b7aff9c2aa4187e1",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SharedTraitsDocumentation.lua"
+    },
+    {
+      "name": "SpellDocumentation.lua",
+      "sha256": "fbedb3cf4b82d623b49a7fa170c982de2e4b005d2bcd5db3068bfb6211e51007",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SpellDocumentation.lua"
+    },
+    {
+      "name": "SpellSharedDocumentation.lua",
+      "sha256": "4ebe8d82b50faa906300f646d9bba4e85ea820b7614947624c8816f19e0d6b68",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SpellSharedDocumentation.lua"
+    },
+    {
+      "name": "TraitConfigDocumentation.lua",
+      "sha256": "8b0a77fc582291e605f9ed5d03695c39cf2f926608300c5c8f66e67e018c5009",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/TraitConfigDocumentation.lua"
+    },
+    {
+      "name": "UnitDocumentation.lua",
+      "sha256": "bc7fd554d45760061d699ff18ec9d9fec45b3b3796a9323d661e003dee5fdbe7",
+      "url": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/UnitDocumentation.lua"
+    }
+  ]
+}

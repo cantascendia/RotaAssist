@@ -5,6 +5,22 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.2] - 2026-09-22
+
+Local adaptive-prediction candidate; [delivery notes](docs/RELEASE_1.1.1-rc.2.md).
+
+### Fixed
+- Isolate predictive state from caller tables and advance each action's simulated
+  time, including the current Blizzard recommendation.
+- Consume known charges, use readable recharge metadata, validate opener actions,
+  and retain unknown resource/cooldown provenance instead of assuming zero/ready.
+- Select Havoc hero profiles by numeric talent spell IDs across client locales.
+
+### Research
+- Run a pinned official SimulationCraft reference and explicit APL interventions
+  with fixed encounter inputs. These results are not live-addon DPS measurements.
+- Document the runtime observation boundary and the remaining performance gates.
+
 ## [1.1.1-rc.1] - 2026-09-21
 
 Local installation candidate. No public marketplace release or live-client/DPS

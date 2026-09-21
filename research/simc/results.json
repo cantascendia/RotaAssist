@@ -1,0 +1,471 @@
+{
+  "date": "2026-09-22",
+  "scope": "Official MID2 Havoc Fel-Scarred full-state SimulationCraft APL; not RotaAssist in-game DPS",
+  "source_commit": "774babde5ddc7c5fc9f1abb129b473f8a076df70",
+  "engine_sha256": "8c6df94966798cabf6864664c2648de9252e396a5ea90188c115c17c8b5339de",
+  "stock_profile_sha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+  "total_samples": null,
+  "adopted_interventions": [],
+  "runs": [
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 120,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 275806.81417991675,
+      "dps_standard_error": 130.2907541010826,
+      "dps_95ci_half_width_approx": 255.3698780381219,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-1t-120s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "7bcd34226bf45205b26ec941fee4cf0e2f7a5c748b1aa2719673e7012f9ed2c0",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 120,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 275799.77271159925,
+      "dps_standard_error": 130.30673577665976,
+      "dps_95ci_half_width_approx": 255.40120212225312,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-1t-120s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "d121bd359261a926c572843ede5eaf029c7c3ab614f2d292e736c087a6f59719",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 300,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 252297.8143203031,
+      "dps_standard_error": 83.35116265013598,
+      "dps_95ci_half_width_approx": 163.3682787942665,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-1t-300s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "cdd2919ec15821a33b9d70bee4c8a0acff30c4c2855631038db07496007c43cc",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 300,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 252325.95784784394,
+      "dps_standard_error": 82.51892527347438,
+      "dps_95ci_half_width_approx": 161.73709353600978,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-1t-300s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "3e198bbacc869ae455b09dee90210898e78e1d6e3eb3119c38d744593742ee4a",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 120,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 538576.2435546828,
+      "dps_standard_error": 205.722675708464,
+      "dps_95ci_half_width_approx": 403.2164443885895,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-5t-120s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "56dabaa44bbd851a30345279f7f141c2423cab98ae00c0ca950ef1d5d27cbfce",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 120,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 538375.2674490407,
+      "dps_standard_error": 208.13979571205374,
+      "dps_95ci_half_width_approx": 407.9539995956253,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-5t-120s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "6f3c6eab1b1bc00dcfe9757f3906cb8ec833e5987b1a0fe3fc7ca7bbc8530200",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 300,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 495639.0021599161,
+      "dps_standard_error": 142.41270249112898,
+      "dps_95ci_half_width_approx": 279.1288968826128,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-5t-300s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "7e4ca8b8366c9dfdf93fe4dedb125e2c54db07f4f76bb903bf042b8f004d14d2",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "essence_break_gate_2s",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 300,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 495376.9175117181,
+      "dps_standard_error": 141.51761500874287,
+      "dps_95ci_half_width_approx": 277.374525417136,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "95040e5c242a5b1661931585649d4dd365cbef2a6aebd33011f0bda1e64ce493",
+      "raw_json_file": "essence_break_gate_2s-5t-300s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "bbdce4891109e2de3a2a82ce92d420c8e862f80d8008c4cc39443c1d17575e35",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "eye_beam_hold_aoe",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 120,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 276189.17572961916,
+      "dps_standard_error": 130.7743359810386,
+      "dps_95ci_half_width_approx": 256.31769852283566,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1b799923d1d6ea8d6299a59aee870c893b68fd0678792821f3e17a369991bc5b",
+      "raw_json_file": "eye_beam_hold_aoe-1t-120s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "bd7ac444d0b9da173fdcac60997a3c19db153a50369eba5a13fb930718108ff0",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "eye_beam_hold_aoe",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 120,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 276098.7623515804,
+      "dps_standard_error": 131.37893043854575,
+      "dps_95ci_half_width_approx": 257.5027036595497,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1b799923d1d6ea8d6299a59aee870c893b68fd0678792821f3e17a369991bc5b",
+      "raw_json_file": "eye_beam_hold_aoe-1t-120s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "5b044c457053fd40e5ec31aab04479ffb07a60cba039689efa8664d81458f4cb",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "eye_beam_hold_aoe",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 120,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 465157.91182621813,
+      "dps_standard_error": 200.05099056005375,
+      "dps_95ci_half_width_approx": 392.09994149770534,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1b799923d1d6ea8d6299a59aee870c893b68fd0678792821f3e17a369991bc5b",
+      "raw_json_file": "eye_beam_hold_aoe-5t-120s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "5bb44b16c398a879e6a729ad094ffe0672c30c74bde827d464e4f01de6e97890",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "eye_beam_hold_aoe",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 120,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 465202.3496254936,
+      "dps_standard_error": 198.1943486709745,
+      "dps_95ci_half_width_approx": 388.46092339511,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1b799923d1d6ea8d6299a59aee870c893b68fd0678792821f3e17a369991bc5b",
+      "raw_json_file": "eye_beam_hold_aoe-5t-120s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "a22c3d393a416090fb3d789a87b9c78eb79ac676c0735f1eae49758179c64e6a",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 120,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 276218.84082608914,
+      "dps_standard_error": 130.72992278062097,
+      "dps_95ci_half_width_approx": 256.2306486500171,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-1t-120s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "bfc74fd57f23ce422a0849587edea0187fdb45e5befbbfcc1ceac8388b5cb86b",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 120,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 276082.12827210216,
+      "dps_standard_error": 131.30051326681516,
+      "dps_95ci_half_width_approx": 257.3490060029577,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-1t-120s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "fc06365da74ef31686249586c6b2a6c9c43ed7f5770a6bd72bad55da48cb8f70",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 300,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 252904.68221466092,
+      "dps_standard_error": 80.49071424459632,
+      "dps_95ci_half_width_approx": 157.7617999194088,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-1t-300s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "dbb6ed676bdffeba53bbb76798696a930d51f6c418e3d61ca8221beb6518ab88",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 1,
+        "duration_seconds": 300,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 252794.06582632125,
+      "dps_standard_error": 79.29693172586688,
+      "dps_95ci_half_width_approx": 155.4219861826991,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-1t-300s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "c76d2b16c257d9bdaf3cbcce896d3c73987cbfbc9f9c6d5a2b9f6809b825acbc",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 120,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 540101.1740783339,
+      "dps_standard_error": 206.96961476363188,
+      "dps_95ci_half_width_approx": 405.6604449367185,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-5t-120s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "a66af3d4fd9a408f73bcb7061ddd9032d45dff6141fa50f39043cf94b7a2c20c",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 120,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 539737.3510021397,
+      "dps_standard_error": 206.86798098541206,
+      "dps_95ci_half_width_approx": 405.46124273140765,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-5t-120s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "8a531638f7a643828b19672ba42e7f1a66883b88cecc5b4c9c7a8e0f7ec2838a",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 300,
+        "seed": 20260922,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 497569.82093933807,
+      "dps_standard_error": 133.28861752005926,
+      "dps_95ci_half_width_approx": 261.2456903393161,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-5t-300s-5000i-seed20260922.simc.json",
+      "raw_json_sha256": "bf5df5a9c93328b0d10170a7bb700ded828efd1eeb8055183045ce4be84c2b94",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    },
+    {
+      "intervention": "stock",
+      "scenario": {
+        "targets": 5,
+        "duration_seconds": 300,
+        "seed": 20260923,
+        "requested_iterations": 5000,
+        "threads": 2
+      },
+      "dps_mean": 497625.9457087744,
+      "dps_standard_error": 133.04444599107654,
+      "dps_95ci_half_width_approx": 260.76711414251,
+      "dps_sample_count": 4999,
+      "effective_apl_sha256": "1c1f2231e161d107ecaa81f02fd0b39d4438e3b96d15dd3b813f3ab53b4a8f74",
+      "raw_json_file": "stock-5t-300s-5000i-seed20260923.simc.json",
+      "raw_json_sha256": "6052cab3637969cdf0ed7cb62fcbc07443048914d1787d10d321be17270ec25c",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ]
+    }
+  ]
+}

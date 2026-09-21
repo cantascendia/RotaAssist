@@ -2,14 +2,14 @@
 
 [![WoW Version](https://img.shields.io/badge/WoW-12.1_Midnight-blueviolet)](https://worldofwarcraft.blizzard.com)
 [![Interface](https://img.shields.io/badge/Interface-120100-informational)](https://warcraft.wiki.gg/wiki/Interface_number)
-[![Version](https://img.shields.io/badge/version-1.1.1--rc.1-orange)](docs/QUALITY_BASELINE.md)
+[![Version](https://img.shields.io/badge/version-1.1.1--rc.2-orange)](docs/QUALITY_BASELINE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **RotaAssist** — WoW Midnight 12.1 的循环**教练**插件。
 *A rotation **coach** for WoW Midnight 12.1 — not another "next spell" icon.*
 
-> **当前交付：1.1.1-rc.1 本地安装候选包。** 尚无本轮真机战斗验收或独立 DPS
-> 对照结果，不宣称理论最优或超越 Hekili。目标客户端为 Interface `120100`；
+> **当前交付：1.1.1-rc.2 本地安装候选包。** 已建立独立 SimulationCraft 参考实验，
+> 尚无插件真机战斗或 DPS 验收，不宣称理论最优或超越 Hekili。目标为 Interface `120100`；
 > 客户端兼容性需要实测。推荐评分和“准确率”不是 DPS 百分比。
 > 详见 [推荐质量与验收标准](docs/QUALITY_BASELINE.md)。
 
@@ -57,8 +57,8 @@ RotaAssist 的设计约束是只使用官方 API，不使用 secret value 做条
 | Demon Hunter | Vengeance | 581 | Candidate：待客户端与 DPS 验收 |
 | Demon Hunter | Devourer | 1480 | Blizzard-only；未核实的 APL 预测停用 |
 
-Havoc 英雄天赋配置目前按英文名称匹配，zhCN/jaJP 可能退回默认 APL；多语言界面
-不代表多语言天赋识别已验收。当前主动作仍以有效的 Blizzard 建议为准。
+Havoc 英雄天赋配置改用数字天赋技能 ID 识别，避免依赖英文名称；离线语言测试
+不能替代实际客户端验收。当前主动作仍以有效的 Blizzard 建议为准。
 
 > ⚠️ **Devourer 说明**：该专精的部分 spellID 基于早期资料整理，尚未在 12.1 真机逐个核验。
 > spellID 存在性检查无法证明技能身份正确，也不能替代真实客户端验证。
@@ -80,7 +80,7 @@ TOC load order. Loaded data still requires per-specialization validation.*
 也不承诺自动更新。
 
 ### Manual / 手动安装
-1. 获取本次交付的 `RotaAssist-1.1.1-rc.1.zip`；源码 ZIP 不能替代带依赖的安装包
+1. 获取本次交付的 `RotaAssist-1.1.1-rc.2.zip`；源码 ZIP 不能替代带依赖的安装包
 2. 解压到
    `World of Warcraft/_retail_/Interface/AddOns/`
    解压后应存在 `Interface/AddOns/RotaAssist/RotaAssist.toc`

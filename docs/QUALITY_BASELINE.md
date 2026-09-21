@@ -15,10 +15,9 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
   does not establish that it represents the intended ability or specialization.
 - APL lookahead estimates future resources, cooldowns and combat windows. Hidden
   combat state, random procs and subsequent player actions can invalidate it.
-- Havoc profile selection still matches English `signatureTalentNames` against
-  client-localized talent names. On zhCN/jaJP it may fall back to the default APL
-  profile. Translated UI text does not establish localized talent-build coverage;
-  stable talent IDs and client verification are still needed.
+- Havoc profile selection uses numeric talent spell IDs, with localized-name
+  fallback retained only for older profiles without numeric signatures. Mock
+  locale coverage does not establish actual-client talent-build coverage.
 - Agreement with the displayed recommendation is an adherence metric. The
   in-addon accuracy percentage is **not** a damage score or proof of optimal play.
 
@@ -43,6 +42,19 @@ behavior is a product reference, not a verified current-client baseline.
    specialization change. Unverified data must have an explicit fallback.
 6. Mock tests and package inspection are offline verification. Real loading,
    combat transitions, protected values and rendering require a real client.
+
+## Adaptive research update (1.1.1-rc.2)
+
+The predictor now uses isolated state and advances time after the current head
+and each predicted action. It consumes known charges, simulates public recharge
+metadata, checks opener feasibility and preserves explicitly unknown resources
+and cooldowns. An observed GCD duration can replace the 1.5-second fallback.
+These fixes improve simulation consistency; they do not calibrate spell damage,
+all talent-dependent costs, channel duration or random procs.
+
+See [the source-backed research notes](ADAPTIVE_RESEARCH_2026-09-22.md) for the
+observation boundary and benchmark methodology. Official SimulationCraft runs
+are an external reference, not measurements of the in-game RotaAssist policy.
 
 ## Evidence still required for a performance claim
 

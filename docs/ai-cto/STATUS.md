@@ -1,5 +1,13 @@
 # RotaAssist — CTO 项目状态
 
+## 2026-09-22：1.1.1-rc.2 自适应模拟与独立研究
+
+分支 `codex/simc-adaptive-quality`，继续由 Astra 统筹、Sol 编码。新增逐步时间推进、
+可观测充能消耗与恢复、起手可行性检查、未知状态传递和数字天赋配置识别。
+官方 SimulationCraft 已在本机实际执行；参考模拟和候选 APL 干预实验不能算作
+RotaAssist 客户端 DPS。仍缺正式服 `Wow.exe`，全局最优或超越 Hekili 尚未证明。
+见 [本轮交付](../RELEASE_1.1.1-rc.2.md) 和 [研究记录](../ADAPTIVE_RESEARCH_2026-09-22.md)。
+
 ## 2026-09-21：1.1.1-rc.1 本地安装候选
 
 按用户要求由 Astra 统筹审查、Sol 编码，分支 `codex/usable-release-quality`。
