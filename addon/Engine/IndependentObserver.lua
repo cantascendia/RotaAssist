@@ -43,6 +43,11 @@ local function selectPolicy(character,spec,apl)
             end
         end
         if unknown or not selected then return nil,"hero_unknown" end
+        local adaptive=RA.IndependentAdaptivePolicies and RA.IndependentAdaptivePolicies[selected]
+        if adaptive then
+            if adaptive.heroProfile~=selected or adaptive.specID~=spec.specID then return nil,"policy_identity_mismatch" end
+            return adaptive
+        end
         if RA.IndependentPolicy and RA.IndependentPolicy.heroProfile==selected then return RA.IndependentPolicy end
         return RA.IndependentPolicies[selected]
     end

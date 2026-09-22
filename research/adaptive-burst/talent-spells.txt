@@ -1,0 +1,182 @@
+SimulationCraft 1210-01 for World of Warcraft 12.1.0.69875 Live (hotfix 2026-09-19/69875, git build midnight 774babd)
+Name             : Burning Wound (id=346278) [Spell Family (107)]
+School           : Chromatic
+Spell Type       : Melee
+Range            : 100 yards
+Duration         : 15 seconds
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+                 : 1052
+Triggered By     : Burning Wound (346279)
+Family Flags     : 90
+Attributes       : DoT Stacking Rule (103), Periodic Can Crit (265), Aura Points On Client (268), Allow Class Ability Procs (416), Nameplate Personal Buffs/Debuffs (423), Periodic Refresh Extends Duration (436)
+Effects          :
+#1 (id=872713)   : Apply Aura (6) | Periodic Damage (3): chromatic every 3 seconds
+                   Base Value: 0 | Scaled Value: 0 | AP Coefficient: 0.2 | Target: Targeted Enemy (6)
+#2 (id=872715)   : Apply Aura (6) | Modify Damage Taken% from Caster's Spells (271)
+                   Base Value: 65 | Scaled Value: 65 | Target: Targeted Enemy (6)
+                   Affected Spells: Immolation Aura (258920), Immolation Aura (258921), Immolation Aura (258922), Immolation Aura (427904), Immolation Aura (427905), Immolation Aura (427906), Immolation Aura (427907), Immolation Aura (427908), Immolation Aura (427910), Immolation Aura (427911), Immolation Aura (427913), Immolation Aura (427914), Immolation Aura (427915), Immolation Aura (427916), Soul Immolation (1241937)
+                   Family Flags: 11, 49, 61
+Description      : $@spelldesc346279
+Tooltip          : Taking $w1 Chaos damage every $t1 seconds.
+
+Name             : Burning Wound (id=346279) [Spell Family (107), Passive]
+School           : Physical
+Spell Type       : None
+Range            : 5 yards
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+                 : 931
+                 : 1052
+Proc Chance      : 100%
+Proc Flags       : Yellow Melee
+Attributes       : Passive (6), Can Proc From Procs (122), Aura Points On Client (268)
+Effects          :
+#1 (id=872714)   : Apply Aura (6) | Proc Trigger Spell (42): Burning Wound
+                   Base Value: 25 | Scaled Value: 25 | Trigger Spell: 346278 | Target: Targeted Enemy (6)
+Description      : Demon's Bite leaves an open wound on your enemy dealing $346278o1 Chaos damage over $346278d and increasing damage taken from your Immolation Aura by $346278s2%.
+Tooltip          : Demon's Bite leaves an open wound on your enemy dealing $346278o1 Chaos damage over $346278d and increasing damage taken from your Immolation Aura by $346278s2%.
+
+Name             : Burning Wound (id=391189) [Spell Family (107), Passive]
+Talent Entry     : Havoc [tree=spec, row=7, col=5, max_rank=1, req_points=8]
+Class            : Demon Hunter
+School           : Physical
+Spell Type       : None
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Proc Chance      : 100%
+Proc Flags       : Yellow Melee, Yellow Ranged, Generic Hostile Spell, Magic Hostile Spell
+Attributes       : Passive (6), Can Proc From Procs (122), Not In Spellbook (143), Aura Points On Client (268), Do Not Log on Learn (355)
+Effects          :
+#1 (id=1028527)  : Apply Aura (6) | Proc Trigger Spell (42): Burning Wound
+                   Base Value: 25 | Scaled Value: 25 | Trigger Spell: 391191 | Target: Self (1)
+#2 (id=1030827)  : Apply Aura (6) | Dummy (4)
+                   Base Value: 3 | Scaled Value: 3 | Target: Self (1)
+Description      : $?s203555[Demon Blades][Demon's Bite] and Throw Glaive leave open wounds on your enemies, dealing $391191o1 Chaos damage over $391191d and increasing damage taken from your Immolation Aura by $391191s2%.
+
+
+
+May be applied to up to $s2 targets.
+
+Name             : Burning Wound (id=391191) [Spell Family (107)]
+Class            : Demon Hunter
+School           : Chromatic
+Spell Type       : Melee
+Range            : 100 yards
+Max Targets      : 3
+Duration         : 15 seconds
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Affecting Spells : Demon Soul (163073 effects: #1, #2), Mastery: Demonic Presence (185164 effects: #1, #2), Fiery Brand (207744 effect#2), Fiery Brand (207771 effect#2), Exergy (208628 effects: #1, #2), Havoc Demon Hunter (212612 effects: #1, #2), Chaos Blades (247938 effects: #2, #3), Demon Soul (347765 effects: #1, #2), Burning Blood (390213 effects: #1, #2), Seething Chaos (394934 effects: #1, #2), Inertia (427641 effects: #1, #2), Never Say Die (427794 effects: #4, #5), Demon Hide (428241 effects: #1, #3), Reaver's Mark (442624 effect#1), Void Metamorphosis (471306 effect#3), Havoc Demon Hunter (1256955 effects: #1, #2), Blind Focus (1272364 effects: #1, #2), Demon Hunter- Midnight PrePatch - 11.2 Class Set 2pc (1283625 effects: #1, #2), Demon Hunter- Midnight PrePatch - 11.2 Class Set 4pc (1283628 effects: #1, #2)
+Triggered By     : Burning Wound (391189)
+Family Flags     : 16, 43, 90
+Attributes       : DoT Stacking Rule (103), Limit N (165), Periodic Can Crit (265), Aura Points On Client (268), Allow Class Ability Procs (416), Nameplate Personal Buffs/Debuffs (423), Periodic Refresh Extends Duration (436)
+Effects          :
+#1 (id=1028531)  : Apply Aura (6) | Periodic Damage (3): chromatic every 3 seconds
+                   Base Value: 0 | Scaled Value: 0 | AP Coefficient: 0.1469 | Target: Targeted Enemy (6)
+#2 (id=1028532)  : Apply Aura (6) | Modify Damage Taken% from Caster's Spells (271)
+                   Base Value: 35 | Scaled Value: 35 | Target: Targeted Enemy (6)
+                   Affected Spells: Immolation Aura (258921), Immolation Aura (258922), Immolation Aura (427904), Immolation Aura (427905), Immolation Aura (427906), Immolation Aura (427907), Immolation Aura (427908), Immolation Aura (427910), Immolation Aura (427911), Immolation Aura (427916)
+                   Family Flags: 49, 61
+Description      : $@spelldesc391189
+Tooltip          : Taking $w1 Chaos damage every $t1 seconds.
+
+Damage taken from $@auracaster's Immolation Aura increased by $s2%.
+
+Name             : A Fire Inside (id=427775) [Spell Family (107), Passive]
+Talent Entry     : Havoc [tree=spec, row=10, col=5, max_rank=1, req_points=20]
+Class            : Demon Hunter
+School           : Physical
+Spell Type       : None
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Attributes       : Passive (6), Not In Spellbook (143), Do Not Log on Learn (355), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=1107525)  : Apply Aura (6) | Modify Cooldown Charge (Category) (411)
+                   Base Value: 1 | Scaled Value: 1 | Misc Value: 1676 (Category) | Target: Self (1)
+                   Affected Spells (Category): Immolation Aura (258920), Immolation Aura (427917), Consuming Fire (452487), Consuming Fire (456640)
+#2 (id=1107526)  : Apply Aura (6) | Dummy (4)
+                   Base Value: 1 | Scaled Value: 1 | Target: Self (1)
+#3 (id=1107803)  : Apply Aura (6) | Modify Recharge Time (Category) (453)
+                   Base Value: -6000 | Scaled Value: -6000 | Misc Value: 1676 (Category) | Target: Self (1)
+                   Affected Spells (Category): Immolation Aura (258920), Immolation Aura (427917), Consuming Fire (452487), Consuming Fire (456640)
+#4 (id=1157661)  : Apply Aura (6) | Modify Cooldown Charge (Category) (411)
+                   Base Value: 1 | Scaled Value: 1 | Misc Value: 2298 (Category) | Target: Self (1)
+#5 (id=1213094)  : Apply Aura (6) | Modify Spell School (220)
+                   Base Value: 0 | Scaled Value: 0 | School: chaos | Target: Self (1)
+                   Affected Spells: Immolation Aura (258921), Immolation Aura (258922), Immolation Aura (427904), Immolation Aura (427905), Immolation Aura (427906), Immolation Aura (427907), Immolation Aura (427908), Immolation Aura (427910), Immolation Aura (427911), Immolation Aura (427916)
+                   Family Flags: 49, 61
+#6 (id=1213095)  : Apply Aura (6) | Cast Linked Spell w/ Value (285): A Fire Inside
+                   Base Value: 1 | Scaled Value: 1 | Trigger Spell: 1224451 | Target: Self (1)
+#7 (id=1293653)  : Apply Aura (6) | Modify Recharge Time (Category) (453)
+                   Base Value: -6000 | Scaled Value: -6000 | Misc Value: 2298 (Category) | Target: Self (1)
+Description      : Immolation Aura has $m1 additional $Lcharge:charges;, has ${$s3/-1000} sec reduced cooldown, and deals Chaos damage instead of Fire.
+
+
+
+You can have multiple Immolation Auras active at a time.
+
+Name             : A Fire Inside (id=427918) [Spell Family (107)]
+Class            : Demon Hunter
+School           : Physical
+Spell Type       : None
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Affecting Spells : Havoc Demon Hunter (212612 effect#7), Vengeance Demon Hunter (212613 effect#7), Devourer Demon Hunter (1213636 effect#6)
+Family Flags     : 85
+Attributes       : Not In Spellbook (143), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=1107806)  : Immediate Cooldown Recharge (Category) (293)
+                   Base Value: 1 | Scaled Value: 1 | Misc Value: 1676 (Category) | Target: Self (1)
+                   Affected Spells (Category): Immolation Aura (258920), Immolation Aura (427917), Consuming Fire (452487), Consuming Fire (456640)
+#2 (id=1157662)  : Immediate Cooldown Recharge (Category) (293)
+                   Base Value: 1 | Scaled Value: 1 | Misc Value: 2298 (Category) | Target: Self (1)
+Description      : $@spelldesc427775
+
+Name             : Screaming Brutality (id=1220506) [Spell Family (107), Passive]
+Talent Entry     : Havoc [tree=spec, row=10, col=4, max_rank=1, req_points=20]
+Class            : Demon Hunter
+School           : Physical
+Spell Type       : None
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Attributes       : Passive (6), Not In Spellbook (143), Aura Points On Client (268), Do Not Log on Learn (355)
+Effects          :
+#1 (id=1206497)  : Apply Aura (6) | Dummy (4)
+                   Base Value: 35 | Scaled Value: 35 | Target: Self (1)
+#2 (id=1206498)  : Apply Aura (6) | Dummy (4)
+                   Base Value: 50 | Scaled Value: 50 | Target: Self (1)
+#3 (id=1206499)  : Apply Aura (6) | Dummy (4)
+                   Base Value: 100 | Scaled Value: 100 | Target: Self (1)
+Description      : Blade Dance automatically triggers Throw Glaive on your primary target for $s3% damage and each slash has a $s2% chance to Throw Glaive an enemy for $s1% damage.
+
+Name             : A Fire Inside (id=1224451) [Spell Family (107), Passive, Hidden]
+Class            : Demon Hunter
+School           : Physical
+Spell Type       : None
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+                 : 2356: Any Means Necessary (394486 effect#1), Any Means Necessary (394486 effect#2), Any Means Necessary (394486 effect#3), Any Means Necessary (394486 effect#4)
+Triggered By     : A Fire Inside (427775)
+Attributes       : Passive (6), Do Not Display (Spellbook, Aura Icon, Combat Log) (7), Do Not Log (8), No Aura Cancel (31), Aura Points On Client (268), Mastery Affects Points (285), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=1213098)  : Apply Aura (6) | Periodic Dummy (226): every 1 seconds
+                   Base Value: 1 | Scaled Value: 1 | Target: Self (1)
+#2 (id=1213116)  : Apply Aura (6) | Add Percent Modifier (108): Spell Direct Amount (0)
+                   Base Value: 0 | Scaled Value: 0 | SP Coefficient: 2.25 | Target: Self (1)
+                   Affected Spells: Immolation Aura (258921), Immolation Aura (258922), Immolation Aura (427904), Immolation Aura (427905), Immolation Aura (427906), Immolation Aura (427907), Immolation Aura (427908), Immolation Aura (427910), Immolation Aura (427911), Immolation Aura (427916)
+                   Family Flags: 49, 61
+#3 (id=1213117)  : Apply Aura (6) | Add Percent Modifier (108): Spell Periodic Amount (22)
+                   Base Value: 0 | Scaled Value: 0 | SP Coefficient: 2.25 | Misc Value: 22 | Target: Self (1)
+                   Affected Spells: Immolation Aura (258921), Immolation Aura (258922), Immolation Aura (427904), Immolation Aura (427905), Immolation Aura (427906), Immolation Aura (427907), Immolation Aura (427908), Immolation Aura (427910), Immolation Aura (427911), Immolation Aura (427916)
+                   Family Flags: 49, 61
+                   Modified By: Any Means Necessary (394486 effect#1), Any Means Necessary (394486 effect#3)
+Description      : $?a427775[Chaos][Fire]

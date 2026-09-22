@@ -1275,11 +1275,12 @@ function SmartQueueManager:OnEnable()
             --    莉・ｯｹ WhitelistSpells 荳ｭ cdSeconds >= 3 逧・橿閭ｽ蜷ｯ逕ｨ霓ｯ螻剰反
             -- FIX (OverridePair): Also soft-block the paired override ID.
             -- 蜷梧慮蟇ｹ隕・尠蟇ｹ謚閭ｽ譁ｽ蜉霓ｯ螻剰反・亥ｦよ命謾ｾ Death Sweep 蜷主酔譌ｶ螻剰反 Blade Dance・峨・
-            local wsInfo = RA.WhitelistSpells and RA.WhitelistSpells[spellID]
+            local pairedID = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[spellID]
+            local wsInfo = RA.WhitelistSpells and (RA.WhitelistSpells[spellID]
+                or (pairedID and RA.WhitelistSpells[pairedID]))
             if wsInfo and wsInfo.cdSeconds and wsInfo.cdSeconds >= 3 then
                 local blockExpiry = GetTime() + SOFT_BLOCK_DURATION
                 softBlockedSpells[spellID] = blockExpiry
-                local pairedID = RA.KNOWN_OVERRIDE_PAIRS and RA.KNOWN_OVERRIDE_PAIRS[spellID]
                 if pairedID then
                     softBlockedSpells[pairedID] = blockExpiry
                 end
@@ -1306,7 +1307,7 @@ function SmartQueueManager:OnEnable()
                         shouldClear = true
                     end
                 end
-                if shouldClear and not CHANNELED_SPELL_IDS[spellID] then
+                if shouldClear and not (CHANNELED_SPELL_IDS[spellID] or (pairedID and CHANNELED_SPELL_IDS[pairedID])) then
                     lastKnownBlizzSpell = nil
                 end
             end

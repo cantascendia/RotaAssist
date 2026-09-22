@@ -1,0 +1,206 @@
+{
+  "uniqueHeldoutRuns": 50,
+  "uniqueDPSSamples": 149950,
+  "reports": {
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\single\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "6ff994124938805b06b79b76e144ebf153fd33c83b1f6e180d4178d1679efec4",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\single\\5ce0425925b2-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "462a6d1bab3fb28baa2e8309cc18a5087dcba4274282a648178bd2601a0f6e88",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\single\\7b3f32220598-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "d1571b38a313b872aa813656a98c663d1dd591448abb158e34cd0f1ba9ee22ad",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\waves\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "c53f995cf5126926b63936d6121d098e9a4dcf3b6096ef15b9fb5d10c93a1892",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\waves\\5ce0425925b2-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "5457b41d32548832b33d2c7da0b2c8beb251c938df11d0131cb0f35799576b78",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\waves\\7b3f32220598-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "22d896bd269c4eb0497a5fae1d2353894cc62faef94f2f8d567442a7f1d313ac",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\moving_waves\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "be1e69bf46c74db74570ef8bd8b855497abd33457253c79b715143c01dd3d45b",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\moving_waves\\5ce0425925b2-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "e4cec6679a7395fae08a2d188a43c58327c50a5543a01b5e753ae86860df0414",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\moving_waves\\7b3f32220598-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "6f455d08ea10fa5e7da3322d3841d7349c4d1b08156732e3187bf71976fa7009",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\movement\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "5474a689bd8c3af6e40080b89a56b947cc4d94616b8fb8365d222f620f5e83d8",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\movement\\5ce0425925b2-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "92f3ea1a534bdbbf2aa0dfabdbb294a50764ccfd0ee78d2d29baa2fc07c4f437",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\movement\\7b3f32220598-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "74c41c8eedfc2116ae8cc71217fa1d083e4aa9ddaabaf1e19335efd95bd9ab8d",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\five\\stock-5t-120s-3000i-20261112.raw.json": {
+      "sha256": "16475aa0040ffa9139afd667eeb3ed8adfd052b1e878b185a4018d27c05b03b8",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\five\\5ce0425925b2-5t-120s-3000i-20261112.raw.json": {
+      "sha256": "8672f6829ef827e8eed9f099d1717c196205d14037e54f818f735722f0436657",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\five\\7b3f32220598-5t-120s-3000i-20261112.raw.json": {
+      "sha256": "bfb93dced8e76449ba2857f9fe4800721d55d1e8e9189ddaf51c58fcc43d50aa",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\single\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "452f1ad15208afca81bd48e464e7b3d5ea7bb554a74a7283dfb8a193566f5f4f",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\single\\5ce0425925b2-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "4ccac15fcddb3af927dfebd23a35c120e30d615dbfaf2958f96542a1bb6686d6",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\single\\7b3f32220598-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "c544d685ece1434830afa31ec3b58d760f2eface9b4916588b14d6e67aa757e7",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\waves\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "4549a24acce017e76cc6b003cce717c706edd13ae03590c1c9da6aa12424cc7e",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\waves\\5ce0425925b2-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "b1a2fa9980403d73fab0be01e4fd570ef452697465e8f76ac87eeb86cb3d0a2e",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\waves\\7b3f32220598-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "d9ace3e496f3af34def70b71c0defff51bd45d3ea1efe56ffa26dca94e3855ca",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\moving_waves\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "258638b043cd5a2775d700898de1e6e1090d5d2772d58cf8c7122c1035f53fe1",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\moving_waves\\5ce0425925b2-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "3137409d8858092ff8e5accd993ffc4c71ca63c26da0274c8562f0f7180222f2",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\moving_waves\\7b3f32220598-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "9ce3e092c35f7f1a5a2e0b3a6bbcc90546e13967e0710318c1b6bf187d77c594",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\movement\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "33ead3300d8b1509b55b8aa8521220200a99ea6c690494732c60b2e25d3dead8",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\movement\\5ce0425925b2-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "39a79ab0a56217b6775a995ff1a3948d81e3fc455a19857e4ed10b7928d68dc8",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\movement\\7b3f32220598-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "c2e4df78ec4ebee29e7bc96752433a7045e2457fa2a70ba1b77dc7291751419e",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\five\\stock-5t-300s-3000i-20261112.raw.json": {
+      "sha256": "09f8ad8639e3797605787fac95fbfebc4c7948f02477218e6edeae496290fa51",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\five\\5ce0425925b2-5t-300s-3000i-20261112.raw.json": {
+      "sha256": "614636a9ac466e0cf0138b2cff1ee8f6b2e695c34f6e460abeb81939216702bd",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\fel_scarred\\five\\7b3f32220598-5t-300s-3000i-20261112.raw.json": {
+      "sha256": "fd9d358e8173089ca73b77a2b73ef338bd30f4c30aa54b2f8fdbe1a618f1042b",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\single\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "2eb62e50f80fb46931caeca009b054e3ecffd50f918ddd88bc72e5c861634388",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\single\\8e77e6b632a0-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "c69ffa70431a2f5e0a4ee7ca682c87895f223d1646f32fe4a3f0ac89c6af7231",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\waves\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "5794b6a370e12eaa4e22f07596e9e75f695a6ae9733645462881c12c9af1238d",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\waves\\8e77e6b632a0-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "3e0e8bff8996bb83776ddd6375e34625a6d088fcd33f6b112b8d2b810aa39cc0",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\moving_waves\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "ce3508868bfa810c8c07b62dda63279166e0b194f6870544d1ca5eb5e651e72f",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\moving_waves\\8e77e6b632a0-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "83922e8811850ee1f9430d890998d2bea987c0e77658ed36bb3f7d60be9f4392",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\movement\\stock-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "86185fdf999ce307e723e271b9cefab513e9754b70c23130bbd37e1616970cee",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\movement\\8e77e6b632a0-1t-120s-3000i-20261112.raw.json": {
+      "sha256": "e73c465c9f9b2be1bfd365cdba85cf7d7169de10abb7b806fefc459c0c109adf",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\five\\stock-5t-120s-3000i-20261112.raw.json": {
+      "sha256": "2538cc337ef661dd97de3d0fde09ac53d96c2c0f4ab64ad68430d083708902f5",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\five\\8e77e6b632a0-5t-120s-3000i-20261112.raw.json": {
+      "sha256": "b0c9d9b60712d2f48730eb51dc3992df4b98c0efa9e37f3008cff0d7ce3586c3",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\single\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "456a1d7d3db13db44a5a8ce5534e1ca87301025b471973b73cd7e97e6d9dd1ed",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\single\\8e77e6b632a0-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "33df3c4e5843bc0648d3342eab742101e0dc84de1ca872577d664bc34a19710f",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\waves\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "b226fbfddb97aa26390a2f1168adedfd0b915a2afca856b88ebff07870bde870",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\waves\\8e77e6b632a0-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "4ff1874c8aae8d33677d1abd131862dda0cadcda92f586f0d99277b0a630ddbe",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\moving_waves\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "f8094731d856fec1c53aac3d1f14c981b8f1aca8594fe64118528dad4282aa4e",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\moving_waves\\8e77e6b632a0-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "58804ec30d4e54bac0923dafe200ef7e8bfd8ae921df6b7f82bd0aa2f761c1b8",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\movement\\stock-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "be0473c984e05050c0eff39afb27876b89a63c7e600a817c1aa80e5b92746385",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\movement\\8e77e6b632a0-1t-300s-3000i-20261112.raw.json": {
+      "sha256": "0fd018e545908f81dc89fc86b30ace9bf7203c8776bab2f0f03cda8f7aa453c2",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\five\\stock-5t-300s-3000i-20261112.raw.json": {
+      "sha256": "14a793ea535b32a40316f3c91c4025a523ffca426fbb4297374307ded3d544c7",
+      "samples": 2999
+    },
+    "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\aldrachi_reaver\\five\\8e77e6b632a0-5t-300s-3000i-20261112.raw.json": {
+      "sha256": "6d3c29c0ee08a04333dab7f6c09ff280c6db00f2ba24f5f31f2ee42f0400a57a",
+      "samples": 2999
+    }
+  }
+}

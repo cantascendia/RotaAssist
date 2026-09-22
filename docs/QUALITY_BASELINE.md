@@ -5,6 +5,13 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.14 fixes enhanced Eye Beam learned-status, paired cooldown metadata and
+  selected-talent transitions. A separate current-population priority search
+  failed to establish an improvement and was not adopted. Twenty held-out
+  comparisons represent 50 unique runs (149950 samples), because unchanged
+  Aldrachi candidate/previous roles reuse the same reports. This is not live
+  addon DPS evidence. See [research](../research/adaptive-burst/README.md).
+
 - rc.13 separates radial action applicability from native target range for three
   Havoc actions. New moving/add-wave simulations expose larger gaps than static
   targets: Fel-Scarred is 91.82%–97.54% of reference and Aldrachi 94.71%–97.49%.

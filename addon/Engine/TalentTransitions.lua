@@ -15,6 +15,11 @@ local function rank(character, specID, talentID)
 end
 function Transitions:GetDuration(specID, spellID)
     local data=RA.Registry.HAVOC_TRANSITIONS
+    specID,spellID=number(specID),number(spellID)
+    if not specID or not spellID then return false end
+    -- The enhanced cast has the same selected Demonic transition as Eye Beam.
+    -- 强化眼棱沿用已选恶魔天赋的变身转移，不凭技能名猜测。
+    if data and spellID==data.abyssalGaze then spellID=data.eyeBeam end
     local character=RA:GetModule("CharacterState")
     if not data or specID~=data.specID or not character
        or (spellID~=data.eyeBeam and spellID~=data.metamorphosis) then return false end

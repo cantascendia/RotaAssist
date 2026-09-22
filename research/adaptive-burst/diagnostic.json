@@ -1,0 +1,224 @@
+[
+  {
+    "hero": "fel_scarred",
+    "intervention": "reference",
+    "measurement": {
+      "policyKey": "stock",
+      "policy": null,
+      "targets": 1,
+      "duration": 180,
+      "seed": 20261115,
+      "iterations": 500,
+      "dps": 315617.17333529127,
+      "standardError": 454.42963957442095,
+      "samples": 499,
+      "profileSha256": "2c96ea993e0cf6f9d1c3fed730f264f439c931827d291e82e54d2451a7bb6d30",
+      "rawSha256": "b8e3cb97aa339123166fbfb6a502e71fcf70e2417fe82fd33055e6c2e8a9e367",
+      "raw": "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\reference\\stock-1t-180s-500i-20261115.raw.json",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ],
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\reference\\stock-1t-180s-500i-20261115.simc",
+        "iterations=500",
+        "desired_targets=1",
+        "threads=2",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "seed=20261115",
+        "json2=C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\reference\\stock-1t-180s-500i-20261115.raw.json",
+        "report_details=0"
+      ]
+    }
+  },
+  {
+    "hero": "fel_scarred",
+    "intervention": "without_auto_retarget",
+    "measurement": {
+      "policyKey": "stock",
+      "policy": null,
+      "targets": 1,
+      "duration": 180,
+      "seed": 20261115,
+      "iterations": 500,
+      "dps": 315710.52697657485,
+      "standardError": 449.82023504979446,
+      "samples": 499,
+      "profileSha256": "3037eecc28497605d4769e89e274cf59f5e1130f47cec7f6b215c3abbc9fc4e0",
+      "rawSha256": "059df33b6f7945831c72e3b05f8333001d35a7cd0e6660f35784798668271d33",
+      "raw": "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\without_auto_retarget\\stock-1t-180s-500i-20261115.raw.json",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ],
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\without_auto_retarget\\stock-1t-180s-500i-20261115.simc",
+        "iterations=500",
+        "desired_targets=1",
+        "threads=2",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "seed=20261115",
+        "json2=C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\without_auto_retarget\\stock-1t-180s-500i-20261115.raw.json",
+        "report_details=0"
+      ]
+    }
+  },
+  {
+    "hero": "fel_scarred",
+    "intervention": "without_fragment_pickup",
+    "measurement": {
+      "policyKey": "stock",
+      "policy": null,
+      "targets": 1,
+      "duration": 180,
+      "seed": 20261115,
+      "iterations": 500,
+      "dps": 313806.79976973217,
+      "standardError": 402.7001341632792,
+      "samples": 499,
+      "profileSha256": "ba0f8c28c7eae4a1782ef8fb515187ec08622b194e85e10ea4b448e7c767d7e8",
+      "rawSha256": "265ce3a46f0096568a612ae3fc267013f3b367cfde5727225d66a8db365a718a",
+      "raw": "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\without_fragment_pickup\\stock-1t-180s-500i-20261115.raw.json",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ],
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\without_fragment_pickup\\stock-1t-180s-500i-20261115.simc",
+        "iterations=500",
+        "desired_targets=1",
+        "threads=2",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "seed=20261115",
+        "json2=C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\fel_scarred\\without_fragment_pickup\\stock-1t-180s-500i-20261115.raw.json",
+        "report_details=0"
+      ]
+    }
+  },
+  {
+    "hero": "aldrachi_reaver",
+    "intervention": "reference",
+    "measurement": {
+      "policyKey": "stock",
+      "policy": null,
+      "targets": 1,
+      "duration": 180,
+      "seed": 20261115,
+      "iterations": 500,
+      "dps": 327216.980629277,
+      "standardError": 770.1007889285619,
+      "samples": 499,
+      "profileSha256": "1aedfd6733fbeaf390e4f300e466403ba4281a62498bcce24d1309a16b44784f",
+      "rawSha256": "8decf7a54099e0d04de83012ab91c040a546290e7001e14ad58880ac0984fc38",
+      "raw": "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\reference\\stock-1t-180s-500i-20261115.raw.json",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ],
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\reference\\stock-1t-180s-500i-20261115.simc",
+        "iterations=500",
+        "desired_targets=1",
+        "threads=2",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "seed=20261115",
+        "json2=C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\reference\\stock-1t-180s-500i-20261115.raw.json",
+        "report_details=0"
+      ]
+    }
+  },
+  {
+    "hero": "aldrachi_reaver",
+    "intervention": "without_auto_retarget",
+    "measurement": {
+      "policyKey": "stock",
+      "policy": null,
+      "targets": 1,
+      "duration": 180,
+      "seed": 20261115,
+      "iterations": 500,
+      "dps": 326930.2308830581,
+      "standardError": 763.6138400838098,
+      "samples": 499,
+      "profileSha256": "6d8abec3f0077fd13692c85c902967d64ce48ff153312c995de596e81a1bfbe0",
+      "rawSha256": "0c95948b6d07f5c9d3d0a38255aa80b5d5ac8b4bed91f61a7f5ac24a53a553b3",
+      "raw": "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\without_auto_retarget\\stock-1t-180s-500i-20261115.raw.json",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ],
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\without_auto_retarget\\stock-1t-180s-500i-20261115.simc",
+        "iterations=500",
+        "desired_targets=1",
+        "threads=2",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "seed=20261115",
+        "json2=C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\without_auto_retarget\\stock-1t-180s-500i-20261115.raw.json",
+        "report_details=0"
+      ]
+    }
+  },
+  {
+    "hero": "aldrachi_reaver",
+    "intervention": "without_fragment_pickup",
+    "measurement": {
+      "policyKey": "stock",
+      "policy": null,
+      "targets": 1,
+      "duration": 180,
+      "seed": 20261115,
+      "iterations": 500,
+      "dps": 317877.6580054921,
+      "standardError": 798.6177675011529,
+      "samples": 499,
+      "profileSha256": "bc217439544ea69753301357f495ef574757c8d048b6e269ccf88368ae7e7881",
+      "rawSha256": "dfea5c26135cc24f2999dc84b5e85d6167d6041261d6218251e6dc0c5fdf3538",
+      "raw": "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\without_fragment_pickup\\stock-1t-180s-500i-20261115.raw.json",
+      "warnings": [
+        {
+          "level": "implementation_not_yet_verified",
+          "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+        }
+      ],
+      "command": [
+        "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+        "C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\without_fragment_pickup\\stock-1t-180s-500i-20261115.simc",
+        "iterations=500",
+        "desired_targets=1",
+        "threads=2",
+        "fixed_time=1",
+        "max_time=180",
+        "vary_combat_length=0",
+        "seed=20261115",
+        "json2=C:\\projects\\RotaAssist\\dist\\research\\adaptive-burst\\diagnostic\\aldrachi_reaver\\without_fragment_pickup\\stock-1t-180s-500i-20261115.raw.json",
+        "report_details=0"
+      ]
+    }
+  }
+]

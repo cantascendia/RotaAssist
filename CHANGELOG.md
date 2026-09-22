@@ -5,6 +5,18 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.14] - 2026-09-22
+
+[Enhanced Eye Beam integration](docs/RELEASE_1.1.1-rc.14.md), implemented by Astra.
+
+- Include current Abyssal Gaze replacements in learned checks, cooldown identity,
+  selected Demonic transitions and Chaotic Transformation resets.
+- Use shared-base cooldown metadata for post-cast prediction filtering and
+  shared-base channel classification.
+- Retain a rejected population-priority experiment: no proven performance
+  improvement, so both shipped policy files and default settings stay unchanged.
+- Validate 741 Lua / 116 Python tests, 169 Lua files and nine behavioral mutations.
+
 ## [1.1.1-rc.13] - 2026-09-22
 
 [Havoc action applicability](docs/RELEASE_1.1.1-rc.13.md), implemented by Astra.

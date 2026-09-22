@@ -1,0 +1,15 @@
+{
+  "release": "1.1.1-rc.14",
+  "luaTests": {"passed": 741, "failed": 0},
+  "pythonTests": {"passed": 116, "failed": 0},
+  "addonLuaSyntaxFiles": 169,
+  "behavioralMutations": {"killed": 9, "total": 9},
+  "generatedExamples": {"enemyPopulation": 60, "demonicTransition": 45},
+  "holdout": {"comparisons": 20, "uniqueSimulations": 50, "dpsSamples": 149950},
+  "shippedPoliciesUnchanged": true,
+  "candidateAdopted": false,
+  "demonstratedDpsImprovement": false,
+  "liveValidated": false,
+  "maximumDPSAchieved": false,
+  "boundary": "Offline model, behavior and syntax checks; no game-client combat acceptance."
+}

@@ -18,6 +18,7 @@ RA.Registry.OVERRIDE_PAIRS = {
     [188499] = 210152, [210152] = 188499,  -- Blade Dance <-> Death Sweep
     [162243] = 203555, [203555] = 162243,  -- Demon's Bite <-> Demon Blades
     [162794] = 201427, [201427] = 162794,  -- Chaos Strike <-> Annihilation
+    [198013] = 452497, [452497] = 198013,  -- Eye Beam <-> Abyssal Gaze
 }
 
 -- Fallback texture ID (question mark icon)
@@ -45,6 +46,7 @@ RA.Registry.HAVOC_CONTEXT = {
 RA.Registry.ACTIVE_OVERRIDE_BASES = {
     [442294] = 185123, -- Reaver's Glaive -> Throw Glaive (Havoc only)
     [201427] = 162794, [210152] = 188499,
+    [452497] = 198013,
 }
 RA.Registry.HAVOC_HERO_TALENTS = {fel_scarred=452402, aldrachi_reaver=442290}
 
@@ -55,10 +57,10 @@ RA.Registry.HAVOC_PLAYER_AREA_ACTIONS = {[258920]=true, [188499]=true, [210152]=
 -- SimC 774babd, 12.1.0.69875: selected-talent transitions, not damage weights.
 -- 固定版本天赋状态转移；持续时间下界不当作精确光环时长。
 RA.Registry.HAVOC_TRANSITIONS = {
-    specID = 577, eyeBeam = 198013, metamorphosis = 191427,
+    specID = 577, eyeBeam = 198013, abyssalGaze = 452497, metamorphosis = 191427,
     demonicTalent = 213410, chaoticTalent = 388112,
     demonicMinimum = 5, metamorphosisDuration = 20,
-    resetCooldowns = {198013, 188499, 210152},
+    resetCooldowns = {198013, 452497, 188499, 210152},
 }
 
 -- Model flags from SimC 774babd, not client aura IDs / 模型标志不是光环 ID。

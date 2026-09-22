@@ -50,6 +50,15 @@ def export_registered(policy):
         "NS.RA.IndependentPolicies["+lua(profile)+"] = policy\n")
 
 
+def export_adaptive(policies):
+    """Write a separately versioned hero registry; keep original exports intact."""
+    profiles=[p.get("heroProfile") for p in policies]
+    if len(profiles)!=len(set(profiles)):
+        raise ValueError("duplicate adaptive hero")
+    return "\n".join("do\n"+export_registered(policy).replace("NS.RA.IndependentPolicies", "NS.RA.IndependentAdaptivePolicies")+"end\n"
+                     for policy in policies)
+
+
 if __name__ == "__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("policy", type=Path)

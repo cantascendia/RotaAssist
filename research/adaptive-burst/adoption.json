@@ -1,0 +1,14 @@
+{
+  "adopted": false,
+  "reason": "No convincing improvement over the previous policies; keep both shipped policy files unchanged.",
+  "fel_scarred": {
+    "selectedCandidateSha256": "7b3f3222059813a4686ebf60cf03002c1c390c3b12511a417e06090833ba0996",
+    "previousSha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+    "statisticallyPositivePriorComparisons": 0
+  },
+  "aldrachi_reaver": {
+    "changed": false
+  },
+  "liveValidated": false,
+  "maximumDPSAchieved": false
+}
