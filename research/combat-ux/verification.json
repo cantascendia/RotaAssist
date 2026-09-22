@@ -1,0 +1,31 @@
+{
+  "schema": "rotaassist.combat-ux-validation.v1",
+  "luaTests": 787,
+  "pythonTests": 131,
+  "luaSyntaxFiles": 172,
+  "mutationsKilled": 19,
+  "mutationsTotal": 19,
+  "newLocalizedKeys": 13,
+  "locales": [
+    "enUS",
+    "zhCN",
+    "jaJP"
+  ],
+  "archiveFiles": 288,
+  "manifestHashes": 287,
+  "orderedLuaLoadSteps": 100,
+  "packageSha256": "0febccdbb2d496899a6f0e56d294049080ae7a204d66c7425053a29e5b8a211d",
+  "packageBytes": 679495,
+  "browserPreviewChecked": [
+    "focus",
+    "learning",
+    "out_of_range",
+    "no_target"
+  ],
+  "previewUsesPlaceholders": true,
+  "clientExecutableVersion": "12.1.0.69875",
+  "clientStatus": "user_confirmed_download_in_progress",
+  "liveClientValidated": false,
+  "maximumDPSProven": false,
+  "damageModelAdded": false
+}

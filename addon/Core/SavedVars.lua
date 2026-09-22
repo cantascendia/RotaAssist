@@ -35,6 +35,7 @@ local defaults = {
             anchorX     = 0,         -- x offset from anchor
             anchorY     = -200,      -- y offset from anchor
             showKeybinds   = true,   -- display keybind text on icons
+            reducedMotion = true,   -- immediate recommendation icons / 推荐图标即时更新
             showCooldownSwirl = true,-- show cooldown spiral animation
             -- Added: keys used by MainDisplay that were missing defaults
             combatOnly      = false, -- hide display when out of combat

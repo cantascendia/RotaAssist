@@ -71,6 +71,11 @@ try {
     }
 
     $docs = @(
+        @((Join-Path $RepoRoot 'docs\USER_QUICK_START.md'), 'START-HERE.md'),
+        @((Join-Path $RepoRoot 'docs\USER_QUICK_START.md'), 'docs\USER_QUICK_START.md'),
+        @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.17.md'), 'docs\RELEASE_1.1.1-rc.17.md'),
+        @((Join-Path $RepoRoot 'docs\ux-readiness.md'), 'docs\ux-readiness.md'),
+        @((Join-Path $RepoRoot 'docs\ux-preview.html'), 'docs\ux-preview.html'),
         @((Join-Path $RepoRoot 'README.md'), 'README.md'),
         @((Join-Path $RepoRoot 'LICENSE'), 'LICENSE'),
         @((Join-Path $RepoRoot 'CHANGELOG.md'), 'CHANGELOG.md'),

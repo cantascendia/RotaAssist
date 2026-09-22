@@ -5,6 +5,17 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.17] - 2026-09-22
+
+[Combat UX and local acceptance capture](docs/RELEASE_1.1.1-rc.17.md), implemented by Astra.
+
+- Resolve current native button bindings across pages, extra bars and spell overrides.
+- Default to immediate icon updates; add static range cues and reliable empty states.
+- Add focused/learning views and stop inventing confidence for unknown forecasts.
+- Add opt-in, bounded public decision samples for local combat acceptance.
+- Include a three-language quick start and clearly labeled interactive layout preview.
+- No new DPS-performance claim; live client and full damage-model validation remain open.
+
 ## [1.1.1-rc.16] - 2026-09-22
 
 [Scoped decision evidence](docs/RELEASE_1.1.1-rc.16.md), implemented by Astra.

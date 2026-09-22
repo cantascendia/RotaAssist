@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RotaAssist · 实战界面评审</title>
+<style>
+:root{color-scheme:dark;--text:#fff;--muted:#ccc;--gold:#fc0;--alert:#f33;--bg:rgba(0,0,0,.7)}
+*{box-sizing:border-box}body{margin:0;background:#101318;color:#eee;font:16px/1.6 system-ui,'Microsoft YaHei',sans-serif}
+main{max-width:1040px;margin:auto;padding:40px 28px}h1{font-size:32px;margin:0 0 8px}h2{font-size:20px;margin:0 0 12px}
+p{margin:8px 0 20px;color:var(--muted)}.tag{color:var(--gold);font-size:13px;letter-spacing:2px}.controls{display:flex;gap:20px;flex-wrap:wrap;margin:24px 0}
+label{display:grid;gap:6px;font-size:14px}select{background:#202630;color:white;border:1px solid #758294;border-radius:6px;padding:9px;font:inherit;min-width:150px}select:focus{outline:2px solid var(--gold);outline-offset:3px}
+.arena{height:300px;border:1px solid #343e4c;border-radius:12px;background:radial-gradient(ellipse at 50% 80%,#253440,#11181f);position:relative;display:grid;place-items:center;overflow:hidden}
+.caption{position:absolute;top:14px;left:18px;color:#bfcad6;font-size:13px}.hud{position:relative;transform:scale(2);transform-origin:center;width:136px}
+.strip{display:flex;align-items:center;gap:4px;padding:8px;background:var(--bg);width:136px;height:64px;border-radius:3px;position:relative}
+.icon{width:32px;height:32px;position:relative;flex:none;background:linear-gradient(145deg,#62316e,#162232);border:1px solid #85818c;overflow:hidden}
+.icon.main{width:48px;height:48px;background:linear-gradient(145deg,#874bd1,#2d1f40)}.glyph{position:absolute;inset:0;display:grid;place-items:center;color:#cac0dd;font-size:10px;letter-spacing:.5px}
+.key{position:absolute;right:1px;top:0;font-size:10px;line-height:1.1;text-shadow:1px 1px black;max-width:calc(100% - 4px);white-space:nowrap;overflow:hidden}
+.main .key{font-size:12px}.badge{position:absolute;bottom:1px;left:2px;font-size:10px;color:var(--gold);text-shadow:1px 1px black}.range{display:none;position:absolute;inset:0;place-items:center;font-size:10px;text-shadow:1px 1px black;background:#a00a}
+.resource{height:8px;margin:4px 8px;background:#191919}.resource:before{content:'';display:block;width:58%;height:100%;background:#939}
+.phase,.accuracy,.cooldowns{font-size:10px;text-align:center;margin:4px;background:#171a20;color:#ccc}.phase{color:#fc0}.notice{position:absolute;inset:0;display:none;place-items:center;font-size:12px;color:white;padding:8px;text-align:center}
+.alert{position:absolute;right:15%;top:65%;padding:4px 9px;border:1px solid var(--alert);color:#fff;background:#510f15;font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}.card{border-top:1px solid #343e4c;padding-top:18px}.card ul{padding-left:20px;color:#ccc}.card li{margin:8px 0}.evidence{padding:15px 18px;margin-top:24px;background:#1d242e;border-left:3px solid #8fbfff}
+[hidden]{display:none!important}@media(max-width:680px){main{padding:24px 16px}.grid{grid-template-columns:1fr}.hud{transform:scale(1.5)}.alert{right:8%;top:77%}}
+</style>
+<main><div class="tag">ROTAASSIST / HAVOC</div><h1>先看清下一步，再理解为什么</h1>
+<p>交互式布局示意，使用主图标 48px、预测图标 32px 的实际布局尺寸。图标为占位图，资源值为示例；这不是 WoW 客户端截图。</p>
+<div class="controls">
+<label>显示方案<select id="view"><option value="focus">实战专注</option><option value="learning">学习视图</option></select></label>
+<label>战斗状态<select id="state"><option value="ready">有技能推荐</option><option value="range">当前技能超距</option><option value="interrupt">需要打断</option><option value="experiment">实验推荐</option><option value="target">未选择目标</option><option value="waiting">等待推荐</option></select></label>
+<label>预览倍率<select id="zoom"><option value="2">2 倍放大评审</option><option value="1">1 倍布局尺寸</option></select></label>
+</div>
+<div class="arena" aria-label="推荐布局示意"><span class="caption">位置示意 · 原生游戏字体和纹理仍待客户端验收</span>
+<div class="hud" id="hud"><div class="phase" hidden>爆发阶段</div><div class="strip">
+<div class="icon main"><span class="glyph">图标</span><span class="key">S-F</span><span class="range">超距</span><span class="badge" hidden>实验</span></div>
+<div class="icon"><span class="glyph">图标</span><span class="key">2</span></div><div class="icon"><span class="glyph">图标</span><span class="key">C-3</span></div>
+<div class="notice" role="status" aria-live="polite"></div></div><div class="resource"></div><div class="accuracy" hidden>跟随率：—</div><div class="cooldowns" hidden>独立冷却面板（示意）</div></div>
+<div class="alert" hidden>打断！</div></div>
+<div class="grid"><section class="card"><h2>这一版修复什么</h2><ul><li>按当前原生动作按钮读取按键，翻页和天赋替换后重新解析。</li><li>默认立即切换推荐纹理；超距有文字提示，可减少图标动画。</li><li>没有推荐时清除旧图标并显示状态，未知置信度不再给满星。</li><li>提供实战专注和学习视图；图标不拦截主条拖动、右键操作。</li></ul></section>
+<section class="card"><h2>进入游戏后检查什么</h2><ul><li>中英日字体、长按键、多种界面缩放和超宽屏是否清晰。</li><li>按键翻页、天赋替换、超距和打断提示是否与游戏一致。</li><li>大米拉怪与团本机制下的提示跳变、漏推荐、CPU 和帧率。</li><li>第三方动作栏和条件宏的绑定支持；本版对无法确认的绑定留空。</li></ul></section></div>
+<div class="evidence">模型边界：布局评审和自动化测试不能证明实战最高输出。当前固定 build 的离线对照仍有差距；实战采样用于定位缺失信息，不等于伤害测量。</div>
+</main><script>
+const view=document.querySelector('#view'),state=document.querySelector('#state'),zoom=document.querySelector('#zoom');
+function render(){const learning=view.value==='learning',s=state.value,empty=s==='target'||s==='waiting';
+document.querySelectorAll('.phase,.accuracy,.cooldowns').forEach(e=>e.hidden=!learning);
+document.querySelectorAll('.icon').forEach(e=>e.hidden=empty);const n=document.querySelector('.notice');n.style.display=empty?'grid':'none';n.textContent=s==='target'?'请选择目标':'等待技能推荐';
+document.querySelector('.range').style.display=s==='range'?'grid':'none';document.querySelector('.badge').hidden=s!=='experiment';document.querySelector('.alert').hidden=s!=='interrupt';
+document.querySelector('#hud').style.transform='scale('+zoom.value+')';}
+[view,state,zoom].forEach(e=>e.addEventListener('change',render));render();
+</script></html>

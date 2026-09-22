@@ -317,3 +317,18 @@ L["AOE_MODE"]                 = "群体模式"
 ------------------------------------------------------------------------
 L["SPEC_NOT_SUPPORTED"]       = "%s 暂未支持 —— 仅显示暴雪的推荐。"
 
+
+-- Recommendation clarity / 推荐可读性
+L["CONFIG_REDUCED_MOTION"] = "减少图标动画"
+L["CONFIG_REDUCED_MOTION_DESC"] = "推荐图标即时更新，使用静态边框代替闪烁高亮。其他面板保留各自的动画。"
+L["RANGE_BADGE"] = "超距"
+L["STATUS_SELECT_TARGET"] = "请选择目标"
+L["STATUS_WAITING"] = "等待技能推荐"
+L["CONFIG_QUICK_START"] = "大图标：下一步技能。小图标：会随战况变化的后续预测。右键主条可打开设置；/ra lock 切换拖动锁定。下方可切换显示方案。"
+L["CONFIG_FOCUS_PRESET"] = "实战专注"
+L["CONFIG_FOCUS_PRESET_DESC"] = "保留技能推荐、资源条和安全警报，收起阶段教练、跟随率和独立冷却面板。"
+L["CONFIG_LEARNING_PRESET"] = "学习视图"
+L["CONFIG_LEARNING_PRESET_DESC"] = "显示阶段教练、战前检查、跟随率和冷却面板。跟随率只表示是否遵循推荐，不代表输出质量。"
+L["CAPTURE_USAGE"] = "/ra capture on|off — 在本地记录公开推荐样本，用于验收。开始新采样会覆盖上一份。"
+L["CAPTURE_ENABLED"] = "采样已开始，最多保留 1200 个事件。停止后重载或正常退出以保存；这不是 DPS 测量。"
+L["CAPTURE_DISABLED"] = "采样已停止。重载或正常退出后，样本保存在当前配置的 SavedVariables 中。"

@@ -263,6 +263,7 @@ local function makeFrame(frameType, name, parent, template)
     function frame:StopMovingOrSizing() end
     function frame:SetClampedToScreen(b) end
     function frame:SetWidth(w) self._w = w end
+    function frame:SetWordWrap(wrap) self._wordWrap = wrap end
     function frame:SetHeight(h) self._h = h end
     function frame:GetWidth() return self._w or 0 end
     function frame:GetHeight() return self._h or 0 end

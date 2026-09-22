@@ -317,3 +317,18 @@ L["AOE_MODE"]                 = "範囲モード"
 L["SPEC_NOT_SUPPORTED"]       = "%s は未対応です —— ブリザードの推奨のみ表示します。"
 
 
+
+-- Recommendation clarity / 推荐可读性
+L["CONFIG_REDUCED_MOTION"] = "アイコンの動きを減らす"
+L["CONFIG_REDUCED_MOTION_DESC"] = "推奨アイコンを即時更新し、点滅の代わりに固定枠を表示します。他のパネルのアニメーションは維持します。"
+L["RANGE_BADGE"] = "射程外"
+L["STATUS_SELECT_TARGET"] = "ターゲットを選択"
+L["STATUS_WAITING"] = "推奨を待機中"
+L["CONFIG_QUICK_START"] = "大きいアイコンは次の行動、小さいアイコンは状況で変わる予測です。バーを右クリックで設定、/ra lock で移動ロックを切り替えます。"
+L["CONFIG_FOCUS_PRESET"] = "戦闘に集中"
+L["CONFIG_FOCUS_PRESET_DESC"] = "推奨・リソース・安全警告を残し、コーチ・追従率・個別クールダウン表示を隠します。"
+L["CONFIG_LEARNING_PRESET"] = "学習ビュー"
+L["CONFIG_LEARNING_PRESET_DESC"] = "コーチ・戦闘前チェック・追従率・クールダウンを表示します。追従率は推奨に従った割合で、DPSの評価ではありません。"
+L["CAPTURE_USAGE"] = "/ra capture on|off — 検証用の公開推奨サンプルをローカル記録します。開始すると前回分を置き換えます。"
+L["CAPTURE_ENABLED"] = "記録開始（最大1200件）。停止後、再読込または通常ログアウトで保存します。DPSの測定ではありません。"
+L["CAPTURE_DISABLED"] = "記録停止。再読込または通常ログアウト時に、現在のプロファイルのSavedVariablesに保存されます。"

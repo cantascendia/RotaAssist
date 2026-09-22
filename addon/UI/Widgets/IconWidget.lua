@@ -28,6 +28,9 @@ function IconWidget:Create(parent, size, name)
     -- Base frame (Button so it can intercept clicks if needed, but not ActionButton)
     obj.frame = CreateFrame("Button", name, parent, "BackdropTemplate")
     obj.frame:SetSize(size, size)
+    -- This is a hint, not a cast button. Let the strip receive drag/right-click.
+    -- 图标是提示，不是施法按钮；拖动和右键由主条接收。
+    obj.frame:EnableMouse(false)
 
     -- Icon Texture
     obj.icon = obj.frame:CreateTexture(nil, "ARTWORK")
@@ -44,13 +47,18 @@ function IconWidget:Create(parent, size, name)
     obj.keybind = obj.frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     obj.keybind:SetPoint("TOPRIGHT", obj.frame, "TOPRIGHT", -1, -1)
     obj.keybind:SetJustifyH("RIGHT")
+    obj.keybind:SetWidth(size - 4)
+    obj.keybind:SetWordWrap(false)
     local fontSize = Theme.ScaledFontSize(size, 0.25)
+    obj.keybindFontSize = fontSize
     Theme.ApplyFont(obj.keybind, fontSize)
 
     -- Confidence Text (Bottom Left)
     obj.confidence = obj.frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     obj.confidence:SetPoint("BOTTOMLEFT", obj.frame, "BOTTOMLEFT", 2, 2)
     obj.confidence:SetJustifyH("LEFT")
+    obj.confidence:SetWidth(size - 4)
+    obj.confidence:SetWordWrap(false)
     Theme.ApplyFont(obj.confidence, Theme.ScaledFontSize(size, 0.22))
     Theme.SetTextColor(obj.confidence, "confidence")
 
@@ -65,6 +73,20 @@ function IconWidget:Create(parent, size, name)
     obj.cdTimer:SetPoint("BOTTOM", obj.frame, "BOTTOM", 0, 2)
     obj.cdTimer:SetJustifyH("CENTER")
     Theme.ApplyFont(obj.cdTimer, fontSize)
+
+    -- Text plus colour: range is readable without distinguishing red.
+    -- 超距同时使用文字与颜色，避免只依赖辨色。
+    obj.rangeText = obj.frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    obj.rangeText:SetPoint("CENTER", obj.frame, "CENTER", 0, 0)
+    obj.rangeText:SetWidth(size - 4)
+    obj.rangeText:SetWordWrap(false)
+    Theme.ApplyFont(obj.rangeText, Theme.fonts.sizes.small)
+    Theme.SetTextColor(obj.rangeText, "text")
+
+    obj.focusFrame = CreateFrame("Frame", nil, obj.frame, "BackdropTemplate")
+    obj.focusFrame:SetAllPoints(obj.frame)
+    Theme.ApplyBackdrop(obj.focusFrame, "outline", nil, "gold")
+    obj.focusFrame:Hide()
 
     -- Alert Frame (Red pulsating border) / 红色脉冲边框
     obj.alertFrame = CreateFrame("Frame", nil, obj.frame, "BackdropTemplate")
@@ -137,6 +159,12 @@ function IconWidget:SetSpell(spellID, texture)
     if UIFrameFadeRemoveFrame then
         UIFrameFadeRemoveFrame(self.frame)
     end
+    self.currentTexture = texture
+    if self.reducedMotion then
+        self.icon:SetTexture(texture)
+        self.frame:SetAlpha(1.0)
+        return
+    end
     local crossfade = Theme.durations.crossfade
     UIFrameFadeOut(self.frame, crossfade)
     self.fadeTimer = C_Timer.NewTimer(crossfade, function()
@@ -181,8 +209,23 @@ end
 ---设置按键绑定文本（右上角）。
 ---@param text string|nil
 function IconWidget:SetKeybind(text)
+    if self.currentKeybind == text then return end
+    self.currentKeybind = text
     if text and text ~= "" then
         self.keybind:SetText(text)
+        Theme.ApplyFont(self.keybind, self.keybindFontSize)
+        -- Do not show a truncated modifier combination as a different key.
+        -- 组合键不能截断成另一个按键；允许缩到主题最小字号，仍不够则留空。
+        if self.keybind.GetStringWidth then
+            local ok, width = pcall(self.keybind.GetStringWidth, self.keybind)
+            if ok and not issecretvalue(width) and type(width) == "number" and width > self.keybind:GetWidth() then
+                Theme.ApplyFont(self.keybind, Theme.fonts.sizes.small)
+                local fits, smaller = pcall(self.keybind.GetStringWidth, self.keybind)
+                if not fits or issecretvalue(smaller) or type(smaller) ~= "number" or smaller > self.keybind:GetWidth() then
+                    self.keybind:SetText("")
+                end
+            end
+        end
     else
         self.keybind:SetText("")
     end
@@ -209,6 +252,9 @@ end
 ---Toggle the primary recommendation glow.
 ---@param enabled boolean
 function IconWidget:SetGlow(enabled)
+    self.glowEnabled = enabled and true or false
+    if self.reducedMotion and enabled then self.focusFrame:Show() else self.focusFrame:Hide() end
+    enabled = enabled and not self.reducedMotion
     local ActionButton_ShowOverlayGlow = _G.ActionButton_ShowOverlayGlow
     local ActionButton_HideOverlayGlow = _G.ActionButton_HideOverlayGlow
 
@@ -229,9 +275,13 @@ end
 ---Toggle the red alert pulse (for defensives / approaching CDs).
 ---@param enabled boolean
 function IconWidget:SetAlert(enabled)
+    self.alertEnabled = enabled and true or false
     if enabled then
         self.alertFrame:Show()
-        if not self.alertAnim:IsPlaying() then self.alertAnim:Play() end
+        if self.reducedMotion then
+            self.alertAnim:Stop()
+            self.alertFrame:SetAlpha(1.0)
+        elseif not self.alertAnim:IsPlaying() then self.alertAnim:Play() end
     else
         self.alertAnim:Stop()
         self.alertFrame:Hide()
@@ -251,9 +301,11 @@ function IconWidget:SetOutOfRange(outOfRange)
     self.outOfRange = outOfRange
 
     if outOfRange then
+        self.rangeText:SetText(RA.L and RA.L["RANGE_BADGE"] or "")
         self.icon:SetVertexColor(Theme.Unpack(Theme.colors.outOfRange))
-        if not self.oorAnim:IsPlaying() then self.oorAnim:Play() end
+        if not self.reducedMotion and not self.oorAnim:IsPlaying() then self.oorAnim:Play() end
     else
+        self.rangeText:SetText("")
         -- Identity tint (1,1,1) = "no tint", a maths constant rather than a
         -- palette choice, so it is deliberately not a theme token.
         -- 单位着色 (1,1,1) 表示"不着色"，是数学恒等量而非配色选择，故不设令牌。
@@ -263,6 +315,25 @@ function IconWidget:SetOutOfRange(outOfRange)
             self.frame:SetAlpha(1.0)
         end
     end
+end
+
+---Switch motion without leaving a pending old texture or pulse behind.
+---切换动态效果时，同时清理旧纹理回调和脉冲。
+function IconWidget:SetReducedMotion(enabled)
+    enabled = enabled and true or false
+    if self.reducedMotion == enabled then return end
+    self.reducedMotion = enabled
+    if enabled then
+        if self.fadeTimer then self.fadeTimer:Cancel(); self.fadeTimer = nil end
+        if UIFrameFadeRemoveFrame then UIFrameFadeRemoveFrame(self.frame) end
+        if self.currentTexture then self.icon:SetTexture(self.currentTexture) end
+        self.oorAnim:Stop()
+        self.frame:SetAlpha(1.0)
+    elseif self.outOfRange then
+        self.oorAnim:Play()
+    end
+    self:SetGlow(self.glowEnabled)
+    self:SetAlert(self.alertEnabled)
 end
 
 ---Apply desaturation (greyscale) to the icon.
@@ -288,6 +359,7 @@ function IconWidget:Clear()
     -- 在淡出阶段取消交叉淡入时恢复透明度，避免模块重新启用后图标永久透明。
     self.frame:SetAlpha(1.0)
     self.currentSpellID = nil
+    self.currentTexture = nil
     self.icon:SetTexture(Theme.FALLBACK_ICON)
     self.cooldown:Clear()
     self:SetKeybind("")

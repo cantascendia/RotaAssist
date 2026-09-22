@@ -1,0 +1,78 @@
+[
+  {
+    "name": "ignore_active_page",
+    "killed": true
+  },
+  {
+    "name": "disable_positive_cache",
+    "killed": true
+  },
+  {
+    "name": "drop_override_match",
+    "killed": true
+  },
+  {
+    "name": "accept_macros",
+    "killed": true
+  },
+  {
+    "name": "ignore_override_bar",
+    "killed": true
+  },
+  {
+    "name": "retain_stale_cache",
+    "killed": true
+  },
+  {
+    "name": "delay_reduced_motion",
+    "killed": true
+  },
+  {
+    "name": "stale_pending_texture",
+    "killed": true
+  },
+  {
+    "name": "pulse_reduced_range",
+    "killed": true
+  },
+  {
+    "name": "invent_confidence",
+    "killed": true
+  },
+  {
+    "name": "ignore_glow_setting",
+    "killed": true
+  },
+  {
+    "name": "preserve_stale_queue",
+    "killed": true
+  },
+  {
+    "name": "ignore_capture_opt_in",
+    "killed": true
+  },
+  {
+    "name": "unbounded_capture_rows",
+    "killed": true
+  },
+  {
+    "name": "skip_capture_cadence",
+    "killed": true
+  },
+  {
+    "name": "serialize_secret_values",
+    "killed": true
+  },
+  {
+    "name": "record_other_players",
+    "killed": true
+  },
+  {
+    "name": "unbounded_capture_builds",
+    "killed": true
+  },
+  {
+    "name": "show_partial_key",
+    "killed": true
+  }
+]

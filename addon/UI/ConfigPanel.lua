@@ -48,6 +48,25 @@ local function GetOptions()
                     notifySettingsChanged()
                 end,
                 args = {
+                    quickStart = {
+                        name = L["CONFIG_QUICK_START"],
+                        type = "description",
+                        order = 1,
+                    },
+                    focusPreset = {
+                        name = L["CONFIG_FOCUS_PRESET"],
+                        desc = L["CONFIG_FOCUS_PRESET_DESC"],
+                        type = "execute",
+                        order = 2,
+                        func = function() ConfigPanel:ApplyViewPreset("focus") end,
+                    },
+                    learningPreset = {
+                        name = L["CONFIG_LEARNING_PRESET"],
+                        desc = L["CONFIG_LEARNING_PRESET_DESC"],
+                        type = "execute",
+                        order = 3,
+                        func = function() ConfigPanel:ApplyViewPreset("learning") end,
+                    },
                     enabled = {
                         name = L["CONFIG_ENABLED"],
                         desc = L["CONFIG_ENABLED_DESC"],
@@ -156,6 +175,12 @@ local function GetOptions()
                         desc = L["CONFIG_COOLDOWN_SWIRL_DESC"],
                         type = "toggle",
                         order = 80,
+                    },
+                    reducedMotion = {
+                        name = L["CONFIG_REDUCED_MOTION"],
+                        desc = L["CONFIG_REDUCED_MOTION_DESC"],
+                        type = "toggle",
+                        order = 82,
                     },
                     hideCooldownPredictions = {
                         name = L["CONFIG_HIDE_CD_PREDICTIONS"],
@@ -355,6 +380,30 @@ end
 ------------------------------------------------------------------------
 -- Public API
 ------------------------------------------------------------------------
+
+---Change presentation only, retaining position, bindings and recommendation mode.
+---仅切换展示配置，保留位置、按键和推荐模式。
+function ConfigPanel:ApplyViewPreset(name)
+    if name ~= "focus" and name ~= "learning" then return false end
+    local profile = RA.db.profile
+    local learning = name == "learning"
+    local display = profile.display
+    display.iconCount = 2
+    display.showKeybinds = true
+    display.showRangeIndicator = true
+    display.reducedMotion = true
+    display.showResourceBar = true
+    display.showPrePullPanel = learning
+    profile.coach = profile.coach or {}
+    profile.accuracy = profile.accuracy or {}
+    profile.cooldowns = profile.cooldowns or {}
+    profile.coach.enabled = learning
+    profile.accuracy.enabled = learning
+    profile.cooldowns.showPanel = learning
+    local events = RA:GetModule("EventHandler")
+    if events then events:Fire("ROTAASSIST_SETTINGS_RESET") end
+    return true
+end
 
 function ConfigPanel:Toggle()
     LibStub("AceConfigDialog-3.0"):Open("RotaAssist")

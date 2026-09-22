@@ -92,6 +92,8 @@ local elements = {
     interruptAlert = nil,   -- independent floating frame / 独立浮窗
 }
 
+local emptyQueue = {}
+local statusText = nil
 local inCombat = false
 local outOfCombatTimer = nil
 local lastDisplayed = {
@@ -111,48 +113,14 @@ local predBuffer = {}
 -- Keybind Cache
 ------------------------------------------------------------------------
 
-local keybindCache = {}
-local keybindCacheDirty = true
-
 local function FindKeybindForSpell(spellID)
-    if not spellID then return nil end
-    -- 检查缓存 / check the cache
-    if keybindCache[spellID] and not keybindCacheDirty then
-        return keybindCache[spellID]
-    end
-    -- 遍历所有动作条槽位 (1-180) / walk every action bar slot
-    for slot = 1, 180 do
-        local actionType, id = GetActionInfo(slot)
-        if actionType == "spell" and id == spellID then
-            local key = GetBindingKey("ACTIONBUTTON" .. slot)
-            if not key and slot > 12 and slot <= 24 then
-                key = GetBindingKey("MULTIACTIONBAR3BUTTON" .. (slot - 12))
-            elseif not key and slot > 24 and slot <= 36 then
-                key = GetBindingKey("MULTIACTIONBAR4BUTTON" .. (slot - 24))
-            elseif not key and slot > 36 and slot <= 48 then
-                key = GetBindingKey("MULTIACTIONBAR2BUTTON" .. (slot - 36))
-            elseif not key and slot > 48 and slot <= 60 then
-                key = GetBindingKey("MULTIACTIONBAR1BUTTON" .. (slot - 48))
-            elseif not key and slot > 60 and slot <= 72 then
-                key = GetBindingKey("MULTIACTIONBAR5BUTTON" .. (slot - 60))
-            elseif not key and slot > 72 and slot <= 84 then
-                key = GetBindingKey("MULTIACTIONBAR6BUTTON" .. (slot - 72))
-            elseif not key and slot > 84 and slot <= 96 then
-                key = GetBindingKey("MULTIACTIONBAR7BUTTON" .. (slot - 84))
-            end
-            if key then
-                -- 简化显示：SHIFT-F → S-F, CTRL-1 → C-1, ALT-Q → A-Q
-                key = key:gsub("SHIFT%-", "S-")
-                key = key:gsub("CTRL%-", "C-")
-                key = key:gsub("ALT%-", "A-")
-                key = key:gsub("NUMPAD", "N")
-                keybindCache[spellID] = key
-                return key
-            end
-        end
-    end
-    keybindCache[spellID] = false  -- 标记为"查过了但没找到" / negative cache
-    return nil
+    local resolver = RA.UI and RA.UI.KeybindResolver
+    return resolver and resolver:Get(spellID) or nil
+end
+
+local function invalidateKeybinds()
+    local resolver = RA.UI and RA.UI.KeybindResolver
+    if resolver then resolver:Invalidate() end
 end
 
 ------------------------------------------------------------------------
@@ -243,6 +211,14 @@ local function buildLayout()
         elements.predictions[i] = pred
     end
 
+    statusText = mainFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    statusText:SetPoint("CENTER", mainFrame, "CENTER", 0, 0)
+    if RA.Theme then
+        RA.Theme.ApplyFont(statusText, RA.Theme.fonts.sizes.normal)
+        RA.Theme.SetTextColor(statusText, "text")
+    end
+    statusText:Hide()
+
     -- 2. Phase badge above the strip / 条上方的阶段徽章
     elements.phaseIndicator = RA.UI.PhaseIndicator:Create(mainFrame)
     elements.phaseIndicator.frame:SetPoint("BOTTOM", mainFrame, "TOP", 0, WIDGET_GAP)
@@ -311,6 +287,13 @@ local checkVisibility
 local function applySettings()
     local display = RA.db and RA.db.profile.display or {}
     local isLocked = display.locked or false
+    if elements.mainIcon.SetReducedMotion then
+        elements.mainIcon:SetReducedMotion(display.reducedMotion ~= false)
+    end
+    for i = 1, MAX_PREDICTIONS do
+        local widget = elements.predictions[i]
+        if widget.SetReducedMotion then widget:SetReducedMotion(display.reducedMotion ~= false) end
+    end
 
     mainFrame:SetScale(display.scale or 1.0)
     applyStripBackdrop(mainFrame, display.hideBackground, display.bgAlpha or 0.5)
@@ -345,6 +328,7 @@ local function applySettings()
 
     local stripWidth = MAIN_ICON_SIZE + slots * (PRED_ICON_SIZE + spacing)
     mainFrame:SetSize(stripWidth + STRIP_PADDING * 2, MAIN_ICON_SIZE + STRIP_PADDING * 2)
+    if statusText then statusText:SetWidth(stripWidth) end
 
     elements.mainIcon.frame:ClearAllPoints()
     elements.mainIcon.frame:SetPoint("LEFT", mainFrame, "LEFT", STRIP_PADDING, 0)
@@ -373,10 +357,7 @@ end
 
 local function UpdateDisplay()
     local smartQ = RA:GetModule("SmartQueueManager")
-    if not smartQ then return end
-
-    local data = smartQ:GetFinalQueue()
-    if not data then return end
+    local data = (smartQ and smartQ:GetFinalQueue()) or emptyQueue
 
     local display  = RA.db and RA.db.profile.display or {}
     local showKeybinds     = display.showKeybinds ~= false
@@ -406,7 +387,7 @@ local function UpdateDisplay()
     end
 
     wipe(predBuffer)
-    if data.next then
+    if mainData and data.next then
         for i = 1, #data.next do
             local predData = data.next[i]
             if predData and not RA:IsSpellPassive(predData.spellID) then
@@ -422,6 +403,19 @@ local function UpdateDisplay()
     ------------------------------------------------------------------
     -- 1. Main Icon / 主图标
     ------------------------------------------------------------------
+    if statusText then
+        if mainData then
+            statusText:Hide()
+        else
+            local key = "STATUS_WAITING"
+            if UnitExists then
+                local ok, exists = pcall(UnitExists, "target")
+                if ok and not issecretvalue(exists) and exists == false then key = "STATUS_SELECT_TARGET" end
+            end
+            statusText:SetText(RA.L and RA.L[key] or "")
+            statusText:Show()
+        end
+    end
     if mainData then
         local mainDisplaySpellID = resolveDisplaySpellID(mainData.spellID)
         if lastDisplayed.mainSpell ~= mainDisplaySpellID then
@@ -436,7 +430,7 @@ local function UpdateDisplay()
             local overlay = _G.C_SpellActivationOverlay
             if overlay and overlay.IsSpellOverlayed then
                 local pOk, pRes = pcall(overlay.IsSpellOverlayed, mainDisplaySpellID)
-                if pOk and pRes then hasProc = true end
+                if pOk and not issecretvalue(pRes) and pRes == true then hasProc = true end
             end
         end
 
@@ -445,7 +439,7 @@ local function UpdateDisplay()
         if interruptActive then
             elements.mainIcon:SetGlow(false)
         else
-            elements.mainIcon:SetGlow(hasProc or mainData.source ~= "DEFENSIVE")
+            elements.mainIcon:SetGlow(showProcGlow and hasProc)
         end
 
         -- Range indicator (round15): pulse red when the target is out of reach.
@@ -474,7 +468,7 @@ local function UpdateDisplay()
         if mainData.source == "INDEPENDENT" and elements.mainIcon.SetSourceLabel then
             elements.mainIcon:SetSourceLabel(RA.L["INDEPENDENT_BADGE"])
         elseif mainData.source == "APL_BLINDSPOT" then
-            elements.mainIcon:SetConfidence(0.9)  -- 高置信星标：这是我们的补充推荐 / high-confidence badge
+            elements.mainIcon:SetConfidence(mainData.confidence)
         else
             elements.mainIcon:SetConfidence(0)    -- 清除星标 / clear the stars
         end
@@ -503,7 +497,7 @@ local function UpdateDisplay()
             end
             -- predData.confidence 本就是 0–1 浮点，与 SetConfidence 的分档语义一致
             -- predData.confidence is already a 0–1 float, matching SetConfidence's thresholds
-            widget:SetConfidence(predData.confidence or 1.0)
+            widget:SetConfidence(predData.confidence)
 
             local predKey = showKeybinds and FindKeybindForSpell(predDisplaySpellID) or ""
             widget:SetKeybind(predKey or "")
@@ -787,17 +781,16 @@ function MainDisplay:OnEnable()
     eh:Subscribe("ROTAASSIST_INTERRUPT_ALERT", "MainDisplay", UpdateInterrupt)
     eh:Subscribe("ROTAASSIST_SETTINGS_RESET", "MainDisplay", applySettings)
 
-    eh:Subscribe("ACTIONBAR_SLOT_CHANGED", "MainDisplay", function()
-        keybindCacheDirty = true
-        keybindCache = {}
-        UpdateDisplay()
-    end)
-
-    eh:Subscribe("UPDATE_BINDINGS", "MainDisplay", function()
-        keybindCacheDirty = true
-        keybindCache = {}
-        UpdateDisplay()
-    end)
+    -- Invalidate now; resolve on the next queue update after native buttons
+    -- have processed the same event. Do not cache their previous page.
+    -- 先失效，在原生按钮处理事件后的推荐刷新中重读，避免缓存旧页面。
+    for _, event in ipairs({"ACTIONBAR_SLOT_CHANGED", "UPDATE_BINDINGS", "ACTIONBAR_PAGE_CHANGED",
+        "UPDATE_BONUS_ACTIONBAR", "UPDATE_OVERRIDE_ACTIONBAR", "UPDATE_VEHICLE_ACTIONBAR",
+        "UPDATE_SHAPESHIFT_FORM", "SPELLS_CHANGED", "PLAYER_ENTERING_WORLD",
+        "ROTAASSIST_CHARACTER_CHANGED", "GAME_PAD_ACTIVE_CHANGED"}) do
+        eh:Subscribe(event, "MainDisplay", invalidateKeybinds)
+    end
+    invalidateKeybinds()
 
     eh:Subscribe("PLAYER_REGEN_DISABLED", "MainDisplay", function()
         inCombat = true
@@ -866,8 +859,8 @@ function MainDisplay:OnDisable()
         mainFrame:Hide()
     end
 
-    wipe(keybindCache)
-    keybindCacheDirty = true
+    invalidateKeybinds()
+    if statusText then statusText:Hide() end
     inCombat = false
 end
 

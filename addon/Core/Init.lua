@@ -58,6 +58,7 @@ local MODULE_ORDER = {
     "ActionTiming",
     "IndependentObserver",
     "SmartQueueManager",
+    "CombatAudit",
     "CooldownOverlay",
     "CDMHook",
     "DefensiveAdvisor",
@@ -572,6 +573,7 @@ function RA:SlashCommand(input)
         self:Print("  /ra version  — " .. L["SLASH_HELP_VERSION"])
         self:Print(L["INDEPENDENT_USAGE"])
         self:Print(L["BUILD_USAGE"])
+        self:Print(L["CAPTURE_USAGE"])
     elseif cmd == "config" or cmd == "options" or cmd == "settings" then
         LibStub("AceConfigDialog-3.0"):Open("RotaAssist")
     elseif cmd == "toggle" then
@@ -611,6 +613,14 @@ function RA:SlashCommand(input)
             aplEngine:PrintConditionReport()
         else
             self:PrintWarning("APLEngine is not available. / APLEngine 不可用。")
+        end
+    elseif cmd == "capture" then
+        local audit = self:GetModule("CombatAudit")
+        if audit and (rest == "on" or rest == "off") then
+            audit:SetRecording(rest == "on")
+            self:Print(L[rest == "on" and "CAPTURE_ENABLED" or "CAPTURE_DISABLED"])
+        else
+            self:Print(L["CAPTURE_USAGE"])
         end
     elseif cmd == "build" then
         local character = self:GetModule("CharacterState")

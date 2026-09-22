@@ -325,3 +325,18 @@ L["AOE_MODE"]                 = "AoE Mode"
 -- %s = 本地化专精名。每个不支持的专精只提示一次，之后插件继续以纯暴雪推荐模式运行。
 L["SPEC_NOT_SUPPORTED"]       = "%s is not yet supported — showing Blizzard's suggestion only."
 
+
+-- Recommendation clarity / 推荐可读性
+L["CONFIG_REDUCED_MOTION"] = "Reduce icon motion"
+L["CONFIG_REDUCED_MOTION_DESC"] = "Update recommendation icons immediately; use static borders instead of pulsing glows. Other panels keep their own animations."
+L["RANGE_BADGE"] = "Range"
+L["STATUS_SELECT_TARGET"] = "Select a target"
+L["STATUS_WAITING"] = "Waiting for a recommendation"
+L["CONFIG_QUICK_START"] = "Large icon: next action. Small icons: forecasts that may change. Right-click the strip for settings; /ra lock toggles the dragging lock. Choose a view below."
+L["CONFIG_FOCUS_PRESET"] = "Combat focus"
+L["CONFIG_FOCUS_PRESET_DESC"] = "Keep recommendations, resources and safety alerts. Hide the coaching, adherence and separate cooldown panels."
+L["CONFIG_LEARNING_PRESET"] = "Learning view"
+L["CONFIG_LEARNING_PRESET_DESC"] = "Show coaching, pre-pull checks, adherence and cooldowns. Adherence measures following suggestions, not DPS quality."
+L["CAPTURE_USAGE"] = "/ra capture on|off — record public recommendation samples locally for testing. Starting replaces the previous capture."
+L["CAPTURE_ENABLED"] = "Capture started (up to 1200 events). Reload or log out normally after stopping to save. This is not a DPS measurement."
+L["CAPTURE_DISABLED"] = "Capture stopped. Samples will be saved in this profile's SavedVariables on reload or normal logout."
