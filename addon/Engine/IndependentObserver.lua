@@ -26,17 +26,40 @@ function Observer:Reset()
     status.mode="observation_only"
 end
 function Observer:GetStatus() return status end
+local function selectPolicy(character,spec,apl)
+    -- Talent proof is authoritative when both hero policies are installed.
+    -- 按完整天赋证据选择英雄策略，不能用 default 标签猜英雄天赋。
+    if RA.IndependentPolicies and RA.Registry and RA.Registry.HAVOC_HERO_TALENTS then
+        local build=character and character:GetSnapshot()
+        if not build or not build.talentsComplete or not spec or build.specID~=spec.specID then return nil,"build_unknown" end
+        local selected,unknown
+        for name,id in pairs(RA.Registry.HAVOC_HERO_TALENTS) do
+            local rank=finite(character:GetTalentRank(id))
+            if not rank or rank<0 or rank%1~=0 then unknown=true
+            elseif rank>0 then
+                if selected then return nil,"conflicting_hero_talents" end
+                selected=name
+            end
+        end
+        if unknown or not selected then return nil,"hero_unknown" end
+        if RA.IndependentPolicy and RA.IndependentPolicy.heroProfile==selected then return RA.IndependentPolicy end
+        return RA.IndependentPolicies[selected]
+    end
+    local policy=RA.IndependentPolicy
+    if policy and apl and apl.GetProfileName and apl:GetProfileName()==policy.heroProfile then return policy end
+end
 function Observer:Observe(state)
     self:Reset()
-    local policy=RA.IndependentPolicy
     local evaluator=RA:GetModule("IndependentDecision")
     local specModule=RA:GetModule("SpecDetector")
     local spec=specModule and specModule:GetCurrentSpec()
     local apl=RA:GetModule("APLEngine")
-    if not policy or not evaluator or not spec or spec.specID~=policy.specID
-       or not apl or not apl.GetProfileName or apl:GetProfileName()~=policy.heroProfile then return status end
-    if not state or state.targetValid~=true then status.status="target_unknown"; return status end
     local character=RA:GetModule("CharacterState")
+    local policy,reason=selectPolicy(character,spec,apl)
+    if reason then status.status=reason; return status end
+    if not policy or not evaluator or not spec or spec.specID~=policy.specID
+       or not apl then return status end
+    if not state or state.targetValid~=true then status.status="target_unknown"; return status end
     if character then
         local build=character:GetSnapshot()
         if not build.talentsComplete or build.specID~=policy.specID then
@@ -45,6 +68,7 @@ function Observer:Observe(state)
         status.talentKey,status.equipmentKey=build.talentKey,build.equipmentKey
         status.characterGeneration=build.generation
     end
+    status.heroProfile=policy.heroProfile
     for _,values in pairs(sample) do wipe(values) end
     wipe(seen)
     if character then
@@ -89,12 +113,14 @@ function Observer:Observe(state)
         local id=rule.spellID
         if not seen[id] then
             seen[id]=true
-            sample.known[id]=boolean(IsPlayerSpell,id)
+            sample.known[id]=boolean(RA.IsPlayerSpellKnownSafe,RA,id)
             sample.charges[id]=finite(state.charges and state.charges[id])
             local remaining=cooldown(id)
             if rule.action then sample.facts["cooldown."..rule.action..".remains"]=remaining end
             local usable=boolean(C_Spell and C_Spell.IsSpellUsable,id)
             local inRange=state.spellRange and state.spellRange[id]
+            local target=RA:GetModule("TargetContext")
+            if target and target.IsActive and target:IsActive() and target.GetSpellRange then inRange=target:GetSpellRange(id) end
             if not public(inRange) or type(inRange)~="boolean" then inRange=nil end
             if usable==false or inRange==false or (remaining and remaining>0)
                or (state.softBlocked and state.softBlocked[id]) then sample.ready[id]=false

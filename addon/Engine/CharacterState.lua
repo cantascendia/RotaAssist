@@ -157,6 +157,9 @@ local function collectSpells()
     for id in pairs(snapshot.spellIDs) do spellSet[id]=true end
     local policy=RA.IndependentPolicy
     if policy and policy.specID==snapshot.specID then for _,rule in ipairs(policy.rules) do spellSet[rule.spellID]=true end end
+    for _,extra in pairs(RA.IndependentPolicies or {}) do
+        if extra.specID==snapshot.specID then for _,rule in ipairs(extra.rules) do spellSet[rule.spellID]=true end end
+    end
     local enh=RA.SpecEnhancements and RA.SpecEnhancements[snapshot.specID]
     if enh and enh.resource and enh.resource.spellCosts then for id in pairs(enh.resource.spellCosts) do spellSet[id]=true end end
     for id in pairs(spellSet) do

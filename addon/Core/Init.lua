@@ -270,12 +270,14 @@ end
 ---@return number resolvedID
 ---@return boolean wasOverridden
 function RA:ResolveSpellOverride(spellID)
+    if issecretvalue and issecretvalue(spellID) then return nil, false end
     if not spellID or spellID == 0 then return spellID, false end
 
     -- 1. Try C_Spell.GetOverrideSpell (WoW 12.0)
     if C_Spell and C_Spell.GetOverrideSpell then
         local ok, overrideID = pcall(C_Spell.GetOverrideSpell, spellID)
-        if ok and overrideID and overrideID ~= spellID then
+        if ok and not (issecretvalue and issecretvalue(overrideID)) and type(overrideID)=="number"
+           and overrideID>0 and overrideID<math.huge and overrideID%1==0 and overrideID ~= spellID then
             return overrideID, true
         end
     end
@@ -283,12 +285,35 @@ function RA:ResolveSpellOverride(spellID)
     -- 2. Fallback to FindSpellOverrideByID (Legacy/11.x)
     if FindSpellOverrideByID then
         local ok, overrideID = pcall(FindSpellOverrideByID, spellID)
-        if ok and overrideID and overrideID ~= spellID then
+        if ok and not (issecretvalue and issecretvalue(overrideID)) and type(overrideID)=="number"
+           and overrideID>0 and overrideID<math.huge and overrideID%1==0 and overrideID ~= spellID then
             return overrideID, true
         end
     end
 
     return spellID, false
+end
+
+-- Distinguish a learned active replacement from an unlearned/unknown spell.
+-- 区分当前已学替换、未学技能与未知值；旧法术书缓存不能证明触发仍有效。
+function RA:IsPlayerSpellKnownSafe(spellID)
+    if issecretvalue and issecretvalue(spellID) then return nil end
+    if type(spellID)~="number" or spellID<=0 or spellID>=math.huge or spellID%1~=0 then return nil end
+    if type(IsPlayerSpell)~="function" then return nil end
+    local ok,known=pcall(IsPlayerSpell,spellID)
+    if not ok or (issecretvalue and issecretvalue(known)) or type(known)~="boolean" then return nil end
+    if known then return true end
+    local bases=self.Registry and self.Registry.ACTIVE_OVERRIDE_BASES
+    local base=bases and bases[spellID]
+    if not base then return false end
+    local baseOK,baseKnown=pcall(IsPlayerSpell,base)
+    if not baseOK or (issecretvalue and issecretvalue(baseKnown)) or type(baseKnown)~="boolean" then return nil end
+    if not baseKnown then return false end
+    if not C_Spell or type(C_Spell.GetOverrideSpell)~="function" then return nil end
+    local overrideOK,current=pcall(C_Spell.GetOverrideSpell,base)
+    if not overrideOK or (issecretvalue and issecretvalue(current)) or type(current)~="number"
+       or current<0 or current>=math.huge or current%1~=0 then return nil end
+    return current==spellID
 end
 
 --- Check if a spell is safe to display as a recommendation.
@@ -303,6 +328,7 @@ end
 ---@return boolean isRecommendable
 function RA:IsSpellRecommendable(spellID)
     -- 1. Nil / 0 / auto-attack
+    if issecretvalue and issecretvalue(spellID) then return false end
     if not spellID or spellID == 0 or spellID == 6603 then return false end
 
     -- 2. Resolve overrides & check passive
@@ -315,10 +341,7 @@ function RA:IsSpellRecommendable(spellID)
     if self:IsSpellPassive(spellID) then return false end
 
     -- 4. Unlearned spell check
-    if IsPlayerSpell then
-        local okK, known = pcall(IsPlayerSpell, spellID)
-        if okK and not known then return false end
-    end
+    if self:IsPlayerSpellKnownSafe(spellID)~=true then return false end
 
     -- 5. C_Spell.IsSpellUsable runtime gate
     if C_Spell and C_Spell.IsSpellUsable then

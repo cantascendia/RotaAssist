@@ -1,0 +1,73 @@
+{
+  "luaTestsPassed": 723,
+  "pythonTestsPassed": 109,
+  "addonLuaSyntaxFiles": 169,
+  "generatedSnapshotCases": 60,
+  "behavioralMutations": [
+    {
+      "name": "static_base_proves_proc",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore_base_learning",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "drop_proc_in_observer",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "drop_proc_in_final_queue",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "drop_proc_in_castability",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "skip_dynamic_range",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore_hero_conflict",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "mask_unknown_hero",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "reject_meta_probe",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "reject_meta_resource",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    }
+  ],
+  "mutationScore": 1.0,
+  "policySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+  "heldoutScenarios": 6,
+  "heldoutRuns": 12,
+  "heldoutDPSSamples": 35988,
+  "candidateReferenceRatioRange": [
+    0.9635348238522135,
+    0.9726952849117831
+  ],
+  "verifiedRawReports": 12,
+  "verifiedGeneratedInputs": 12,
+  "liveValidated": false,
+  "automaticReplacementQualified": false,
+  "defaultExperimentalEnabled": false,
+  "personalExportRequired": false
+}

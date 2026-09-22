@@ -120,16 +120,14 @@ SmartQueueManager._IsSpellOnCooldown = IsSpellOnCooldown
 --- @param spellID number
 --- @return boolean castable
 local function IsSpellCastable(spellID)
+    if issecretvalue(spellID) then return false end
     if not spellID or spellID == 0 then return false end
     -- 1. 陲ｫ蜉ｨ鮟大錐蜊募ｿｫ騾溯ｷｯ蠕・
     if PASSIVE_BLACKLIST[spellID] then return false end
     -- 2. RA 陲ｫ蜉ｨ譽豬・
     if RA.IsSpellPassive and RA:IsSpellPassive(spellID) then return false end
     -- 3. 譛ｪ蟄ｦ荵譽豬・
-    if IsPlayerSpell then
-        local okL, known = pcall(IsPlayerSpell, spellID)
-        if okL and not known then return false end
-    end
+    if RA:IsPlayerSpellKnownSafe(spellID)~=true then return false end
     -- 4. 荳榊庄譁ｽ謾ｾ譽豬具ｼ郁ｦ・尠 Hero Talent 蠅槫ｼｺ蝙玖｢ｫ蜉ｨ遲・IsSpellPassive 貍丞愛逧・ュ蜀ｵ・・
     if C_Spell and C_Spell.IsSpellUsable then
         local okU, usable = pcall(C_Spell.IsSpellUsable, spellID)
@@ -959,12 +957,7 @@ local function AssembleQueue()
         wipe(unlearnedRemove_reuse)
         local unlearnedRemove = unlearnedRemove_reuse
         for sid, _ in pairs(candidates) do
-            if IsPlayerSpell then
-                local okK, isK = pcall(IsPlayerSpell, sid)
-                if okK and not isK then
-                    unlearnedRemove[#unlearnedRemove + 1] = sid
-                end
-            end
+            if RA:IsPlayerSpellKnownSafe(sid)~=true then unlearnedRemove[#unlearnedRemove + 1] = sid end
         end
         for _, sid in ipairs(unlearnedRemove) do
             candidates[sid] = nil

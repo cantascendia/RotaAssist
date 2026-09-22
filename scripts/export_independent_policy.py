@@ -40,6 +40,16 @@ def export(policy):
             "NS.RA.IndependentPolicy = policy\n")
 
 
+def export_registered(policy):
+    """Additional hero policy; preserve the original singleton export unchanged."""
+    profile=policy.get("heroProfile")
+    if not isinstance(profile,str) or not profile.isascii() or not profile.replace("_","").isalnum():
+        raise ValueError("invalid hero profile")
+    return export(policy).replace("NS.RA.IndependentPolicy = policy\n",
+        "NS.RA.IndependentPolicies = NS.RA.IndependentPolicies or {}\n"
+        "NS.RA.IndependentPolicies["+lua(profile)+"] = policy\n")
+
+
 if __name__ == "__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("policy", type=Path)

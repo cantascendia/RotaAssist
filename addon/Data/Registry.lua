@@ -34,8 +34,19 @@ RA.Registry.HAVOC_CONTEXT = {
         ["buff.initiative"] = 391215,
         ["buff.inertia_trigger"] = 1215159,
         ["buff.metamorphosis"] = 162264,
+        ["buff.reavers_glaive"] = 444686,
+        ["buff.glaive_flurry"] = 442435,
+        ["buff.rending_strike"] = 442442,
     },
 }
+
+-- One-way learned-base evidence; a pair alone never proves a proc is active.
+-- 已学基础技能映射；还必须实时确认替换，不能把静态映射当作触发状态。
+RA.Registry.ACTIVE_OVERRIDE_BASES = {
+    [442294] = 185123, -- Reaver's Glaive -> Throw Glaive (Havoc only)
+    [201427] = 162794, [210152] = 188499,
+}
+RA.Registry.HAVOC_HERO_TALENTS = {fel_scarred=452402, aldrachi_reaver=442290}
 
 -- SimC 774babd, 12.1.0.69875: selected-talent transitions, not damage weights.
 -- 固定版本天赋状态转移；持续时间下界不当作精确光环时长。

@@ -1,0 +1,267 @@
+{
+  "schema": "rotaassist.independent-policy.v1",
+  "specID": 577,
+  "heroProfile": "aldrachi_reaver",
+  "parameters": {
+    "search": "aldrachi_structure_v2",
+    "change": "remove",
+    "index": 20
+  },
+  "rules": [
+    {
+      "action": "reavers_glaive",
+      "spellID": 442294,
+      "cost": 0,
+      "form": null,
+      "conditions": [
+        [
+          "buff.reavers_glaive.up",
+          ">",
+          0
+        ],
+        [
+          "buff.rending_strike.up",
+          "==",
+          0
+        ],
+        [
+          "buff.glaive_flurry.up",
+          "==",
+          0
+        ]
+      ]
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "form": "meta",
+      "conditions": [
+        [
+          "buff.rending_strike.up",
+          ">",
+          0
+        ]
+      ]
+    },
+    {
+      "action": "chaos_strike",
+      "spellID": 162794,
+      "cost": 40,
+      "form": "normal",
+      "conditions": [
+        [
+          "buff.rending_strike.up",
+          ">",
+          0
+        ],
+        [
+          "active_enemies",
+          ">=",
+          2
+        ]
+      ]
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "form": "meta",
+      "conditions": [
+        [
+          "buff.glaive_flurry.up",
+          ">",
+          0
+        ]
+      ]
+    },
+    {
+      "action": "blade_dance",
+      "spellID": 188499,
+      "cost": 35,
+      "form": "normal",
+      "conditions": [
+        [
+          "buff.glaive_flurry.up",
+          ">",
+          0
+        ]
+      ]
+    },
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "fury",
+          "<=",
+          40
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "vengeful_retreat",
+      "spellID": 198793,
+      "cost": 0,
+      "conditions": [
+        [
+          "buff.initiative.up",
+          "==",
+          0
+        ],
+        [
+          "cooldown.eye_beam.remains",
+          "<",
+          2
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [
+        [
+          "debuff.essence_break.up",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "conditions": [
+        [
+          "debuff.essence_break.up",
+          ">",
+          0
+        ]
+      ],
+      "form": "meta"
+    },
+    {
+      "action": "felblade",
+      "spellID": 232893,
+      "cost": 0,
+      "conditions": [
+        [
+          "buff.inertia_trigger.up",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [
+        [
+          "charges",
+          ">=",
+          2
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "metamorphosis",
+      "spellID": 191427,
+      "cost": 0,
+      "conditions": [
+        [
+          "cooldown.eye_beam.remains",
+          ">",
+          8
+        ],
+        [
+          "cooldown.blade_dance.remains",
+          ">",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "the_hunt",
+      "spellID": 370965,
+      "cost": 0,
+      "conditions": [
+        [
+          "buff.reavers_glaive.up",
+          "==",
+          0
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "eye_beam",
+      "spellID": 198013,
+      "cost": 30,
+      "conditions": [],
+      "form": null
+    },
+    {
+      "action": "essence_break",
+      "spellID": 258860,
+      "cost": 0,
+      "conditions": [
+        [
+          "cooldown.eye_beam.remains",
+          ">",
+          4
+        ],
+        [
+          "fury",
+          ">=",
+          35
+        ]
+      ],
+      "form": null
+    },
+    {
+      "action": "death_sweep",
+      "spellID": 210152,
+      "cost": 35,
+      "conditions": [],
+      "form": "meta"
+    },
+    {
+      "action": "blade_dance",
+      "spellID": 188499,
+      "cost": 35,
+      "conditions": [],
+      "form": "normal"
+    },
+    {
+      "action": "annihilation",
+      "spellID": 201427,
+      "cost": 40,
+      "conditions": [],
+      "form": "meta"
+    },
+    {
+      "action": "chaos_strike",
+      "spellID": 162794,
+      "cost": 40,
+      "conditions": [],
+      "form": "normal"
+    },
+    {
+      "action": "immolation_aura",
+      "spellID": 258920,
+      "cost": 0,
+      "conditions": [],
+      "form": null
+    }
+  ],
+  "requiredTalent": 442290
+}

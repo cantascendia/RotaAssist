@@ -5,6 +5,13 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.12 adds Aldrachi hero selection and a separately authored policy, plus fixes
+  for confirmed active replacements in the queue/range/resource paths. Six
+  held-out full-information SimC cases reach 96.35%–97.27% of reference DPS;
+  all six remain below reference. One fixed build and stationary encounters do
+  not establish all-build quality or live addon DPS. Experimental mode stays
+  off by default. See [research](../research/aldrachi-policy/README.md).
+
 - rc.11 adds bounded Fel-Scarred Demonsurge cast-state tracking. Four pinned SimC
   trajectories validate the 628 model values emitted by the tracker (plus 393
   public-form-absence values); 878 values remain unknown. The replay supplies

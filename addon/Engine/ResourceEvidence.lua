@@ -56,7 +56,7 @@ function Evidence:Observe(rules, powerType)
         local id=number(rule.spellID)
         if id and id>0 and not seen[id] then
             seen[id]=true
-            local learnedOK,learned=pcall(IsPlayerSpell,id)
+            local learnedOK,learned=pcall(RA.IsPlayerSpellKnownSafe,RA,id)
             if learnedOK and boolean(learned)==true then
                 local cost=minimumCost(id,powerType)
                 if cost then

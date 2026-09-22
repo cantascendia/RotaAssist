@@ -149,7 +149,7 @@ function Context:GetSnapshot()
     local probe = config and config.meleeProbe
     if probe and RA.ResolveSpellOverride then probe = RA:ResolveSpellOverride(probe) end
     if not public(probe) or type(probe) ~= "number"
-       or readBool(IsPlayerSpell, probe) ~= true then probe = nil end
+       or readBool(RA.IsPlayerSpellKnownSafe, RA, probe) ~= true then probe = nil end
     state.probeSpellID = probe
     wipe(seen)
     local targetGUID = readGUID("target")
@@ -245,7 +245,7 @@ function Context:GetSpellTargets(spellID)
     result.min, result.unknown, result.complete = 0, 0, false
     result.sampleSerial, result.generation = sampleSerial, state.generation
     result.source = "spell_targetable_lower_bound"
-    if readBool(IsPlayerSpell, spellID) ~= true
+    if readBool(RA.IsPlayerSpellKnownSafe, RA, spellID) ~= true
        or readBool(C_Spell and C_Spell.IsSpellHarmful, spellID) ~= true then
         result.unknown = 1; return result
     end

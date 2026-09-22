@@ -5,6 +5,19 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.12] - 2026-09-22
+
+[Aldrachi Havoc and active replacements](docs/RELEASE_1.1.1-rc.12.md), implemented by Astra.
+
+- Select a separate Aldrachi policy from current complete hero talent evidence.
+- Read Reaver's Glaive, Rending Strike and Glaive Flurry public aura facts and
+  query current range for actions missing from the older generic APL.
+- Retain publicly confirmed learned active replacements through default and
+  experimental queue filters, melee probes and resource-bound evidence.
+- Freeze and benchmark the same policy exported to Lua: 96.35%–97.27% of the
+  reference on six held-out scenarios; experimental mode remains default-off.
+- Validate 723 Lua / 109 Python tests, 169 Lua files and ten behavioral mutations.
+
 ## [1.1.1-rc.11] - 2026-09-22
 
 [Havoc burst-state tracking](docs/RELEASE_1.1.1-rc.11.md), implemented by Astra.
