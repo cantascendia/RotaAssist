@@ -75,6 +75,10 @@ function Observer:Observe(state)
         status.characterGeneration=build.generation
     end
     status.heroProfile=policy.heroProfile
+    local timing=RA:GetModule("ActionTiming")
+    local delay=timing and timing:GetQueueDelay() or 0
+    status.planningDelay=delay or 0
+    if delay and delay>0 then status.timingSource="public_gcd_queue_window" end
     wipe(rangeEvidence)
     status.rangeEvidence=rangeEvidence
     for _,values in pairs(sample) do wipe(values) end
@@ -105,10 +109,12 @@ function Observer:Observe(state)
     if sample.facts["buff.metamorphosis.up"]==nil and state.inMetaKnown==true
        and public(state.inMeta) and type(state.inMeta)=="boolean" then
         sample.facts["buff.metamorphosis.up"]=state.inMeta
+        sample.facts["buff.metamorphosis.remains"]=finite(state.metaRemains)
     end
     if state.windowUnknown and state.windowUnknown.essence_break~=true then
         local window=state.windows and state.windows.essence_break
         if public(window) and type(window)=="boolean" then sample.facts["debuff.essence_break.up"]=window end
+        sample.facts["debuff.essence_break.remains"]=finite(state.windowRemains and state.windowRemains.essence_break)
     end
     local count=finite(state.targetCount)
     if count and count>=0 then
@@ -124,6 +130,9 @@ function Observer:Observe(state)
             sample.known[id]=boolean(RA.IsPlayerSpellKnownSafe,RA,id)
             sample.charges[id]=finite(state.charges and state.charges[id])
             local remaining=cooldown(id)
+            -- Only event-proven GCDs may become ready at the queue horizon.
+            -- 队列窗口只消除有事件证据的公共冷却，不消除技能自身冷却。
+            if delay and delay>0 and timing:GetDelay(id) then remaining=0 end
             if rule.action then sample.facts["cooldown."..rule.action..".remains"]=remaining end
             local usable=boolean(C_Spell and C_Spell.IsSpellUsable,id)
             local inRange=state.spellRange and state.spellRange[id]
@@ -141,7 +150,23 @@ function Observer:Observe(state)
     -- Explicit cast-model provenance, not fabricated client aura observations.
     -- 强化标志来自有期限的施法模型；无记录或变身不可读时仍未知。
     local surge=RA:GetModule("HavocSurgeTracker")
-    if surge then status.surgeTrackedFacts,status.surgeSource=surge:Populate(sample.facts) end
+    if surge then status.surgeTrackedFacts,status.surgeSource=surge:Populate(sample.facts,delay) end
+    if delay and delay>0 then
+        for key,value in pairs(sample.facts) do
+            local prefix=key:match("^(buff%..+)%.up$") or key:match("^(debuff%..+)%.up$")
+            if prefix and (value==true or value==1) then
+                local remains=finite(sample.facts[prefix..".remains"])
+                if remains then sample.facts[key]=remains>delay
+                else sample.facts[key]=nil end
+            end
+        end
+        for key,value in pairs(sample.facts) do
+            if key:match("^buff%..+%.remains$") or key:match("^debuff%..+%.remains$") then
+                local remains=finite(value)
+                sample.facts[key]=remains and math.max(0,remains-delay) or nil
+            end
+        end
+    end
     local consensus=RA:GetModule("IndependentConsensus")
     local evaluated=(consensus or evaluator):Evaluate(policy,sample)
     status.status=evaluated.status

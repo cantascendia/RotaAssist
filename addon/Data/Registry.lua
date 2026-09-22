@@ -49,6 +49,7 @@ RA.Registry.ACTIVE_OVERRIDE_BASES = {
     [452497] = 198013,
 }
 RA.Registry.HAVOC_HERO_TALENTS = {fel_scarred=452402, aldrachi_reaver=442290}
+RA.Registry.ACTION_TIMING = {gcdSpellID=61304, maxQueueWindow=0.4}
 
 -- SimC 774babd: radial Havoc attacks with coverage beyond the melee probe.
 -- 仅玩家周围范围伤害；不把锥形、地面指向或位移技能当作同类。

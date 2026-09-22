@@ -1,0 +1,8 @@
+{
+  "checkedAt": "2026-09-22",
+  "source": "https://raw.githubusercontent.com/Gethe/wow-ui-source/78282522143e25c3540583734fd192c3d69be910/Interface/AddOns/Blizzard_APIDocumentationGenerated/SpellSharedDocumentation.lua",
+  "upstreamCommit": "78282522143e25c3540583734fd192c3d69be910",
+  "sha256": "4ebe8d82b50faa906300f646d9bba4e85ea820b7614947624c8816f19e0d6b68",
+  "fact": "isOnGCD is NeverSecret and trustworthy only when responding to SPELL_UPDATE_COOLDOWN",
+  "localArchive": "dist/research/action-timing/SpellSharedDocumentation.lua"
+}

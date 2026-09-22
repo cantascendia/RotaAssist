@@ -64,13 +64,16 @@ function Tracker:OnCast(unit,guid,spellID)
         if index and expires[index] and expires[index]>now then values[index]=0 end
     end
 end
-function Tracker:Populate(facts)
+function Tracker:Populate(facts,planningDelay)
     local c=RA.Registry.HAVOC_SURGE
     -- Callers reuse buffers; always erase our own prior contribution first.
     -- 调用方可复用缓冲区；先清除本模块上一次提供的值。
     for _,key in ipairs(c.facts) do facts[key]=nil end
     if not enabled then return 0,"disabled" end
     local now=clock(); if not now then return 0,"clock_unknown" end
+    if not public(planningDelay) then return 0,"horizon_unknown" end
+    local delay=planningDelay==nil and 0 or number(planningDelay)
+    if not delay or delay<0 then return 0,"horizon_unknown" end
     local selected=talent(c.talent)
     if selected==nil then clear(); return 0,"build_unknown" end
     if selected==0 then
@@ -78,16 +81,18 @@ function Tracker:Populate(facts)
         return 0,"talent_absent"
     end
     local auras=RA:GetModule("PublicAuraFacts")
-    local up=auras and auras:ReadPlayer(c.metaAura,now)
+    local up,remains
+    if auras then up,remains=auras:ReadPlayer(c.metaAura,now) end
     if not public(up) or type(up)~="boolean" then return 0,"form_unknown" end
     if up==false then
         clear(); for _,key in ipairs(c.facts) do facts[key]=0 end
         return 0,"public_form_absent"
     end
+    if delay>0 and (not number(remains) or remains<=delay) then return 0,"form_horizon_unknown" end
     local count=0
     for i,key in ipairs(c.facts) do
-        if expires[i] and expires[i]>now then facts[key]=values[i]; count=count+1
-        else values[i],expires[i]=nil,nil end
+        if expires[i] and expires[i]>now+delay then facts[key]=values[i]; count=count+1
+        elseif not expires[i] or expires[i]<=now then values[i],expires[i]=nil,nil end
     end
     return count,count>0 and "cast_model" or "history_unknown"
 end

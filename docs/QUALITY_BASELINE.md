@@ -5,6 +5,12 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.15 adds event-proven GCD queue planning, capped at 400 ms, with aura and
+  surge expiry checks at the action horizon. The real queue works without a
+  native recommendation in the fixture and withdraws on target loss. This is
+  offline behavioral evidence, not real-client observation coverage or DPS.
+  See [timing evidence](../research/action-timing/README.md).
+
 - rc.14 fixes enhanced Eye Beam learned-status, paired cooldown metadata and
   selected-talent transitions. A separate current-population priority search
   failed to establish an improvement and was not adopted. Twenty held-out

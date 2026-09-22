@@ -1,0 +1,50 @@
+[
+  {
+    "name": "ignore_gcd_flag",
+    "killed": true
+  },
+  {
+    "name": "ignore_spell_clock",
+    "killed": true
+  },
+  {
+    "name": "ignore_queue_window",
+    "killed": true
+  },
+  {
+    "name": "ignore_clock_refresh",
+    "killed": true
+  },
+  {
+    "name": "ignore_charges",
+    "killed": true
+  },
+  {
+    "name": "ignore_cast_reset",
+    "killed": true
+  },
+  {
+    "name": "ignore_event_scope",
+    "killed": true
+  },
+  {
+    "name": "ignore_aura_expiry",
+    "killed": true
+  },
+  {
+    "name": "keep_unbounded_aura",
+    "killed": true
+  },
+  {
+    "name": "drop_gcd_readiness",
+    "killed": true
+  },
+  {
+    "name": "extend_surge_expiry",
+    "killed": true
+  },
+  {
+    "name": "ignore_form_horizon",
+    "killed": true
+  }
+]

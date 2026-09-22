@@ -5,6 +5,17 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.15] - 2026-09-22
+
+[Public GCD action timing](docs/RELEASE_1.1.1-rc.15.md), implemented by Astra.
+
+- Use event-scoped GCD evidence for independent hints within a maximum 400 ms
+  queue horizon; preserve real cooldown, charge and secret-value boundaries.
+- Recheck aura and Demonsurge expiry at that horizon without extending history.
+- Verify the real main slot without native input, population changes and target loss.
+- Validate 756 Lua / 118 Python tests, 170 Lua files and twelve behavioral mutations.
+- Keep priority policies and opt-in defaults unchanged; no live DPS claim.
+
 ## [1.1.1-rc.14] - 2026-09-22
 
 [Enhanced Eye Beam integration](docs/RELEASE_1.1.1-rc.14.md), implemented by Astra.

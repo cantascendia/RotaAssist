@@ -55,6 +55,7 @@ local MODULE_ORDER = {
     "ResourceEvidence",
     "PublicAuraFacts",
     "HavocSurgeTracker",
+    "ActionTiming",
     "IndependentObserver",
     "SmartQueueManager",
     "CooldownOverlay",
@@ -144,7 +145,11 @@ end
 --- @return boolean|nil ready 是否就绪，nil=無法判断
 --- @return number|nil start CD 开始时间，nil=secret
 --- @return number|nil duration CD 总时长，nil=secret
-function RA:GetSpellCooldownSafe(spellID)
+-- eventFacts is an optional reusable output, only for synchronous cooldown-event
+-- consumers. isOnGCD is not trustworthy when polled outside that event.
+-- 可选事件输出只供冷却事件同步使用；普通轮询不能把 GCD 标志当证据。
+function RA:GetSpellCooldownSafe(spellID, eventFacts)
+    if eventFacts then wipe(eventFacts) end
     if issecretvalue(spellID) then
         return nil, nil, nil, nil
     end
@@ -156,8 +161,14 @@ function RA:GetSpellCooldownSafe(spellID)
     end
 
     local ok, cdInfo = pcall(C_Spell.GetSpellCooldown, spellID)
-    if not ok or type(cdInfo) ~= "table" then
+    if not ok or issecretvalue(cdInfo) or type(cdInfo) ~= "table" then
         return nil, nil, nil, nil
+    end
+
+    if eventFacts then
+        local flag, enabled = cdInfo.isOnGCD, cdInfo.isEnabled
+        if not issecretvalue(flag) and type(flag)=="boolean" then eventFacts.isOnGCD=flag end
+        if not issecretvalue(enabled) and type(enabled)=="boolean" then eventFacts.isEnabled=enabled end
     end
 
     -- Blizzard documents isEnabled=false as a cooldown on hold. In that state

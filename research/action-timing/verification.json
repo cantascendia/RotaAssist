@@ -1,0 +1,15 @@
+{
+  "release": "1.1.1-rc.15",
+  "luaTests": {"passed": 756, "failed": 0},
+  "pythonTests": {"passed": 118, "failed": 0},
+  "addonLuaSyntaxFiles": 170,
+  "behavioralMutations": {"killed": 12, "total": 12},
+  "generatedTestBudgets": {"publicClockCombinations": 100, "surgeHorizons": 55},
+  "realQueueIntegrationTest": true,
+  "nativeRecommendationRequiredInQueueFixture": false,
+  "maximumPlanningHorizonSeconds": 0.4,
+  "shippedPoliciesUnchanged": true,
+  "liveValidated": false,
+  "demonstratedDpsImprovement": false,
+  "maximumDPSAchieved": false
+}
