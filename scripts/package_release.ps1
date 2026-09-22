@@ -71,6 +71,9 @@ try {
     }
 
     $docs = @(
+        @((Join-Path $RepoRoot 'README.en.md'), 'README.en.md'),
+        @((Join-Path $RepoRoot 'docs\assets\hero.svg'), 'docs\assets\hero.svg'),
+        @((Join-Path $RepoRoot 'docs\assets\experience.svg'), 'docs\assets\experience.svg'),
         @((Join-Path $RepoRoot 'docs\USER_QUICK_START.md'), 'START-HERE.md'),
         @((Join-Path $RepoRoot 'docs\USER_QUICK_START.md'), 'docs\USER_QUICK_START.md'),
         @((Join-Path $RepoRoot 'docs\RELEASE_1.1.1-rc.17.md'), 'docs\RELEASE_1.1.1-rc.17.md'),

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540" role="img" aria-labelledby="title desc">
+<title id="title">RotaAssist — Read the fight. Own your next move.</title><desc id="desc">Havoc-first early access rotation coach. Concept illustration, not an in-game screenshot.</desc>
+<defs>
+<linearGradient id="bg" x2="1" y2="1"><stop stop-color="#090b14"/><stop offset="1" stop-color="#211331"/></linearGradient>
+<radialGradient id="aura"><stop stop-color="#a052ff" stop-opacity=".4"/><stop offset="1" stop-color="#a052ff" stop-opacity="0"/></radialGradient>
+<linearGradient id="card" x2="1" y2="1"><stop stop-color="#583081"/><stop offset="1" stop-color="#1d162a"/></linearGradient>
+<linearGradient id="blade" x2="1" y2="1"><stop stop-color="#e1ffb7"/><stop offset="1" stop-color="#91e95e"/></linearGradient>
+<pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#cab1ef" stroke-opacity=".035"/></pattern>
+</defs>
+<rect width="1200" height="540" rx="24" fill="url(#bg)"/><rect width="1200" height="540" rx="24" fill="url(#grid)"/><ellipse cx="919" cy="273" rx="342" ry="286" fill="url(#aura)"/>
+<path d="M708 523 1049 61M802 550 1143 88M649 436 971 0" stroke="#ae77ff" stroke-opacity=".13"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<rect x="64" y="56" width="256" height="31" rx="15" fill="#b8ff83" fill-opacity=".08" stroke="#b8ff83" stroke-opacity=".35"/><circle cx="82" cy="71" r="3" fill="#b8ff83"/><text x="95" y="76" fill="#ccffad" font-size="11" font-weight="700" letter-spacing="1.6">EARLY ACCESS / HAVOC FIRST</text>
+<text x="60" y="205" fill="#f4efff" font-size="88" font-weight="800" letter-spacing="-5">RotaAssist<tspan fill="#b8ff83">.</tspan></text>
+<text x="65" y="263" fill="#f4efff" font-size="27" font-weight="700" letter-spacing="1">READ THE FIGHT.</text><text x="65" y="305" fill="#bca8dc" font-size="27" font-weight="700" letter-spacing="1">OWN YOUR NEXT MOVE.</text>
+<text x="65" y="350" fill="#aaa5bb" font-size="16">Your rotation, with more context and less clutter.</text>
+<line x1="65" y1="398" x2="604" y2="398" stroke="#51415e"/>
+<text x="65" y="433" fill="#d4c4ed" font-size="11" font-weight="700" letter-spacing="1.6">BUILD AWARE</text><text x="251" y="433" fill="#d4c4ed" font-size="11" font-weight="700" letter-spacing="1.6">LIVE CONTEXT</text><text x="437" y="433" fill="#d4c4ed" font-size="11" font-weight="700" letter-spacing="1.6">FOCUSED UI</text>
+<text x="65" y="497" fill="#9690a4" font-size="12" letter-spacing="1">WORLD OF WARCRAFT / MIDNIGHT 12.1</text>
+<rect x="741" y="159" width="148" height="186" rx="17" fill="#080910" stroke="#a679e9" stroke-width="2"/><text x="763" y="187" fill="#c4ff94" font-size="11" font-weight="700" letter-spacing="2">NEXT ACTION</text>
+<rect x="756" y="201" width="118" height="118" rx="12" fill="url(#card)" stroke="#9668bd"/>
+<path d="m818 222-41 37 8 30 11-16-2-13 24-19-10 22 23-19 21-5-34 45 13 17 32-57-13-23-13 17Z" fill="url(#blade)"/><text x="849" y="225" fill="#fff" font-size="14" font-weight="700">F</text>
+<path d="M903 255h17m-5-5 5 5-5 5" fill="none" stroke="#bcb1ce" stroke-width="2"/>
+<rect x="934" y="219" width="84" height="84" rx="11" fill="#251b36" stroke="#715688"/><path d="m955 264 17-24 22 6-16 14 12 21-19-9-11 11 5-18Z" fill="#c4a1ff"/><text x="998" y="236" fill="#fff" font-size="12">2</text>
+<rect x="1030" y="231" width="67" height="67" rx="10" fill="#21182e" stroke="#564363"/><path d="m1046 271 13-23 8 13 18-4-19 26-4-16Z" fill="#8d77ab"/><text x="1080" y="246" fill="#c7c0d1" font-size="10">3</text>
+<rect x="756" y="365" width="341" height="5" rx="2" fill="#342840"/><rect x="756" y="365" width="201" height="5" rx="2" fill="#a777ed"/>
+<text x="937" y="340" fill="#afa1c2" font-size="10" letter-spacing="1.4">CHANGING LOOKAHEAD</text><text x="770" y="413" fill="#aa9bbc" font-size="11">Concept illustration / not an in-game capture</text>
+</g></svg>

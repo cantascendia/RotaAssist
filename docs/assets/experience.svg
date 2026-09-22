@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="250" viewBox="0 0 1200 250" role="img" aria-labelledby="t d">
+<title id="t">Two views. One focus: the fight.</title><desc id="d">Combat focus keeps next-action guidance clear. Learning view adds context. Schematic illustrations, not screenshots.</desc>
+<rect width="1200" height="250" rx="18" fill="#11101b"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="35" y="42" fill="#bdff8a" font-size="12" font-weight="700" letter-spacing="2">01 / COMBAT FOCUS</text><text x="35" y="77" fill="#f6efff" font-size="22" font-weight="700">Less noise. More room to react.</text>
+<rect x="36" y="105" width="64" height="64" rx="8" fill="#5b3485" stroke="#b0ff8d"/><text x="48" y="143" fill="#fff" font-size="16" font-weight="700">NOW</text><rect x="112" y="121" width="42" height="42" rx="6" fill="#30223f" stroke="#77618f"/><text x="128" y="148" fill="#d7c9e6" font-size="16">1</text><rect x="164" y="121" width="42" height="42" rx="6" fill="#30223f" stroke="#77618f"/><text x="180" y="148" fill="#d7c9e6" font-size="16">2</text><text x="235" y="141" fill="#c6bbd5" font-size="14">Action + lookahead + resources</text><text x="36" y="211" fill="#a295b0" font-size="12">Keep interrupt and defensive alerts available.</text>
+<line x1="600" y1="28" x2="600" y2="221" stroke="#3d2d4b"/>
+<text x="636" y="42" fill="#c49aff" font-size="12" font-weight="700" letter-spacing="2">02 / LEARNING VIEW</text><text x="636" y="77" fill="#f6efff" font-size="22" font-weight="700">See the rhythm behind the buttons.</text>
+<rect x="636" y="106" width="191" height="29" rx="6" fill="#2c1d41"/><text x="650" y="125" fill="#ceaffe" font-size="12">PHASE CONTEXT</text><rect x="636" y="144" width="191" height="29" rx="6" fill="#211d2a"/><text x="650" y="163" fill="#c3b9d3" font-size="12">PRE-PULL CHECKS</text><text x="851" y="125" fill="#c6bbd5" font-size="14">Coaching, cooldowns</text><text x="851" y="149" fill="#c6bbd5" font-size="14">and suggestion adherence.</text><text x="636" y="211" fill="#a295b0" font-size="12">Schematic preview / not an in-game capture</text>
+</g></svg>
