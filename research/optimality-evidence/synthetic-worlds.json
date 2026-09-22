@@ -1,0 +1,36 @@
+{
+  "schema": "rotaassist.return-bounds.v1",
+  "observation": "synthetic: identical public history",
+  "alternatives": [
+    "burst_now",
+    "hold"
+  ],
+  "worlds": [
+    {
+      "id": "fight_ends_soon",
+      "returns": {
+        "burst_now": [
+          100,
+          100
+        ],
+        "hold": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "adds_arrive",
+      "returns": {
+        "burst_now": [
+          100,
+          100
+        ],
+        "hold": [
+          180,
+          180
+        ]
+      }
+    }
+  ]
+}

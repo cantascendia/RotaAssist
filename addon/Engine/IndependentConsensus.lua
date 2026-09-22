@@ -7,7 +7,8 @@ RA:RegisterModule("IndependentConsensus",Consensus)
 local MAX_DOMAINS,MAX_PREDICATES,MAX_DEPTH=128,1216,128
 local DEFAULT_BUDGET=2048
 local domains,predicates,domainIndex,starts,counts,ids={},{},{},{},{},{}
-local result={status="unavailable",candidates={},missing={}}
+local result={status="unavailable",candidates={},missing={},counterexamples={}}
+local witnessPool={}
 local candidateSet={}
 local domainCount,predicateCount,ruleCount,nodes,budget=0,0,0,0,DEFAULT_BUDGET
 local selected,diverged,exhausted,leaves=nil,false,false,0
@@ -23,6 +24,10 @@ end
 function Consensus:OnInitialize()
     for i=1,MAX_DOMAINS do domains[i]=domains[i] or {} end
     for i=1,MAX_PREDICATES do predicates[i]=predicates[i] or {} end
+    for i=1,2 do
+        witnessPool[i]=witnessPool[i] or {bounds={}}
+        for j=1,MAX_DOMAINS do witnessPool[i].bounds[j]=witnessPool[i].bounds[j] or {} end
+    end
 end
 local function domain(key,value,bound,isFlag)
     local index=domainIndex[key]
@@ -31,6 +36,7 @@ local function domain(key,value,bound,isFlag)
     if domainCount>MAX_DOMAINS then return nil end
     index=domainCount; domainIndex[key]=index
     local d=domains[index]
+    d.key=key
     if value~=nil then d.lo,d.hi=value,value
     else
         local lo,hi
@@ -95,6 +101,18 @@ local function witness(id)
     if not candidateSet[id] then
         candidateSet[id]=true
         if id~=0 then result.candidates[#result.candidates+1]=id end
+        -- At most two counterexamples suffice to show policy disagreement.
+        -- 两个区间见证只证明策略分歧，不声称恢复了真实隐藏战况。
+        local index=#result.counterexamples+1
+        if index<=2 then
+            local w=witnessPool[index]; w.action,w.count=id,domainCount
+            for i=1,domainCount do
+                local d,b=domains[i],w.bounds[i]
+                b.key,b.min,b.max=d.key,d.lo,d.hi
+                b.minOpen,b.maxOpen=d.loOpen,d.hiOpen
+            end
+            result.counterexamples[index]=w
+        end
     end
     if selected==nil then selected=id elseif selected~=id then diverged=true end
 end
@@ -121,8 +139,16 @@ end
 -- Borrowed result; budget exhaustion always fails closed.
 -- 复用结果；搜索预算耗尽不会把部分结果提升为确定推荐。
 function Consensus:Evaluate(policy,snapshot,nodeBudget)
+    wipe(result.counterexamples)
+    result.policyInvariant,result.maximumDPSProven=false,false
+    result.proofScope="supplied_policy_only"
     local evaluator=RA:GetModule("IndependentDecision")
-    if not evaluator then result.status="unavailable"; result.spellID=nil; return result end
+    if not evaluator then
+        wipe(result.candidates); wipe(result.missing)
+        result.status,result.spellID,result.exhaustive="unavailable",nil,false
+        result.nodes,result.leaves=0,0
+        return result
+    end
     local base=evaluator:Evaluate(policy,snapshot)
     wipe(result.candidates); wipe(result.missing); wipe(candidateSet)
     result.status,result.spellID,result.exhaustive=base.status,base.spellID,false
@@ -131,6 +157,7 @@ function Consensus:Evaluate(policy,snapshot,nodeBudget)
     for _,id in ipairs(base.candidates) do result.candidates[#result.candidates+1]=id end
     if base.status~="ambiguous" then
         result.exhaustive=base.status=="decided" or base.status=="wait"
+        result.policyInvariant=result.exhaustive
         return result
     end
     if not domains[1] then self:OnInitialize() end
@@ -142,15 +169,19 @@ function Consensus:Evaluate(policy,snapshot,nodeBudget)
     visit(1,1,0)
     result.nodes,result.leaves=nodes,leaves
     result.exhaustive=not exhausted and not diverged
-    if exhausted then result.status="budget_exceeded"
+    if exhausted then result.status="budget_exceeded"; wipe(result.counterexamples)
     elseif diverged then result.status="ambiguous"
     elseif selected==0 then result.status="wait"
     elseif selected~=nil then result.status="decided"; result.spellID=selected
     else result.status="unavailable" end
+    result.policyInvariant=result.exhaustive and (result.status=="decided" or result.status=="wait")
+    if not diverged then wipe(result.counterexamples) end
     return result
 end
 function Consensus:OnEnable() end
 function Consensus:OnDisable()
     wipe(result.candidates); wipe(result.missing)
+    wipe(result.counterexamples)
+    result.policyInvariant,result.maximumDPSProven=false,false
     result.status,result.spellID,result.exhaustive="unavailable",nil,false
 end

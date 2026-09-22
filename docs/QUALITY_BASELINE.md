@@ -5,6 +5,11 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.16 emits policy ambiguity witnesses and adds a separate exact finite-table
+  regret calculator. Certificates are conditional on the supplied alternatives
+  and bounds, not real-game optimality. The historical raw-report audit still
+  shows a gap against the reference. See [proof scopes](../research/optimality-evidence/README.md).
+
 - rc.15 adds event-proven GCD queue planning, capped at 400 ms, with aura and
   surge expiry checks at the action horizon. The real queue works without a
   native recommendation in the fixture and withdraws on target loss. This is

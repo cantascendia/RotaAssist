@@ -1,0 +1,229 @@
+{
+  "sourceSha256": "17a5bf06c4bb61bc047d3f71752c8cb15c4c94839a80c62b4802ce3866965624",
+  "uniqueRawReportsVerified": 40,
+  "comparisons": [
+    {
+      "hero": "fel_scarred",
+      "scenario": "single",
+      "duration": 120,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 276066.5786516164,
+      "shippedMeanDps": 272189.2596985427,
+      "ratio": 0.9859551309252588,
+      "meanGap": 3877.3189530737,
+      "gapMinusThreeSESum": 2848.0793903189783
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "waves",
+      "duration": 120,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 343621.00199948176,
+      "shippedMeanDps": 320712.782298275,
+      "ratio": 0.9333328883627394,
+      "meanGap": 22908.219701206777,
+      "gapMinusThreeSESum": 21543.929086143416
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "moving_waves",
+      "duration": 120,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 333096.9667989045,
+      "shippedMeanDps": 306042.96397759276,
+      "ratio": 0.9187803987490386,
+      "meanGap": 27054.002821311762,
+      "gapMinusThreeSESum": 25681.04739077804
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement",
+      "duration": 120,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 266762.61307966296,
+      "shippedMeanDps": 261282.79101327114,
+      "ratio": 0.9794580582221415,
+      "meanGap": 5479.822066391818,
+      "gapMinusThreeSESum": 4435.638407016426
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "five",
+      "duration": 120,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 539870.7159509213,
+      "shippedMeanDps": 531948.287572665,
+      "ratio": 0.9853253230001523,
+      "meanGap": 7922.428378256271,
+      "gapMinusThreeSESum": 6305.430533591291
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "single",
+      "duration": 300,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 252766.61728687264,
+      "shippedMeanDps": 247713.43874716066,
+      "ratio": 0.9800085209275203,
+      "meanGap": 5053.178539711982,
+      "gapMinusThreeSESum": 4417.47040025926
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "waves",
+      "duration": 300,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 316340.8851665794,
+      "shippedMeanDps": 297380.11865433713,
+      "ratio": 0.9400622322269286,
+      "meanGap": 18960.766512242262,
+      "gapMinusThreeSESum": 18040.426790851183
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "moving_waves",
+      "duration": 300,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 305563.83013004105,
+      "shippedMeanDps": 285924.3346035696,
+      "ratio": 0.9357270279073497,
+      "meanGap": 19639.495526471466,
+      "gapMinusThreeSESum": 18711.863426643136
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement",
+      "duration": 300,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 241787.71377704202,
+      "shippedMeanDps": 238408.55752240535,
+      "ratio": 0.9860242846840734,
+      "meanGap": 3379.1562546366767,
+      "gapMinusThreeSESum": 2714.0587966657204
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "five",
+      "duration": 300,
+      "shippedPolicySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "referenceMeanDps": 497237.5398377153,
+      "shippedMeanDps": 483889.1439965905,
+      "ratio": 0.9731548912306957,
+      "meanGap": 13348.395841124759,
+      "gapMinusThreeSESum": 12315.875766259358
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "single",
+      "duration": 120,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 261472.2153927294,
+      "shippedMeanDps": 251147.21115531918,
+      "ratio": 0.9605120405550466,
+      "meanGap": 10325.004237410234,
+      "gapMinusThreeSESum": 8823.310864759027
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "waves",
+      "duration": 120,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 358424.16541656,
+      "shippedMeanDps": 336937.3935697659,
+      "ratio": 0.9400521116598759,
+      "meanGap": 21486.771846794116,
+      "gapMinusThreeSESum": 18991.310943723973
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "moving_waves",
+      "duration": 120,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 344981.12542216014,
+      "shippedMeanDps": 323354.3696178232,
+      "ratio": 0.937310321607097,
+      "meanGap": 21626.75580433692,
+      "gapMinusThreeSESum": 19174.70332284009
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement",
+      "duration": 120,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 248467.63437903626,
+      "shippedMeanDps": 239867.80538055138,
+      "ratio": 0.9653885343256986,
+      "meanGap": 8599.828998484882,
+      "gapMinusThreeSESum": 7077.815621068439
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "five",
+      "duration": 120,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 567982.8348147864,
+      "shippedMeanDps": 549173.8825044038,
+      "ratio": 0.966884646581765,
+      "meanGap": 18808.95231038262,
+      "gapMinusThreeSESum": 15400.528845578727
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "single",
+      "duration": 300,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 247504.46570237473,
+      "shippedMeanDps": 238327.3526396055,
+      "ratio": 0.9629214243196534,
+      "meanGap": 9177.113062769233,
+      "gapMinusThreeSESum": 8239.054495260392
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "waves",
+      "duration": 300,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 333746.57222147915,
+      "shippedMeanDps": 321102.5943091897,
+      "ratio": 0.9621150328881919,
+      "meanGap": 12643.97791228944,
+      "gapMinusThreeSESum": 11127.012721900534
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "moving_waves",
+      "duration": 300,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 317771.8129926832,
+      "shippedMeanDps": 308625.3123746262,
+      "ratio": 0.9712167654773471,
+      "meanGap": 9146.500618056976,
+      "gapMinusThreeSESum": 7616.697827569667
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement",
+      "duration": 300,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 233740.46193572113,
+      "shippedMeanDps": 227118.2023085785,
+      "ratio": 0.9716683214694606,
+      "meanGap": 6622.25962714263,
+      "gapMinusThreeSESum": 5695.88872472997
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "five",
+      "duration": 300,
+      "shippedPolicySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "referenceMeanDps": 542652.7510889429,
+      "shippedMeanDps": 528341.1828925887,
+      "ratio": 0.9736266550429623,
+      "meanGap": 14311.568196354201,
+      "gapMinusThreeSESum": 12172.596355043352
+    }
+  ],
+  "rawMetricsAndInputProfilesVerified": true,
+  "boundary": "Existing offline SimC means. Three-SE screen is descriptive, not a simultaneous confidence theorem or live-game proof.",
+  "maximumDPSProven": false
+}

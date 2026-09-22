@@ -1,0 +1,36 @@
+{
+  "schema": "rotaassist.return-bounds.v1",
+  "observation": "synthetic dominance example",
+  "alternatives": [
+    "burst_now",
+    "hold"
+  ],
+  "worlds": [
+    {
+      "id": "high_return",
+      "returns": {
+        "burst_now": [
+          100,
+          120
+        ],
+        "hold": [
+          80,
+          90
+        ]
+      }
+    },
+    {
+      "id": "low_return",
+      "returns": {
+        "burst_now": [
+          10,
+          12
+        ],
+        "hold": [
+          0,
+          9
+        ]
+      }
+    }
+  ]
+}

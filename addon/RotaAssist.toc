@@ -2,7 +2,7 @@
 ## Title: RotaAssist
 ## Notes: AI-powered rotation assistant for WoW Midnight 12.1 | 智能循环助手 | ローテアシスト
 ## Author: RotaAssist Team
-## Version: 1.1.1-rc.15
+## Version: 1.1.1-rc.16
 ## SavedVariables: RotaAssistDB
 ## OptionalDeps: Ace3
 ## IconTexture: Interface\Icons\Ability_Mage_BrainFreeze

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "include_self_regret",
+    "killed": true
+  },
+  {
+    "name": "reverse_regret",
+    "killed": true
+  },
+  {
+    "name": "allow_missing_actions",
+    "killed": true
+  },
+  {
+    "name": "drop_prior_weight",
+    "killed": true
+  },
+  {
+    "name": "claim_live_proof",
+    "killed": true
+  },
+  {
+    "name": "wrong_witness_action",
+    "killed": true
+  },
+  {
+    "name": "close_open_endpoint",
+    "killed": true
+  },
+  {
+    "name": "drop_wait_witness",
+    "killed": true
+  },
+  {
+    "name": "claim_policy_is_dps",
+    "killed": true
+  }
+]

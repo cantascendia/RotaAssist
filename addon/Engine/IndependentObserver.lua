@@ -175,6 +175,10 @@ function Observer:Observe(state)
     status.missing=evaluated.missing
     status.consensusNodes=evaluated.nodes
     status.consensusExhaustive=evaluated.exhaustive
+    status.policyInvariant=evaluated.policyInvariant==true
+    status.proofScope=evaluated.proofScope or "supplied_policy_only"
+    status.counterexamples=evaluated.counterexamples
+    status.maximumDPSProven=false
     status.policySha256=policy.policySha256
     status.performanceQualified=false
     return status

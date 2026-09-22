@@ -5,6 +5,16 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.16] - 2026-09-22
+
+[Scoped decision evidence](docs/RELEASE_1.1.1-rc.16.md), implemented by Astra.
+
+- Explain policy ambiguity with two bounded, reusable interval witnesses.
+- Separate policy invariance from DPS optimality in observer diagnostics.
+- Add an exact rational finite-table regret calculator and clearly synthetic examples.
+- Audit 40 historical raw simulator reports and matching input/summary metrics.
+- Validate 761 Lua / 131 Python tests and nine behavioral mutations; no live DPS proof.
+
 ## [1.1.1-rc.15] - 2026-09-22
 
 [Public GCD action timing](docs/RELEASE_1.1.1-rc.15.md), implemented by Astra.
