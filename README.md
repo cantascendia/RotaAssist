@@ -2,13 +2,13 @@
 
 [![WoW Version](https://img.shields.io/badge/WoW-12.1_Midnight-blueviolet)](https://worldofwarcraft.blizzard.com)
 [![Interface](https://img.shields.io/badge/Interface-120100-informational)](https://warcraft.wiki.gg/wiki/Interface_number)
-[![Version](https://img.shields.io/badge/version-1.1.1--rc.12-orange)](docs/QUALITY_BASELINE.md)
+[![Version](https://img.shields.io/badge/version-1.1.1--rc.13-orange)](docs/QUALITY_BASELINE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **RotaAssist** — WoW Midnight 12.1 的循环**教练**插件。
 *A rotation **coach** for WoW Midnight 12.1 — not another "next spell" icon.*
 
-> **当前交付：1.1.1-rc.12 本地安装候选包，优先完善浩劫。** 自动识别当前玩家已学主动技能，接入角色 build 快照、公开事实与可选独立决策，
+> **当前交付：1.1.1-rc.13 本地安装候选包，优先完善浩劫。** 自动识别当前玩家已学主动技能，接入角色 build 快照、公开事实与可选独立决策，
 > 尚无插件真机战斗或 DPS 验收，不宣称理论最优或超越 Hekili。目标为 Interface `120100`；
 > 客户端兼容性需要实测。推荐评分和“准确率”不是 DPS 百分比。
 > 详见 [推荐质量与验收标准](docs/QUALITY_BASELINE.md)。
@@ -16,6 +16,10 @@
 游戏内自动识别无需个人导出或外部模拟：切换专精、天赋和目标后刷新技能与距离观测，
 明确超距的技能会从推荐中移除。不同技能分别记录可选敌人数下界；该数量不等于 AoE 命中数。
 这套采集与过滤面向各专精，但全专精独立伤害模型尚未完成。详见 [rc.10 说明](docs/RELEASE_1.1.1-rc.10.md)。
+
+rc.13 修复玩家周围范围技能因没有原生目标射程结果而无法确定的问题，使用当前目标的
+公开近战证据，转火后重新判断。移动和增援模拟揭示现有策略仍有明显差距，尚未通过
+实战大米、团本最高输出验收。详见 [rc.13 说明](docs/RELEASE_1.1.1-rc.13.md)。
 
 rc.12 新增奥达奇独立策略，按完整英雄天赋证据自动选择；修复掠夺者战刃被误当作未学会、
 变身后的歼灭导致近战探针失效的问题。六个独立模拟场景达到参考循环的 96.35%–97.27%，
@@ -100,7 +104,7 @@ TOC load order. Loaded data still requires per-specialization validation.*
 也不承诺自动更新。
 
 ### Manual / 手动安装
-1. 获取本次交付的 `RotaAssist-1.1.1-rc.12.zip`；源码 ZIP 不能替代带依赖的安装包
+1. 获取本次交付的 `RotaAssist-1.1.1-rc.13.zip`；源码 ZIP 不能替代带依赖的安装包
 2. 解压到
    `World of Warcraft/_retail_/Interface/AddOns/`
    解压后应存在 `Interface/AddOns/RotaAssist/RotaAssist.toc`

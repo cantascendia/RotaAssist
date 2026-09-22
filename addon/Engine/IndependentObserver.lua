@@ -6,6 +6,7 @@ local Observer = {}
 RA:RegisterModule("IndependentObserver", Observer)
 local sample = {facts={},known={},ready={},charges={},bounds={}}
 local enemyBounds, seen = {}, {}
+local rangeEvidence = {}
 local status = {status="unavailable", mode="observation_only"}
 local function public(v) return not (issecretvalue and issecretvalue(v)) end
 local function finite(v)
@@ -69,6 +70,8 @@ function Observer:Observe(state)
         status.characterGeneration=build.generation
     end
     status.heroProfile=policy.heroProfile
+    wipe(rangeEvidence)
+    status.rangeEvidence=rangeEvidence
     for _,values in pairs(sample) do wipe(values) end
     wipe(seen)
     if character then
@@ -120,7 +123,10 @@ function Observer:Observe(state)
             local usable=boolean(C_Spell and C_Spell.IsSpellUsable,id)
             local inRange=state.spellRange and state.spellRange[id]
             local target=RA:GetModule("TargetContext")
-            if target and target.IsActive and target:IsActive() and target.GetSpellRange then inRange=target:GetSpellRange(id) end
+            if target and target.IsActive and target:IsActive() then
+                if target.GetActionRange then inRange,rangeEvidence[id]=target:GetActionRange(id)
+                elseif target.GetSpellRange then inRange=target:GetSpellRange(id) end
+            end
             if not public(inRange) or type(inRange)~="boolean" then inRange=nil end
             if usable==false or inRange==false or (remaining and remaining>0)
                or (state.softBlocked and state.softBlocked[id]) then sample.ready[id]=false

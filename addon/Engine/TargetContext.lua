@@ -232,6 +232,22 @@ function Context:GetSpellRange(spellID)
     return state.spellRange[spellID]
 end
 
+-- Separate action applicability from native target range and AoE hit counts.
+-- 范围伤害的近战见证不写回原生射程，不伪装成精确命中数。
+function Context:GetActionRange(spellID)
+    if not enabled or not public(spellID) or type(spellID)~="number" or spellID<=0
+       or spellID>=math.huge or spellID%1~=0 then return nil,"unknown" end
+    local native=self:GetSpellRange(spellID)
+    if native~=nil then return native,"native_spell_range" end
+    local config=getConfig()
+    local area=RA.Registry and RA.Registry.HAVOC_PLAYER_AREA_ACTIONS
+    if not config or not area or area[spellID]~=true or state.targetValid~=true then return nil,"unknown" end
+    if readBool(C_Spell and C_Spell.SpellHasRange,spellID)~=false then return nil,"unknown" end
+    local probe=state.probeSpellID
+    if probe and self:GetSpellRange(probe)==true then return true,"current_target_melee_witness" end
+    return nil,"unknown"
+end
+
 -- Targetable units are not AoE hits: no cone, cleave or splash geometry implied.
 -- 可作为该技能目标的单位下界，不代表锥形、顺劈或溅射命中数。
 function Context:GetSpellTargets(spellID)

@@ -1,0 +1,2201 @@
+{
+  "sourceCommit": "774babde5ddc7c5fc9f1abb129b473f8a076df70",
+  "engineSha256": "8c6df94966798cabf6864664c2648de9252e396a5ea90188c115c17c8b5339de",
+  "scenarios": [
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement",
+      "events": [
+        "movement,first=15,cooldown=30,distance=20"
+      ],
+      "profileSha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+      "policySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "reference": {
+        "policyKey": "stock",
+        "policy": null,
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 252743.02030100962,
+        "standardError": 138.2571676250444,
+        "samples": 2999,
+        "profileSha256": "61afb5246fc6b562218759569d6ffe66c7bb62af9f1ac7aa2b82aa278e9ff0fb",
+        "rawSha256": "09849d396d027fac57f57599d2e9232f8bfb8c56e694fa104ec90378d7e958f0",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\stock-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\stock-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "candidate": {
+        "policyKey": "5ce0425925b2",
+        "policy": {
+          "schema": "rotaassist.independent-policy.v1",
+          "specID": 577,
+          "heroProfile": "fel_scarred",
+          "parameters": {
+            "search": "rule_relocation"
+          },
+          "rules": [
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "fury",
+                  "<=",
+                  40
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "vengeful_retreat",
+              "spellID": 198793,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.initiative.up",
+                  "==",
+                  0
+                ],
+                [
+                  "cooldown.eye_beam.remains",
+                  "<",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.annihilation.demonsurge_available",
+                  ">",
+                  0
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.death_sweep.demonsurge_available",
+                  ">",
+                  0
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "action.death_sweep.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "action.annihilation.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.immolation_aura.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.inertia_trigger.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "charges",
+                  ">=",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "metamorphosis",
+              "spellID": 191427,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  0
+                ],
+                [
+                  "cooldown.blade_dance.remains",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "the_hunt",
+              "spellID": 370965,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "eye_beam",
+              "spellID": 198013,
+              "cost": 30,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  4
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            }
+          ]
+        },
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 246534.80656819377,
+        "standardError": 138.42361287117475,
+        "samples": 2999,
+        "profileSha256": "117bbebe0c63ac3ef295d5f1001bd87e2bbe39a0593bb5094f1d7f4e622dce47",
+        "rawSha256": "ff344c0d78c8ce50a74f486dea7b096191d6ca98d73c473207ebe8b5fff810f7",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\5ce0425925b2-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\5ce0425925b2-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\5ce0425925b2-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "ratio": 0.9754366560729469,
+      "delta": -6208.213732815842,
+      "deltaMinusThreeSESum": -7038.2560743045,
+      "deltaPlusThreeSESum": -5378.171391327185,
+      "eventReplay": {
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=1",
+          "threads=1",
+          "max_time=90",
+          "fixed_time=1",
+          "seed=20261102",
+          "debug=1",
+          "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\events.log"
+        ],
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement\\events.log",
+        "sha256": "d2f9c1aa8e420faf2a9370467fcefafcf4ec65a7b1a83e3654298bae12fb685e",
+        "evidence": [
+          {
+            "event": "movement,first=15,cooldown=30,distance=20",
+            "observedStarts": 3,
+            "firstStart": 15.0
+          }
+        ]
+      }
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "add_waves",
+      "events": [
+        "adds,count=4,first=25,cooldown=60,duration=20"
+      ],
+      "profileSha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+      "policySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "reference": {
+        "policyKey": "stock",
+        "policy": null,
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 327354.61299461254,
+        "standardError": 186.9135206420927,
+        "samples": 2999,
+        "profileSha256": "cea48da631bd7e4be3bc9946bd0eea8fc464362ee842db4938d8ccac4af55aed",
+        "rawSha256": "c68770ad91516119abab7d746316e354738d66c7fced71ab300a74e926475136",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\stock-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\stock-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "candidate": {
+        "policyKey": "5ce0425925b2",
+        "policy": {
+          "schema": "rotaassist.independent-policy.v1",
+          "specID": 577,
+          "heroProfile": "fel_scarred",
+          "parameters": {
+            "search": "rule_relocation"
+          },
+          "rules": [
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "fury",
+                  "<=",
+                  40
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "vengeful_retreat",
+              "spellID": 198793,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.initiative.up",
+                  "==",
+                  0
+                ],
+                [
+                  "cooldown.eye_beam.remains",
+                  "<",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.annihilation.demonsurge_available",
+                  ">",
+                  0
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.death_sweep.demonsurge_available",
+                  ">",
+                  0
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "action.death_sweep.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "action.annihilation.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.immolation_aura.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.inertia_trigger.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "charges",
+                  ">=",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "metamorphosis",
+              "spellID": 191427,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  0
+                ],
+                [
+                  "cooldown.blade_dance.remains",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "the_hunt",
+              "spellID": 370965,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "eye_beam",
+              "spellID": 198013,
+              "cost": 30,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  4
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            }
+          ]
+        },
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 303610.49482549605,
+        "standardError": 175.66082954976252,
+        "samples": 2999,
+        "profileSha256": "fb1e7d2711800ee3e727c37b14d5719e33ab2187dfe75e48ee9231c72d4bb17e",
+        "rawSha256": "e4c66e8eac3cf369905e4bb6368253b6859bc630fcccb78bf1787811b4cf73a1",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\5ce0425925b2-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\5ce0425925b2-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\5ce0425925b2-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "ratio": 0.9274666761164375,
+      "delta": -23744.118169116497,
+      "deltaMinusThreeSESum": -24831.84121969206,
+      "deltaPlusThreeSESum": -22656.39511854093,
+      "eventReplay": {
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=1",
+          "threads=1",
+          "max_time=90",
+          "fixed_time=1",
+          "seed=20261102",
+          "debug=1",
+          "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\events.log"
+        ],
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\add_waves\\events.log",
+        "sha256": "508bae9e7971e4344363eaf3977427be7b8bc2ad61652ce6bb004b33e5251bf2",
+        "evidence": [
+          {
+            "event": "adds,count=4,first=25,cooldown=60,duration=20",
+            "observedStarts": 8,
+            "firstStart": 25.0
+          }
+        ]
+      }
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement_and_adds",
+      "events": [
+        "movement,first=15,cooldown=30,distance=20",
+        "adds,count=4,first=25,cooldown=60,duration=20"
+      ],
+      "profileSha256": "d14ce688a7016d548c4abd3c2554be2b891c1284d771180ab7cc2571c17db3e1",
+      "policySha256": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+      "reference": {
+        "policyKey": "stock",
+        "policy": null,
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 315758.3755068991,
+        "standardError": 185.8557255023571,
+        "samples": 2999,
+        "profileSha256": "450db3870d8a032a52970c5606c452467e5650392ea8e130245e8f8a8dd13749",
+        "rawSha256": "9714c3a200d40e48999f2de9d6db6e994080f8f5865327abb0c68a8a56113ab5",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\stock-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\stock-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "candidate": {
+        "policyKey": "5ce0425925b2",
+        "policy": {
+          "schema": "rotaassist.independent-policy.v1",
+          "specID": 577,
+          "heroProfile": "fel_scarred",
+          "parameters": {
+            "search": "rule_relocation"
+          },
+          "rules": [
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "fury",
+                  "<=",
+                  40
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "vengeful_retreat",
+              "spellID": 198793,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.initiative.up",
+                  "==",
+                  0
+                ],
+                [
+                  "cooldown.eye_beam.remains",
+                  "<",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.annihilation.demonsurge_available",
+                  ">",
+                  0
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.death_sweep.demonsurge_available",
+                  ">",
+                  0
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "action.death_sweep.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "action.annihilation.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "action.immolation_aura.demonsurge_available",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.inertia_trigger.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "charges",
+                  ">=",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "metamorphosis",
+              "spellID": 191427,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  0
+                ],
+                [
+                  "cooldown.blade_dance.remains",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "the_hunt",
+              "spellID": 370965,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "eye_beam",
+              "spellID": 198013,
+              "cost": 30,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  4
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            }
+          ]
+        },
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 289916.4402308867,
+        "standardError": 181.790613668287,
+        "samples": 2999,
+        "profileSha256": "b047c2fa97e6e2eca7da64e5b7604d1a6c30d7030ed0bd787cc77c8bf0bc6b6e",
+        "rawSha256": "363b2e7a2b74fa1ecdb79a4361f6b538ea0c1b7c618b417e6126c3f5e7e28349",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\5ce0425925b2-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\5ce0425925b2-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\5ce0425925b2-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "ratio": 0.9181591454715101,
+      "delta": -25841.935276012402,
+      "deltaMinusThreeSESum": -26944.874293524335,
+      "deltaPlusThreeSESum": -24738.99625850047,
+      "eventReplay": {
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=1",
+          "threads=1",
+          "max_time=90",
+          "fixed_time=1",
+          "seed=20261102",
+          "debug=1",
+          "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\events.log"
+        ],
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\fel_scarred\\movement_and_adds\\events.log",
+        "sha256": "3d51c0a604e2fdb82903644813123c978cad24c556383484329347bc98568ff4",
+        "evidence": [
+          {
+            "event": "movement,first=15,cooldown=30,distance=20",
+            "observedStarts": 3,
+            "firstStart": 15.0
+          },
+          {
+            "event": "adds,count=4,first=25,cooldown=60,duration=20",
+            "observedStarts": 8,
+            "firstStart": 25.0
+          }
+        ]
+      }
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement",
+      "events": [
+        "movement,first=15,cooldown=30,distance=20"
+      ],
+      "profileSha256": "ee729fafbd70047213098bf77b0db7a0d33d350472f5de816cf4bfefed0031df",
+      "policySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "reference": {
+        "policyKey": "stock",
+        "policy": null,
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 239862.61274322798,
+        "standardError": 205.93677878347157,
+        "samples": 2999,
+        "profileSha256": "dbb91e39930f5f60a82ffc6481d655f4dd2e19561303e2049c83d751cc3f5060",
+        "rawSha256": "e29c2fa25ce8ca4f3ee34fee4847b532f52bf131cc24346bf4a8b8d89313b2d8",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\stock-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\stock-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "candidate": {
+        "policyKey": "8e77e6b632a0",
+        "policy": {
+          "schema": "rotaassist.independent-policy.v1",
+          "specID": 577,
+          "heroProfile": "aldrachi_reaver",
+          "parameters": {
+            "search": "aldrachi_order_v4"
+          },
+          "rules": [
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "form": "meta",
+              "conditions": [
+                [
+                  "buff.rending_strike.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "form": "normal",
+              "conditions": [
+                [
+                  "buff.rending_strike.up",
+                  ">",
+                  0
+                ],
+                [
+                  "active_enemies",
+                  ">=",
+                  2
+                ]
+              ]
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "form": "meta",
+              "conditions": [
+                [
+                  "buff.glaive_flurry.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "form": "normal",
+              "conditions": [
+                [
+                  "buff.glaive_flurry.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "fury",
+                  "<=",
+                  40
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "vengeful_retreat",
+              "spellID": 198793,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.initiative.up",
+                  "==",
+                  0
+                ],
+                [
+                  "cooldown.eye_beam.remains",
+                  "<",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "reavers_glaive",
+              "spellID": 442294,
+              "cost": 0,
+              "form": null,
+              "conditions": [
+                [
+                  "buff.reavers_glaive.up",
+                  ">",
+                  0
+                ],
+                [
+                  "buff.rending_strike.up",
+                  "==",
+                  0
+                ],
+                [
+                  "buff.glaive_flurry.up",
+                  "==",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.inertia_trigger.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "charges",
+                  ">=",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "metamorphosis",
+              "spellID": 191427,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  8
+                ],
+                [
+                  "cooldown.blade_dance.remains",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "the_hunt",
+              "spellID": 370965,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.reavers_glaive.up",
+                  "==",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "eye_beam",
+              "spellID": 198013,
+              "cost": 30,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  4
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            }
+          ],
+          "requiredTalent": 442290
+        },
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 233841.9739441616,
+        "standardError": 195.6198918607369,
+        "samples": 2999,
+        "profileSha256": "763180032ba5d31305d81850008c060a4a1616eadefb823d512cda73e1a358fa",
+        "rawSha256": "6f3069866a065ec91a89bb755910fbc2700ad0d2bf1315653bddb8b5d5897727",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\8e77e6b632a0-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\8e77e6b632a0-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\8e77e6b632a0-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "ratio": 0.9748996363784654,
+      "delta": -6020.638799066364,
+      "deltaMinusThreeSESum": -7225.308810998989,
+      "deltaPlusThreeSESum": -4815.968787133739,
+      "eventReplay": {
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=1",
+          "threads=1",
+          "max_time=90",
+          "fixed_time=1",
+          "seed=20261102",
+          "debug=1",
+          "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\events.log"
+        ],
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement\\events.log",
+        "sha256": "c2778d54b2d83241fbac136cd0f1ea3cc385f5a82e5e73e1fd6bc2712747e1ab",
+        "evidence": [
+          {
+            "event": "movement,first=15,cooldown=30,distance=20",
+            "observedStarts": 3,
+            "firstStart": 15.0
+          }
+        ]
+      }
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "add_waves",
+      "events": [
+        "adds,count=4,first=25,cooldown=60,duration=20"
+      ],
+      "profileSha256": "ee729fafbd70047213098bf77b0db7a0d33d350472f5de816cf4bfefed0031df",
+      "policySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "reference": {
+        "policyKey": "stock",
+        "policy": null,
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 343260.7247701859,
+        "standardError": 329.7024086651144,
+        "samples": 2999,
+        "profileSha256": "4ffe6cf6971e286ccd3e013c494e4d0cbf069d78e25547380afb790bd37790d8",
+        "rawSha256": "14d0dbc0b890d3cbd518f9358e670fb5afda48cad191b2d08730d5e6955dcad4",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\stock-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\stock-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "candidate": {
+        "policyKey": "8e77e6b632a0",
+        "policy": {
+          "schema": "rotaassist.independent-policy.v1",
+          "specID": 577,
+          "heroProfile": "aldrachi_reaver",
+          "parameters": {
+            "search": "aldrachi_order_v4"
+          },
+          "rules": [
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "form": "meta",
+              "conditions": [
+                [
+                  "buff.rending_strike.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "form": "normal",
+              "conditions": [
+                [
+                  "buff.rending_strike.up",
+                  ">",
+                  0
+                ],
+                [
+                  "active_enemies",
+                  ">=",
+                  2
+                ]
+              ]
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "form": "meta",
+              "conditions": [
+                [
+                  "buff.glaive_flurry.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "form": "normal",
+              "conditions": [
+                [
+                  "buff.glaive_flurry.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "fury",
+                  "<=",
+                  40
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "vengeful_retreat",
+              "spellID": 198793,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.initiative.up",
+                  "==",
+                  0
+                ],
+                [
+                  "cooldown.eye_beam.remains",
+                  "<",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "reavers_glaive",
+              "spellID": 442294,
+              "cost": 0,
+              "form": null,
+              "conditions": [
+                [
+                  "buff.reavers_glaive.up",
+                  ">",
+                  0
+                ],
+                [
+                  "buff.rending_strike.up",
+                  "==",
+                  0
+                ],
+                [
+                  "buff.glaive_flurry.up",
+                  "==",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.inertia_trigger.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "charges",
+                  ">=",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "metamorphosis",
+              "spellID": 191427,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  8
+                ],
+                [
+                  "cooldown.blade_dance.remains",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "the_hunt",
+              "spellID": 370965,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.reavers_glaive.up",
+                  "==",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "eye_beam",
+              "spellID": 198013,
+              "cost": 30,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  4
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            }
+          ],
+          "requiredTalent": 442290
+        },
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 325107.28375848016,
+        "standardError": 326.06029285826753,
+        "samples": 2999,
+        "profileSha256": "daf1e7c7dc95f8fbf66077e7420f8388fa368225f82ca967cd21ef5198b83a30",
+        "rawSha256": "88c4402b2bd537c4b010a687423710c371d12734da46838459e51a357ecb3b9b",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\8e77e6b632a0-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\8e77e6b632a0-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\8e77e6b632a0-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "ratio": 0.9471147157197798,
+      "delta": -18153.441011705727,
+      "deltaMinusThreeSESum": -20120.729116275874,
+      "deltaPlusThreeSESum": -16186.152907135582,
+      "eventReplay": {
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=1",
+          "threads=1",
+          "max_time=90",
+          "fixed_time=1",
+          "seed=20261102",
+          "debug=1",
+          "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\events.log"
+        ],
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\add_waves\\events.log",
+        "sha256": "79b5d224b2d0b29ee0f11c4f5e17a64f9cb2c4498b8b5812bc7ee834af77f7a1",
+        "evidence": [
+          {
+            "event": "adds,count=4,first=25,cooldown=60,duration=20",
+            "observedStarts": 8,
+            "firstStart": 25.0
+          }
+        ]
+      }
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement_and_adds",
+      "events": [
+        "movement,first=15,cooldown=30,distance=20",
+        "adds,count=4,first=25,cooldown=60,duration=20"
+      ],
+      "profileSha256": "ee729fafbd70047213098bf77b0db7a0d33d350472f5de816cf4bfefed0031df",
+      "policySha256": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd",
+      "reference": {
+        "policyKey": "stock",
+        "policy": null,
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 327370.14821780944,
+        "standardError": 322.11052557131313,
+        "samples": 2999,
+        "profileSha256": "37057ca455b49fcc51070d4615d2578f3c8caf8f0492561d1ab0912bd0600700",
+        "rawSha256": "c9ef311349a162fe8eacbd943b0d32f929379a7e2980bbadaf3d1084f4d99fc3",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\stock-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\stock-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "candidate": {
+        "policyKey": "8e77e6b632a0",
+        "policy": {
+          "schema": "rotaassist.independent-policy.v1",
+          "specID": 577,
+          "heroProfile": "aldrachi_reaver",
+          "parameters": {
+            "search": "aldrachi_order_v4"
+          },
+          "rules": [
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "form": "meta",
+              "conditions": [
+                [
+                  "buff.rending_strike.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "form": "normal",
+              "conditions": [
+                [
+                  "buff.rending_strike.up",
+                  ">",
+                  0
+                ],
+                [
+                  "active_enemies",
+                  ">=",
+                  2
+                ]
+              ]
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "form": "meta",
+              "conditions": [
+                [
+                  "buff.glaive_flurry.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "form": "normal",
+              "conditions": [
+                [
+                  "buff.glaive_flurry.up",
+                  ">",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "fury",
+                  "<=",
+                  40
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "vengeful_retreat",
+              "spellID": 198793,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.initiative.up",
+                  "==",
+                  0
+                ],
+                [
+                  "cooldown.eye_beam.remains",
+                  "<",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "reavers_glaive",
+              "spellID": 442294,
+              "cost": 0,
+              "form": null,
+              "conditions": [
+                [
+                  "buff.reavers_glaive.up",
+                  ">",
+                  0
+                ],
+                [
+                  "buff.rending_strike.up",
+                  "==",
+                  0
+                ],
+                [
+                  "buff.glaive_flurry.up",
+                  "==",
+                  0
+                ]
+              ]
+            },
+            {
+              "action": "death_sweep",
+              "spellID": 210152,
+              "cost": 35,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [
+                [
+                  "debuff.essence_break.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": "meta"
+            },
+            {
+              "action": "felblade",
+              "spellID": 232893,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.inertia_trigger.up",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [
+                [
+                  "charges",
+                  ">=",
+                  2
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "metamorphosis",
+              "spellID": 191427,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  8
+                ],
+                [
+                  "cooldown.blade_dance.remains",
+                  ">",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "the_hunt",
+              "spellID": 370965,
+              "cost": 0,
+              "conditions": [
+                [
+                  "buff.reavers_glaive.up",
+                  "==",
+                  0
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "eye_beam",
+              "spellID": 198013,
+              "cost": 30,
+              "conditions": [],
+              "form": null
+            },
+            {
+              "action": "essence_break",
+              "spellID": 258860,
+              "cost": 0,
+              "conditions": [
+                [
+                  "cooldown.eye_beam.remains",
+                  ">",
+                  4
+                ],
+                [
+                  "fury",
+                  ">=",
+                  35
+                ]
+              ],
+              "form": null
+            },
+            {
+              "action": "blade_dance",
+              "spellID": 188499,
+              "cost": 35,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "annihilation",
+              "spellID": 201427,
+              "cost": 40,
+              "conditions": [],
+              "form": "meta"
+            },
+            {
+              "action": "chaos_strike",
+              "spellID": 162794,
+              "cost": 40,
+              "conditions": [],
+              "form": "normal"
+            },
+            {
+              "action": "immolation_aura",
+              "spellID": 258920,
+              "cost": 0,
+              "conditions": [],
+              "form": null
+            }
+          ],
+          "requiredTalent": 442290
+        },
+        "targets": 1,
+        "duration": 180,
+        "seed": 20261101,
+        "iterations": 3000,
+        "dps": 313675.62809586315,
+        "standardError": 321.5032131659791,
+        "samples": 2999,
+        "profileSha256": "a3a2f7e99eb3cd8f6cde60d6b7220d4b46fb2409d7c22ef749aaf0485ff44c8b",
+        "rawSha256": "d0938e4f9c4da4b04822b245861329d7cdae32afa43c0f80c94b9d0fd6b2bf93",
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\8e77e6b632a0-1t-180s-3000i-20261101.raw.json",
+        "warnings": [
+          {
+            "level": "implementation_not_yet_verified",
+            "message": "Rune of Unleashed Fire: Procs are assumed to target the same unit that triggered them. Procs triggered by damage are assumed to proc damage. Procs triggered by healing/aura are assumed to proc heal."
+          }
+        ],
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\8e77e6b632a0-1t-180s-3000i-20261101.simc",
+          "iterations=3000",
+          "desired_targets=1",
+          "threads=2",
+          "fixed_time=1",
+          "max_time=180",
+          "vary_combat_length=0",
+          "seed=20261101",
+          "json2=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\8e77e6b632a0-1t-180s-3000i-20261101.raw.json",
+          "report_details=0"
+        ]
+      },
+      "ratio": 0.9581680852805342,
+      "delta": -13694.52012194629,
+      "deltaMinusThreeSESum": -15625.361338158167,
+      "deltaPlusThreeSESum": -11763.678905734414,
+      "eventReplay": {
+        "command": [
+          "C:\\projects\\RotaAssist\\dist\\research\\simc\\extract\\simc-1210.01.774babd-win64\\simc.exe",
+          "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\stock-1t-180s-3000i-20261101.simc",
+          "iterations=1",
+          "threads=1",
+          "max_time=90",
+          "fixed_time=1",
+          "seed=20261102",
+          "debug=1",
+          "output=C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\events.log"
+        ],
+        "raw": "C:\\projects\\RotaAssist\\dist\\research\\havoc-encounters\\holdout\\aldrachi_reaver\\movement_and_adds\\events.log",
+        "sha256": "242c5a7b7c95b91d0543e68d9280d5a17454a5a62bed09c59fc845ff5e36183a",
+        "evidence": [
+          {
+            "event": "movement,first=15,cooldown=30,distance=20",
+            "observedStarts": 3,
+            "firstStart": 15.0
+          },
+          {
+            "event": "adds,count=4,first=25,cooldown=60,duration=20",
+            "observedStarts": 8,
+            "firstStart": 25.0
+          }
+        ]
+      }
+    }
+  ],
+  "frozenPolicies": {
+    "fel_scarred": "5ce0425925b2979bf757ebce0d62c1bdb36afc41f72c765912ba4a8fe532de81",
+    "aldrachi_reaver": "8e77e6b632a04714177b2ff2c8fd55bef1ab4c83401ddc26b221503011eb40dd"
+  },
+  "policyTunedOnTheseScenarios": false,
+  "liveValidated": false,
+  "representsSpecificBossOrDungeonRoute": false,
+  "automaticReplacementQualified": false
+}

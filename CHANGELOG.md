@@ -5,6 +5,18 @@ All notable changes to RotaAssist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1-rc.13] - 2026-09-22
+
+[Havoc action applicability](docs/RELEASE_1.1.1-rc.13.md), implemented by Astra.
+
+- Use explicit current-target melee evidence for three player-centered Havoc
+  area actions when a public API confirms they have no target-range check.
+- Preserve native true/false range, unknown signals and current-target invalidation.
+- Verify real main-queue integration; keep both policies and default settings.
+- Add six movement/add-wave SimC comparisons and six event execution traces;
+  preserve the larger measured losses and open real-instance acceptance work.
+- Validate 731 Lua / 111 Python tests, 169 Lua files and 18 behavioral mutations.
+
 ## [1.1.1-rc.12] - 2026-09-22
 
 [Aldrachi Havoc and active replacements](docs/RELEASE_1.1.1-rc.12.md), implemented by Astra.

@@ -13,7 +13,7 @@ MUTATIONS=[
     ('drop_proc_in_observer','addon/Engine/IndependentObserver.lua','boolean(RA.IsPlayerSpellKnownSafe,RA,id)','boolean(IsPlayerSpell,id)'),
     ('drop_proc_in_final_queue','addon/Engine/SmartQueueManager.lua','if RA:IsPlayerSpellKnownSafe(sid)~=true then','if not IsPlayerSpell(sid) then'),
     ('drop_proc_in_castability','addon/Engine/SmartQueueManager.lua','if RA:IsPlayerSpellKnownSafe(spellID)~=true then','if not IsPlayerSpell(spellID) then'),
-    ('skip_dynamic_range','addon/Engine/IndependentObserver.lua','if target and target.IsActive and target:IsActive() and target.GetSpellRange then','if false then'),
+    ('skip_dynamic_range','addon/Engine/IndependentObserver.lua','if target and target.IsActive and target:IsActive() then','if false then'),
     ('ignore_hero_conflict','addon/Engine/IndependentObserver.lua','if selected then return nil,"conflicting_hero_talents" end','if false then return nil,"conflicting_hero_talents" end'),
     ('mask_unknown_hero','addon/Engine/IndependentObserver.lua','if unknown or not selected then','if not selected then'),
     ('reject_meta_probe','addon/Engine/TargetContext.lua','readBool(RA.IsPlayerSpellKnownSafe, RA, probe)','readBool(IsPlayerSpell, probe)'),

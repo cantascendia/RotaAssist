@@ -1,0 +1,177 @@
+SimulationCraft 1210-01 for World of Warcraft 12.1.0.69875 Live (hotfix 2026-09-19/69875, git build midnight 774babd)
+Name             : Chaos Strike (id=162794) [Spell Family (107)]
+Replaces         : Chaos Strike (id=344862)
+Class            : Havoc Demon Hunter
+School           : Chaos
+Spell Type       : Melee
+Resource         : 40 Fury (17) (id=10198)
+Range            : 5 yards
+Cone Angle       : 60 degrees
+GCD              : 1.5 seconds
+Requires weapon  : One-handed Axe, One-handed Sword, War Glaive, Fist Weapon
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Affecting Spells : Metamorphosis (162264 effect#6), Mastery: Demonic Presence (185164 effects: #1, #2), Fiery Brand (207744 effect#2), Fiery Brand (207771 effect#2), Havoc Demon Hunter (212612 effect#6), Vengeance Demon Hunter (212613 effect#6), Thirsting Blades (278736 effect#2), Critical Chaos (320413 effect#1), Mark of the Ogre (326486 effect#3), Chaotic Blades (337567 effect#2), Half-Giant Empowerment (345871 effect#3), Chaos Theory (390195 effect#2), Burning Blood (390213 effects: #1, #2), Demon Hide (428241 effects: #1, #3), Devourer Demon Hunter (1213636 effect#5), Blind Focus (1272364 effects: #1, #2)
+Family Flags     : 32, 43, 52
+Attributes       : Is Ability (4), Not Shapeshifted (16), Do Not Sheath (18), Initiates Combat (Enables Auto-Attack) (41), Discount Power On Miss (59), Requires Main-Hand Weapon (106), Requires Off-Hand Weapon (120), Melee Chain Targeting (172), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=228690)   : Dummy (3)
+                   Base Value: 30 | Scaled Value: 30 | Chain Multiplier: 1 | Chain Targets: 1 | Target: Targeted Enemy (6)
+#2 (id=230219)   : Trigger Spell (64): Chaos Strike
+                   Base Value: 0 | Scaled Value: 0 | Trigger Spell: 222031 | Target: Targeted Enemy (6)
+#3 (id=293650)   : Trigger Spell (64): Chaos Strike
+                   Base Value: 0 | Scaled Value: 0 | Delay: 300_ms | Trigger Spell: 199547 | Target: Targeted Enemy (6)
+Description      : Slice your target for ${$222031s1+$199547s1} Chaos damage. Chaos Strike has a ${$min($197125h,100)}% chance to refund $193840s1 Fury.
+
+Name             : Blade Dance (id=188499) [Spell Family (107)]
+Class            : Havoc Demon Hunter
+School           : Physical
+Spell Type       : Melee
+Resource         : 35 Fury (17) (id=10434)
+Spell Level      : 14
+GCD              : 1.5 seconds
+Duration         : 1 seconds
+Requires weapon  : One-handed Axe, One-handed Sword, War Glaive, Fist Weapon
+Cooldown         : 15 seconds
+Category         : 1640 (Type 0x0)
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Category Cooldown: 15 seconds
+Affecting Spells : Metamorphosis (162264 effect#7), Havoc Demon Hunter (212612 effects: #6, #7), Vengeance Demon Hunter (212613 effects: #6, #7), Revolving Blades (279581 effect#2), Revolving Blades (279584 effect#1), Blade Dance (320402 effect#1), Mark of the Ogre (326486 effect#5), Half-Giant Empowerment (345871 effect#5), Deadly Dance (364438 effect#1), Demon Hunter Havoc Class Set 2pc (393628 effects: #1, #2), Enduring Torment (453314 effect#2), Demon Hunter Havoc 11.0 Class Set 2pc (454616 effect#1), Blade Rhapsody (454628 effect#2), Devourer Demon Hunter (1213636 effects: #5, #6), Winning Streak! (1217011 effect#1), Winning Streak! (1220706 effect#1), Demon Hunter Havoc 12.0 Class Set 2pc (1264805 effect#1), Remorseless (1266328 effects: #1, #2), Eternal Hunt (1270901 effect#1), Demon Hunter Havoc 12.1 Class Set 2pc (1296611 effect#1)
+Triggered By     : Unbreaking Grasp (370718)
+Family Flags     : 23, 25, 32, 42, 85
+Attributes       : Is Ability (4), Not Shapeshifted (16), Do Not Sheath (18), Initiates Combat (Enables Auto-Attack) (41), Discount Power On Miss (59), No Aura Icon (60), Requires Main-Hand Weapon (106), Requires Off-Hand Weapon (120), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=275300)   : Dummy (3)
+                   Base Value: 0 | Scaled Value: 0 | Radius: 0 - 8 yards | Target: Source (22) -> Enemy in Area (15)
+#2 (id=275301)   : Trigger Spell (64): Blade Dance
+                   Base Value: 0 | Scaled Value: 0 | Trigger Spell: 199552 | Target: Self (1)
+#3 (id=283866)   : Trigger Spell (64): Blade Dance
+                   Base Value: 0 | Scaled Value: 0 | Delay: 150_ms | Trigger Spell: 199552 | Target: Self (1)
+#4 (id=293658)   : Trigger Spell (64): Blade Dance
+                   Base Value: 0 | Scaled Value: 0 | Delay: 450_ms | Trigger Spell: 199552 | Target: Self (1)
+#5 (id=293659)   : Trigger Spell (64): Blade Dance
+                   Base Value: 0 | Scaled Value: 0 | Delay: 700_ms | Trigger Spell: 200685 | Target: Self (1)
+#6 (id=293660)   : Apply Aura (6) | Supress Transformation (483)
+                   Base Value: 0 | Scaled Value: 0 | Misc Value 2: 8 | Target: Self (1)
+Description      : Strike $?a206416[your primary target for $<firstbloodDmg> Chaos damage and ][]nearby enemies for $<baseDmg> Physical damage$?s320398[, and increase your chance to dodge by $193311s1% for $193311d.][. Deals reduced damage beyond $199552s1 targets.]
+Tooltip          : Dodge chance increased by $s2%.
+Variables        : $mastery=$?s185164[${((100+$185164m1)/100)}][${1.00}]
+
+$baseDmg=${3*$199552sw2+$200685sw2}
+
+$baseSweepDmg=${3*$210153sw2+$210155sw2}
+
+$firstbloodDmg=${(3*$199552sw2+$200685sw2)*(100+$206416s1)/100*$<mastery>}
+
+$firstbloodSweepDmg=${(3*$210153sw2+$210155sw2)*(100+$206416s1)/100*$<mastery>}
+
+Name             : Death Sweep (id=210152) [Spell Family (107)]
+Class            : Demon Hunter
+School           : Physical
+Spell Type       : Melee
+Resource         : 35 Fury (17) (id=11104)
+GCD              : 1.5 seconds
+Requires weapon  : One-handed Axe, One-handed Sword, War Glaive, Fist Weapon
+Cooldown         : 9 seconds
+Category         : 1640 (Type 0x0)
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+                 : 3597
+Category Cooldown: 9 seconds
+Affecting Spells : Havoc Demon Hunter (212612 effects: #6, #7), Vengeance Demon Hunter (212613 effects: #6, #7), Revolving Blades (279581 effect#2), Revolving Blades (279584 effect#1), Mark of the Ogre (326486 effect#5), Half-Giant Empowerment (345871 effect#5), Deadly Dance (364438 effect#1), Demon Hunter Havoc Class Set 2pc (393628 effects: #1, #2), Demon Hunter Havoc 11.0 Class Set 2pc (454616 effect#1), Blade Rhapsody (454628 effect#2), Devourer Demon Hunter (1213636 effects: #5, #6), Winning Streak! (1217011 effect#1), Winning Streak! (1220706 effect#1), Demon Hunter Havoc 12.0 Class Set 2pc (1264805 effect#1), Remorseless (1266328 effects: #1, #2), Eternal Hunt (1270901 effect#1), Demon Hunter Havoc 12.1 Class Set 2pc (1296611 effect#1)
+Family Flags     : 23, 32, 37, 42, 85
+Attributes       : Is Ability (4), Do Not Sheath (18), Initiates Combat (Enables Auto-Attack) (41), Discount Power On Miss (59), Requires Main-Hand Weapon (106), Requires Off-Hand Weapon (120), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=311149)   : Dummy (3)
+                   Base Value: 0 | Scaled Value: 0 | Radius: 0 - 8 yards | Target: Source (22) -> Enemy in Area (15)
+#2 (id=311150)   : Trigger Spell (64): Death Sweep
+                   Base Value: 0 | Scaled Value: 0 | Trigger Spell: 210153 | Target: Self (1)
+#3 (id=311151)   : Trigger Spell (64): Death Sweep
+                   Base Value: 0 | Scaled Value: 0 | Delay: 150_ms | Trigger Spell: 210153 | Target: Self (1)
+#4 (id=311152)   : Trigger Spell (64): Death Sweep
+                   Base Value: 0 | Scaled Value: 0 | Delay: 450_ms | Trigger Spell: 210153 | Target: Self (1)
+#5 (id=311153)   : Trigger Spell (64): Death Sweep
+                   Base Value: 0 | Scaled Value: 0 | Delay: 950_ms | Trigger Spell: 210155 | Target: Self (1)
+Description      : Strike $?a206416[your primary target for $<firstbloodSweepDmg> Chaos damage and ][]$199552s1 nearby enemies for $<baseSweepDmg> Physical damage$?s320398[, and increase your chance to dodge by $193311s1% for $193311d.][. Deals reduced damage beyond $210153s1 targets.]
+Tooltip          : Dodge chance increased by $s3%.
+Variables        : $mastery=$?s185164[${((100+$185164m1)/100)}][${1.00}]
+
+$baseDmg=${3*$199552sw2+$200685sw2}
+
+$baseSweepDmg=${3*$210153sw2+$210155sw2}
+
+$firstbloodDmg=${(3*$199552sw2+$200685sw2)*(100+$206416s1)/100*$<mastery>}
+
+$firstbloodSweepDmg=${(3*$210153sw2+$210155sw2)*(100+$206416s1)/100*$<mastery>}
+
+Name             : Immolation Aura (id=258920) [Spell Family (107)]
+Class            : Demon Hunter
+School           : Fire
+Spell Type       : None
+Spell Level      : 11
+GCD              : 1.5 seconds
+Duration         : 6 seconds
+Cooldown         : 1.5 seconds
+Charges          : 1 (30 seconds cooldown)
+Category         : 1676 (Type 0x1): Havoc Demon Hunter (212612 effect#9), Vengeance Demon Hunter (212613 effect#10), Immolation Aura (320378 effect#1), A Fire Inside (427775 effect#1), A Fire Inside (427775 effect#3)
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+                 : 3038
+Category Cooldown: 1.5 seconds
+Internal Cooldown: 0.5 seconds
+Proc Chance      : 100%
+Proc Flags       : White Melee Taken, Yellow Melee Taken
+Affecting Spells : Agonizing Flames (207548 effects: #1, #2), Havoc Demon Hunter (212612 effects: #6, #7), Vengeance Demon Hunter (212613 effects: #6, #7), Infernal Armor (320331 effect#1), Immolation Aura (320377 effect#1), Burning Wound (346278 effect#2), Any Means Necessary (388114 effect#1), Immolation Aura (433719 effect#1), Immolation Aura (433721 effect#1), Immolation Aura (433724 effect#1), Immolation Aura (433737 effect#1), Demonsurge (452489 effect#2), Devourer Demon Hunter (1213636 effects: #5, #6), Spontaneous Immolation (1246556 effect#1)
+Family Flags     : 11, 32, 85, 94
+Attributes       : Is Ability (4), Not Shapeshifted (16), Do Not Sheath (18), No Aura Cancel (31), Initiates Combat (Enables Auto-Attack) (41), Can Proc From Procs (122), Aura Points On Client (268), Allow Class Ability Procs (416), Nameplate Personal Buffs/Debuffs (423), Do Not Consume Aura Stack On Proc (428)
+Aura Interrupt   : Leave World (19)
+Effects          :
+#1 (id=483167)   : Apply Aura (6) | Periodic Trigger Spell (23): Immolation Aura every 1 seconds
+                   Base Value: 0 | Scaled Value: 0 | Trigger Spell: 258922 | Target: Self (1)
+#2 (id=483168)   : Energize Power (30)
+                   Base Value: 20 | Scaled Value: 20 | Resource: fury | Target: Self (1)
+                   Modified By: Spontaneous Immolation (1246556 effect#1)
+#3 (id=807397)   : Energize Power (30)
+                   Base Value: 8 | Scaled Value: 8 | Resource: fury | Target: Self (1)
+#4 (id=811734)   : Apply Aura (6) | Increase Movement Speed% (Stacking) (129)
+                   Base Value: 0 | Scaled Value: 0 | Target: Self (1)
+                   Modified By: Agonizing Flames (207548 effect#1)
+#5 (id=821561)   : Apply Aura (6) | Modify Armor% (101)
+                   Base Value: 0 | Scaled Value: 0 | Misc Value: 1 | Target: Self (1)
+                   Modified By: Infernal Armor (320331 effect#1)
+#6 (id=821562)   : Apply Aura (6) | Modify Spell School (220)
+                   Base Value: 0 | Scaled Value: 0 | School: fire | Target: Self (1)
+                   Affected Spells: Soul Cleave (228477), Soul Cleave (228478), Soul Sunder (452436)
+                   Family Flags: 31, 34
+Description      : Engulf yourself in flames, $?a320364 [instantly causing $258921s1 $@spelldesc1224451 damage to enemies within $258921A1 yards and ][]radiating ${$258922s1*$d} $@spelldesc1224451 damage over $d.$?s320374[
+
+
+
+|cFFFFFFFFGenerates $<havocTalentFury> Fury over $d.|r][]$?(s212612 & !s320374)[
+
+
+
+|cFFFFFFFFGenerates $<havocFury> Fury.|r][]$?s212613[
+
+
+
+|cFFFFFFFFGenerates $<vengeFury> Fury over $d.|r][]
+Tooltip          : Burning nearby enemies for $258922s1 $@spelldesc395020 damage every $t1 sec.$?a207548[
+
+
+
+Movement speed increased by $w4%.][]$?a320331[
+
+
+
+Armor increased by $w5%. Attackers suffer $@spelldesc395020 damage.][]
+Variables        : $havocFury=${$s2}
+
+$vengeFury=${$s3+($258922s3*$d)}
+
+$havocTalentFury=${$s2+($258922s2*$d)}

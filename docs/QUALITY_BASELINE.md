@@ -5,6 +5,12 @@ matching or exceeding an optimal rotation helper. It is not a DPS benchmark resu
 
 ## Current evidence
 
+- rc.13 separates radial action applicability from native target range for three
+  Havoc actions. New moving/add-wave simulations expose larger gaps than static
+  targets: Fel-Scarred is 91.82%–97.54% of reference and Aldrachi 94.71%–97.49%.
+  These are six synthetic full-information comparisons, not addon measurements
+  in real dungeons/raids. See [encounter evidence](../research/havoc-encounters/README.md).
+
 - rc.12 adds Aldrachi hero selection and a separately authored policy, plus fixes
   for confirmed active replacements in the queue/range/resource paths. Six
   held-out full-information SimC cases reach 96.35%–97.27% of reference DPS;

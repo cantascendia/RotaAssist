@@ -1,0 +1,67 @@
+SimulationCraft 1210-01 for World of Warcraft 12.1.0.69875 Live (hotfix 2026-09-19/69875, git build midnight 774babd)
+Name             : Annihilation (id=201427) [Spell Family (107)]
+Class            : Demon Hunter
+School           : Magic
+Spell Type       : Melee
+Resource         : 40 Fury (17) (id=10809)
+Range            : 5 yards
+Cone Angle       : 60 degrees
+GCD              : 1.5 seconds
+Requires weapon  : One-handed Axe, One-handed Sword, War Glaive, Fist Weapon
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+                 : 3597
+Affecting Spells : Mastery: Demonic Presence (185164 effects: #1, #2), Fiery Brand (207744 effect#2), Fiery Brand (207771 effect#2), Havoc Demon Hunter (212612 effect#6), Vengeance Demon Hunter (212613 effect#6), Thirsting Blades (278736 effect#2), Mark of the Ogre (326486 effect#3), Half-Giant Empowerment (345871 effect#3), Burning Blood (390213 effects: #1, #2), Demon Hide (428241 effects: #1, #3), Devourer Demon Hunter (1213636 effect#5), Blind Focus (1272364 effects: #1, #2)
+Family Flags     : 32, 43, 53
+Attributes       : Is Ability (4), Not Shapeshifted (16), Do Not Sheath (18), Initiates Combat (Enables Auto-Attack) (41), Discount Power On Miss (59), Requires Main-Hand Weapon (106), Requires Off-Hand Weapon (120), Melee Chain Targeting (172), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=296756)   : Dummy (3)
+                   Base Value: 30 | Scaled Value: 30 | Chain Multiplier: 1 | Chain Targets: 1 | Target: Targeted Enemy (6)
+#2 (id=296757)   : Trigger Spell (64): Annihilation
+                   Base Value: 0 | Scaled Value: 0 | Trigger Spell: 227518 | Target: Self (1)
+#3 (id=296758)   : Trigger Spell (64): Annihilation
+                   Base Value: 0 | Scaled Value: 0 | Delay: 300_ms | Trigger Spell: 201428 | Target: Self (1)
+Description      : Slice your target for ${$227518s1+$201428s1} Chaos damage. Annihilation has a $197125h% chance to refund $193840s1 Fury.
+
+Name             : Immolation Aura (id=258921) [Spell Family (107)]
+Class            : Demon Hunter
+School           : Fire
+Spell Type       : Magic
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Affecting Spells : Demon Soul (163073 effects: #1, #2), Aura of Pain (207347 effect#1), Agonizing Flames (207548 effects: #1, #2), Fiery Brand (207744 effect#2), Fiery Brand (207771 effect#2), Exergy (208628 effects: #1, #2), Havoc Demon Hunter (212612 effects: #1, #2, #14), Vengeance Demon Hunter (212613 effects: #1, #2, #15), Fiery Demise (212818 effect#1), Frailty (247456 effect#4), Chaos Blades (247938 effects: #2, #3), Infernal Armor (320331 effect#1), Immolation Aura (320377 effect#1), Burning Wound (346278 effect#2), Demon Soul (347765 effects: #1, #2), Any Means Necessary (388114 effects: #1, #3, #4), Burning Blood (390213 effects: #1, #2), Volatile Flameblood (390808 effect#4), Burning Wound (391191 effect#2), Seething Chaos (394934 effects: #1, #2), Fires of Fel (409645 effect#1), Fiery Resolve (425653 effects: #1, #2), Inertia (427641 effects: #1, #2), A Fire Inside (427775 effect#5), Never Say Die (427794 effects: #4, #5), Demon Hide (428241 effects: #1, #3), Immolation Aura (433721 effect#1), Immolation Aura (433724 effect#1), Immolation Aura (433737 effect#1), Reaver's Mark (442624 effect#1), Flamebound (452413 effects: #1, #2), Demonsurge (452489 effect#5), Void Metamorphosis (471306 effect#3), Luck of the Draw! (1219012 effects: #1, #2), A Fire Inside (1224451 effects: #2, #3), Spontaneous Immolation (1246556 effect#1), Havoc Demon Hunter (1256955 effects: #1, #2, #3), Vengeance Demon Hunter (1256959 effects: #1, #2), Furious (1266326 effects: #1, #2), Blind Focus (1272364 effects: #1, #2), Demon Hunter- Midnight PrePatch - 11.2 Class Set 2pc (1283625 effects: #1, #2), Demon Hunter- Midnight PrePatch - 11.2 Class Set 4pc (1283628 effects: #1, #2)
+Family Flags     : 11, 16, 49, 70, 72
+Attributes       : Is Ability (4), Do Not Sheath (18), No Redirection (35), No Reflection (39), Initiates Combat (Enables Auto-Attack) (41), Allow Cast While Casting (135), Always AOE Line of Sight (186), Allow Cast While Channeling (308), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=483170)   : School Damage (2): fire
+                   Base Value: 0 | Scaled Value: 0 (delta=0.05) | AP Coefficient: 0.334 | Radius: 0 - 8 yards | Target: Source (22) -> Enemy in Area (15)
+#2 (id=1042623)  : Dummy (3)
+                   Base Value: 8 | Scaled Value: 8 | Radius: 0 - 8 yards | Target: Source (22) -> Enemy in Area (15)
+                   Modified By: Spontaneous Immolation (1246556 effect#1)
+Description      : $@spelldesc258920
+
+Name             : Immolation Aura (id=258922) [Spell Family (107)]
+Class            : Demon Hunter
+School           : Fire
+Spell Type       : Magic
+Labels           : 16: Class Spells
+                 : 66: Demon Hunter Spells
+                 : 292
+Affecting Spells : Demon Soul (163073 effects: #1, #2), Aura of Pain (207347 effect#1), Agonizing Flames (207548 effects: #1, #2), Fiery Brand (207744 effect#2), Fiery Brand (207771 effect#2), Exergy (208628 effects: #1, #2), Havoc Demon Hunter (212612 effects: #1, #2, #14), Vengeance Demon Hunter (212613 effects: #1, #2, #15), Fiery Demise (212818 effect#1), Frailty (247456 effect#4), Chaos Blades (247938 effects: #2, #3), Infernal Armor (320331 effect#1), Immolation Aura (320377 effect#1), Burning Wound (346278 effect#2), Demon Soul (347765 effects: #1, #2), Any Means Necessary (388114 effects: #1, #3, #4), Burning Blood (390213 effects: #1, #2), Volatile Flameblood (390808 effect#4), Burning Wound (391191 effect#2), Seething Chaos (394934 effects: #1, #2), Fires of Fel (409645 effect#1), Fiery Resolve (425653 effects: #1, #2), Inertia (427641 effects: #1, #2), A Fire Inside (427775 effect#5), Never Say Die (427794 effects: #4, #5), Demon Hide (428241 effects: #1, #3), Immolation Aura (433721 effect#1), Immolation Aura (433724 effect#1), Immolation Aura (433737 effect#1), Reaver's Mark (442624 effect#1), Flamebound (452413 effects: #1, #2), Demonsurge (452489 effect#5), Void Metamorphosis (471306 effect#3), Luck of the Draw! (1219012 effects: #1, #2), A Fire Inside (1224451 effects: #2, #3), Spontaneous Immolation (1246556 effect#1), Havoc Demon Hunter (1256955 effects: #1, #2, #3), Vengeance Demon Hunter (1256959 effects: #1, #2), Furious (1266326 effects: #1, #2), Blind Focus (1272364 effects: #1, #2), Demon Hunter- Midnight PrePatch - 11.2 Class Set 2pc (1283625 effects: #1, #2), Demon Hunter- Midnight PrePatch - 11.2 Class Set 4pc (1283628 effects: #1, #2)
+Triggered By     : Immolation Aura (258920)
+Family Flags     : 11, 16, 61, 70, 72
+Attributes       : Is Ability (4), Do Not Sheath (18), No Redirection (35), No Reflection (39), Not In Spellbook (143), Always AOE Line of Sight (186), Allow Class Ability Procs (416)
+Effects          :
+#1 (id=483172)   : School Damage (2): fire
+                   Base Value: 0 | Scaled Value: 0 (delta=0.05) | AP Coefficient: 0.12466 | Radius: 0 - 8 yards | Target: Source (22) -> Enemy in Area (15)
+#2 (id=483173)   : Energize Power (30)
+                   Base Value: 3 | Scaled Value: 3 | Resource: fury | Target: Self (1)
+                   Modified By: Spontaneous Immolation (1246556 effect#1)
+#3 (id=807415)   : Energize Power (30)
+                   Base Value: 2 | Scaled Value: 2 | Resource: fury | Target: Self (1)
+#4 (id=1042693)  : Dummy (3)
+                   Base Value: 8 | Scaled Value: 8 | Target: Self (1)
+                   Modified By: Agonizing Flames (207548 effect#1)
+Description      : $@spelldesc258920

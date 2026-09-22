@@ -1,0 +1,99 @@
+{
+  "luaTestsPassed": 731,
+  "pythonTestsPassed": 111,
+  "addonLuaSyntaxFiles": 169,
+  "generatedRangeCases": 65,
+  "focusedMutations": [
+    {
+      "name": "ignore_native_false",
+      "killedByBehaviorTest": true
+    },
+    {
+      "name": "all_spells_radial",
+      "killedByBehaviorTest": true
+    },
+    {
+      "name": "ignore_no_range_declaration",
+      "killedByBehaviorTest": true
+    },
+    {
+      "name": "false_probe_is_proof",
+      "killedByBehaviorTest": true
+    },
+    {
+      "name": "unknown_probe_is_proof",
+      "killedByBehaviorTest": true
+    },
+    {
+      "name": "ignore_specialization",
+      "killedByBehaviorTest": true
+    },
+    {
+      "name": "disabled_can_prove",
+      "killedByBehaviorTest": true
+    },
+    {
+      "name": "observer_uses_only_native",
+      "killedByBehaviorTest": true
+    }
+  ],
+  "aldrachiMutations": [
+    {
+      "name": "static_base_proves_proc",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore_base_learning",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "drop_proc_in_observer",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "drop_proc_in_final_queue",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "drop_proc_in_castability",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "skip_dynamic_range",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore_hero_conflict",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "mask_unknown_hero",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "reject_meta_probe",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    },
+    {
+      "name": "reject_meta_resource",
+      "killedByBehaviorTest": true,
+      "exitCode": 1
+    }
+  ],
+  "holdoutRuns": 12,
+  "holdoutSamples": 35988,
+  "eventVerificationTraces": 6,
+  "liveValidated": false,
+  "maximumDPSAchieved": false,
+  "policyChanged": false,
+  "independentDefaultEnabled": false
+}

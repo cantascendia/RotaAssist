@@ -1,0 +1,107 @@
+{
+  "verifiedRawReports": 12,
+  "verifiedGeneratedInputs": 12,
+  "verifiedEventTraces": 6,
+  "artifacts": [
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement",
+      "side": "reference",
+      "rawSha256": "09849d396d027fac57f57599d2e9232f8bfb8c56e694fa104ec90378d7e958f0",
+      "profileSha256": "61afb5246fc6b562218759569d6ffe66c7bb62af9f1ac7aa2b82aa278e9ff0fb"
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement",
+      "side": "candidate",
+      "rawSha256": "ff344c0d78c8ce50a74f486dea7b096191d6ca98d73c473207ebe8b5fff810f7",
+      "profileSha256": "117bbebe0c63ac3ef295d5f1001bd87e2bbe39a0593bb5094f1d7f4e622dce47"
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "add_waves",
+      "side": "reference",
+      "rawSha256": "c68770ad91516119abab7d746316e354738d66c7fced71ab300a74e926475136",
+      "profileSha256": "cea48da631bd7e4be3bc9946bd0eea8fc464362ee842db4938d8ccac4af55aed"
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "add_waves",
+      "side": "candidate",
+      "rawSha256": "e4c66e8eac3cf369905e4bb6368253b6859bc630fcccb78bf1787811b4cf73a1",
+      "profileSha256": "fb1e7d2711800ee3e727c37b14d5719e33ab2187dfe75e48ee9231c72d4bb17e"
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement_and_adds",
+      "side": "reference",
+      "rawSha256": "9714c3a200d40e48999f2de9d6db6e994080f8f5865327abb0c68a8a56113ab5",
+      "profileSha256": "450db3870d8a032a52970c5606c452467e5650392ea8e130245e8f8a8dd13749"
+    },
+    {
+      "hero": "fel_scarred",
+      "scenario": "movement_and_adds",
+      "side": "candidate",
+      "rawSha256": "363b2e7a2b74fa1ecdb79a4361f6b538ea0c1b7c618b417e6126c3f5e7e28349",
+      "profileSha256": "b047c2fa97e6e2eca7da64e5b7604d1a6c30d7030ed0bd787cc77c8bf0bc6b6e"
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement",
+      "side": "reference",
+      "rawSha256": "e29c2fa25ce8ca4f3ee34fee4847b532f52bf131cc24346bf4a8b8d89313b2d8",
+      "profileSha256": "dbb91e39930f5f60a82ffc6481d655f4dd2e19561303e2049c83d751cc3f5060"
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement",
+      "side": "candidate",
+      "rawSha256": "6f3069866a065ec91a89bb755910fbc2700ad0d2bf1315653bddb8b5d5897727",
+      "profileSha256": "763180032ba5d31305d81850008c060a4a1616eadefb823d512cda73e1a358fa"
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "add_waves",
+      "side": "reference",
+      "rawSha256": "14d0dbc0b890d3cbd518f9358e670fb5afda48cad191b2d08730d5e6955dcad4",
+      "profileSha256": "4ffe6cf6971e286ccd3e013c494e4d0cbf069d78e25547380afb790bd37790d8"
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "add_waves",
+      "side": "candidate",
+      "rawSha256": "88c4402b2bd537c4b010a687423710c371d12734da46838459e51a357ecb3b9b",
+      "profileSha256": "daf1e7c7dc95f8fbf66077e7420f8388fa368225f82ca967cd21ef5198b83a30"
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement_and_adds",
+      "side": "reference",
+      "rawSha256": "c9ef311349a162fe8eacbd943b0d32f929379a7e2980bbadaf3d1084f4d99fc3",
+      "profileSha256": "37057ca455b49fcc51070d4615d2578f3c8caf8f0492561d1ab0912bd0600700"
+    },
+    {
+      "hero": "aldrachi_reaver",
+      "scenario": "movement_and_adds",
+      "side": "candidate",
+      "rawSha256": "d0938e4f9c4da4b04822b245861329d7cdae32afa43c0f80c94b9d0fd6b2bf93",
+      "profileSha256": "a3a2f7e99eb3cd8f6cde60d6b7220d4b46fb2409d7c22ef749aaf0485ff44c8b"
+    }
+  ],
+  "spellQueryTranscripts": [
+    {
+      "file": "spell-ranges.txt",
+      "normalization": "trim line-end whitespace and trailing blank lines",
+      "rawPath": "dist\\research\\havoc-encounters\\pilot\\spells-console.txt",
+      "rawSha256": "99ed71b915648dfe72b376a0e1f4a616370da746ff3ef2288c060ec5da4cec7d",
+      "normalizedSha256": "204470593612272f16f67d421440fdf28e66a0b9c0056a530508db82ba61b1b2"
+    },
+    {
+      "file": "area-spells.txt",
+      "normalization": "trim line-end whitespace and trailing blank lines",
+      "rawPath": "dist\\research\\havoc-encounters\\pilot\\area-spells.txt",
+      "rawSha256": "59f2ea09a04b2fc07a3b55139ef63a0aff5ba08ccd504e273daf756aa8f4c5ff",
+      "normalizedSha256": "bdd05a4807703d428ffdba86c6972713cc8dbfe81548c564823bb85bc569451b"
+    }
+  ]
+}

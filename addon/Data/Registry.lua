@@ -48,6 +48,10 @@ RA.Registry.ACTIVE_OVERRIDE_BASES = {
 }
 RA.Registry.HAVOC_HERO_TALENTS = {fel_scarred=452402, aldrachi_reaver=442290}
 
+-- SimC 774babd: radial Havoc attacks with coverage beyond the melee probe.
+-- 仅玩家周围范围伤害；不把锥形、地面指向或位移技能当作同类。
+RA.Registry.HAVOC_PLAYER_AREA_ACTIONS = {[258920]=true, [188499]=true, [210152]=true}
+
 -- SimC 774babd, 12.1.0.69875: selected-talent transitions, not damage weights.
 -- 固定版本天赋状态转移；持续时间下界不当作精确光环时长。
 RA.Registry.HAVOC_TRANSITIONS = {
